@@ -85,11 +85,90 @@ export class AppMenuComponent implements OnInit {
                             }
                         ]
                     },
+                ]
+            },
+            {
+                label: 'Account Management',
+                items: [
                     {
-                        label: 'Crud',
-                        icon: 'pi pi-fw pi-pencil',
-                        routerLink: ['/pages/crud']
+                        label: 'Users', icon: 'pi pi-fw pi-user-edit',
+                        items: [
+                            {
+                                label: 'Add', icon: 'pi pi-fw pi-plus', routerLink: ['/dashboard/users/create-user']
+                            },
+                            {
+                                label: 'Edit', icon: 'pi pi-fw pi-pencil', routerLink: ['/dashboard/users']
+                            },
+
+                        ]
                     },
+                    { label: 'Roles', icon: 'pi pi-fw pi-users' },
+                    { label: 'Privileges', icon: 'pi pi-fw pi-eye' },
+                ]
+            },
+            {
+                label: 'Sales',
+                icon: 'pi pi-fw pi-user',
+                items: [
+                    {
+                        label: 'Brands',
+                        icon: 'pi pi-fw pi-tags',
+                        routerLink: ['/pages/products']
+                    },
+                    {
+                        label: 'Categories',
+                        icon: 'pi pi-fw pi-th-large',
+                        routerLink: ['/pages/products']
+                    }, {
+                        label: 'Products',
+                        icon: 'pi pi-fw pi-shopping-cart',
+                        routerLink: ['/pages/products']
+                    },
+                    {
+                        label: 'Packages',
+                        icon: 'pi pi-fw pi-shopping-bag',
+                        routerLink: ['/pages/products']
+                    },
+                ]
+            },
+            {
+                label: 'Orders',
+                items: [
+                    { label: 'Orders', icon: 'pi pi-fw pi-tags' },
+                    { label: 'Delivery', icon: 'pi pi-fw pi-th-large' },
+                ]
+            },
+            {
+                label: 'Reports',
+                items: [
+                    { label: 'Revenue', icon: 'pi pi-fw pi-dollar', routerLink: ['/dashboard'] },
+                    { label: 'Expenses', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/dashboard'] },
+                    {
+                        label: 'Clients', icon: 'pi pi-fw pi-users',
+                        items: [
+                            {
+                                label: 'Search', icon: 'pi pi-fw pi-search', routerLink: ['/dashboard/clients']
+                            },
+                            {
+                                label: 'Block', icon: 'pi pi-fw pi-ban', routerLink: ['/dashboard/client-profile']
+                            },
+                            {
+                                label: 'Active', icon: 'pi pi-fw pi-check', routerLink: ['/dashboard/clients']
+                            },
+                        ]
+                    }
+                ]
+            },
+            {
+                label: 'Application',
+                items: [
+                    {
+                        label: 'Performance', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/help']
+                    },
+                    {
+                        label: 'Settings', icon: 'pi pi-fw pi-cog', routerLink: ['/settings']
+                    },
+
                     {
                         label: 'Timeline',
                         icon: 'pi pi-fw pi-calendar',
@@ -105,61 +184,52 @@ export class AppMenuComponent implements OnInit {
                         icon: 'pi pi-fw pi-circle-off',
                         routerLink: ['/pages/empty']
                     },
-                ]
-            },
-            {
-                label: 'Hierarchy',
-                items: [
+
                     {
-                        label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
+                        label: 'Hierarchy',
                         items: [
                             {
-                                label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
+                                label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
                                 items: [
-                                    { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
+                                    {
+                                        label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
+                                        items: [
+                                            { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
+                                            { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
+                                            { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
+                                        ]
+                                    },
+                                    {
+                                        label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
+                                        items: [
+                                            { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }
+                                        ]
+                                    },
                                 ]
                             },
                             {
-                                label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
+                                label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
                                 items: [
-                                    { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }
+                                    {
+                                        label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
+                                        items: [
+                                            { label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark' },
+                                            { label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark' },
+                                        ]
+                                    },
+                                    {
+                                        label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
+                                        items: [
+                                            { label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark' },
+                                        ]
+                                    },
                                 ]
-                            },
+                            }
                         ]
                     },
-                    {
-                        label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {
-                                label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                            {
-                                label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                        ]
-                    }
-                ]
-            },
-            {
-                label: 'Get Started',
-                items: [
-                    {
-                        label: 'Documentation', icon: 'pi pi-fw pi-question', routerLink: ['/documentation']
-                    },
-                    {
-                        label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/primefaces/sakai-ng'], target: '_blank'
-                    }
+                   
                 ]
             }
-        ];
+        ]
     }
 }
