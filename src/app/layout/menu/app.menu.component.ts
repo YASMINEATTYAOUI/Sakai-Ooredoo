@@ -38,10 +38,10 @@ export class AppMenuComponent implements OnInit {
                 label: 'Sales',
                 icon: 'pi pi-fw pi-user',
                 items: [
-                    { label: 'Brands', icon: 'pi pi-fw pi-tags', routerLink: ['dashboard/pages/brands'] },
-                    { label: 'Categories', icon: 'pi pi-fw pi-th-large', routerLink: ['dashboard/pages/categories'] },
-                    { label: 'Products', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['dashboard/pages/products'] },
-                    { label: 'Packages', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['dashboard/pages/packages'] },
+                    { label: 'Brands', icon: 'pi pi-fw pi-tags', routerLink: ['dashboard/pages/sales/brands'] },
+                    { label: 'Categories', icon: 'pi pi-fw pi-th-large', routerLink: ['dashboard/pages/sales/categories'] },
+                    { label: 'Products', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['dashboard/pages/sales/products'] },
+                    { label: 'Packages', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['dashboard/pages/sales/packages'] },
                 ]
             },
             {
