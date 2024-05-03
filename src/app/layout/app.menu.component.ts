@@ -113,7 +113,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Brands',
                         icon: 'pi pi-fw pi-tags',
-                        routerLink: ['/pages/products']
+                        routerLink: ['/pages/brands']
                     },
                     {
                         label: 'Categories',
