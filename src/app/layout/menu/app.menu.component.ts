@@ -26,12 +26,12 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Users', icon: 'pi pi-fw pi-user-edit',
                         items: [
-                            { label: 'Add', icon: 'pi pi-fw pi-plus', routerLink: ['/dashboard/users/create-user'] },
-                            { label: 'Edit', icon: 'pi pi-fw pi-pencil', routerLink: ['/dashboard/users'] },
+                            { label: 'Add', icon: 'pi pi-fw pi-plus', routerLink: ['/dashboard/pages/account-management/users/create-user'] },
+                            { label: 'Edit', icon: 'pi pi-fw pi-pencil', routerLink: ['/dashboard/pages/account-management/users'] },
                         ]
                     },
-                    { label: 'Roles', icon: 'pi pi-fw pi-users' },
-                    { label: 'Privileges', icon: 'pi pi-fw pi-eye' },
+                    { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/dashboard/pages/account-management/roles']},
+                    { label: 'Privileges', icon: 'pi pi-fw pi-eye', routerLink: ['/dashboard/pages/account-management/privileges']},
                 ]
             },
             {
