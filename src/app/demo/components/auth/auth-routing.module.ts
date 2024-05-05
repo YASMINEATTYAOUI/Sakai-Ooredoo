@@ -11,8 +11,8 @@ import { AuthComponent } from './auth.component';
                 { path: 'access', loadChildren: () => import('./access/access.module').then(m => m.AccessModule) },
                 { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
                 { path: 'forgot-pwd', loadChildren: () => import('./forgot-pwd/forgot-pwd.module').then(m => m.ForgotPwdModule) },
+                { path: 'unauthorized', loadChildren: () => import('./unauthorized/unauthorized.module').then(m => m.UnauthorizedModule) },
                 { path: '**', redirectTo: '/notfound' }
-
             ]}])],
     exports: [RouterModule]
 })
