@@ -23,15 +23,9 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Account Management',
                 items: [
-                    {
-                        label: 'Users', icon: 'pi pi-fw pi-user-edit',
-                        items: [
-                            { label: 'Add', icon: 'pi pi-fw pi-plus', routerLink: ['/dashboard/pages/account-management/users/create-user'] },
-                            { label: 'Edit', icon: 'pi pi-fw pi-pencil', routerLink: ['/dashboard/pages/account-management/users'] },
-                        ]
-                    },
-                    { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/dashboard/pages/account-management/roles']},
-                    { label: 'Privileges', icon: 'pi pi-fw pi-eye', routerLink: ['/dashboard/pages/account-management/privileges']},
+                    {label: 'Users', icon: 'pi pi-fw pi-user-edit', routerLink: ['/dashboard/pages/account-management/users']},
+                    { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/dashboard/pages/account-management/roles'] },
+                    { label: 'Privileges', icon: 'pi pi-fw pi-eye', routerLink: ['/dashboard/pages/account-management/privileges'] },
                 ]
             },
             {
@@ -97,7 +91,7 @@ export class AppMenuComponent implements OnInit {
                         label: 'Prime Blocks',
                         items: [
                             { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['dashboard/blocks'], badge: 'NEW' },
-                            
+
                         ]
                     },
                     {

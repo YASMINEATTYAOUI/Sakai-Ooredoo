@@ -5,6 +5,9 @@ import { UserProfileComponent } from './user-profile.component';
 import { OverlayModule } from 'primeng/overlay';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
+import { PlusIcon } from 'primeng/icons/plus';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [UserProfileComponent],
@@ -14,7 +17,8 @@ import { FileUploadModule } from 'primeng/fileupload';
     OverlayModule,
     DropdownModule,
     FileUploadModule,
-    
-  ]
+    ToastModule,
+  ],
+  providers: [MessageService]
 })
 export class UserProfileModule { }

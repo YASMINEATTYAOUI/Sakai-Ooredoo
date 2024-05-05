@@ -35,6 +35,7 @@ import { UsersComponent } from './users.component';
     RadioButtonModule,
     InputNumberModule,
     DialogModule
+    
 ],
 declarations: [UsersComponent]
 })
