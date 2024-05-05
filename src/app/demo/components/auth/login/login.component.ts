@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
@@ -11,7 +12,8 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
             margin-right: 1rem;
             color: var(--primary-color) !important;
         }
-    `]
+    `],
+   providers: [MessageService] 
 })
 export class LoginComponent {
 
