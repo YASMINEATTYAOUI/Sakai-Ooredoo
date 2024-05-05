@@ -18,6 +18,8 @@ import { AccessComponent } from './demo/components/auth/access/access.component'
                     { path: 'dashboard/documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'dashboard/blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
                     { path: 'dashboard/pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
+                    { path: 'dashboard/calendar', loadChildren: () => import('./demo/components/calendar/calendar.module').then(m => m.CalendarModule) },
+                    { path: 'dashboard/user-profile', loadChildren: () => import('./demo/components/user-profile/user-profile.module').then(m => m.UserProfileModule) },
                     { path: 'dashboard/notfound', component: NotfoundComponent },
                     { path: 'dashboard/access', component: AccessComponent },
                 ]
