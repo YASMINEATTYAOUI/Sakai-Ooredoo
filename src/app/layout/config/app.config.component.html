@@ -41,89 +41,95 @@
         <p-inputSwitch [(ngModel)]="ripple"></p-inputSwitch>
     </ng-container>
 
-
-    <h5>Bootstrap</h5>
+    <h5>Themes </h5>
+    <h6>Bootstrap</h6>
     <div class="grid">
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('bootstrap4-light-blue', 'light')">
-                <img src="assets/layout/images/themes/bootstrap4-light-blue.svg" class="w-2rem h-2rem" alt="Bootstrap Light Blue">
+        <div class="col-6">
+            <button class="p-link w-6rem h-4rem" (click)="changeTheme('bootstrap4-light-blue', 'light')">
+                <img src="assets/layout/images/themes/lara-light-red.png" class="w-6rem h-4rem" alt="Bootstrap Light Blue">
             </button>
+            <p>Light</p>
         </div>
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('bootstrap4-dark-blue', 'dark')">
-                <img src="assets/layout/images/themes/bootstrap4-dark-blue.svg" class="w-2rem h-2rem" alt="Bootstrap Dark Blue">
+        <div class="col-6">
+            <button class="p-link w-6rem h-4rem" (click)="changeTheme('bootstrap4-dark-blue', 'dark')">
+                <img src="assets/layout/images/themes/arya-red.png" class="w-6rem h-4rem" alt="Bootstrap Dark Blue">
             </button>
+            <p>Dark</p>
         </div>
     </div>
 
 
-    <h5>Material Design</h5>
+    <h6>Material Design</h6>
     <div class="grid">
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('mdc-light-indigo', 'light')">
-                <img src="assets/layout/images/themes/md-light-indigo.svg" class="w-2rem h-2rem" alt="Material Light Indigo">
+        <div class="col-6">
+            <button class="p-link w-6rem h-4rem" (click)="changeTheme('mdc-light-indigo', 'light')">
+                <img src="assets/layout/images/themes/lara-light-red.png" class="w-6rem h-4rem" alt="Material Light Indigo">
             </button>
+            <p>Light</p>
         </div>
         
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('mdc-dark-indigo', 'dark')">
-                <img src="assets/layout/images/themes/md-dark-indigo.svg" class="w-2rem h-2rem" alt="Material Dark Indigo">
+        <div class="col-6">
+            <button class="p-link w-6rem h-4rem" (click)="changeTheme('mdc-dark-indigo', 'dark')">
+                <img src="assets/layout/images/themes/arya-red.png" class="w-6rem h-4rem" alt="Material Dark Indigo">
             </button>
-        </div>
-        
-    </div>
-
-    <h5>Tailwind</h5>
-    <div class="grid">
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('tailwind-light', 'light')">
-                <img src="assets/layout/images/themes/tailwind-light.png" class="w-2rem h-2rem" alt="Tailwind Light">
-            </button>
-        </div>
-    </div>
-
-    <h5>Fluent UI</h5>
-    <div class="grid">
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('fluent-light', 'light')">
-                <img src="assets/layout/images/themes/fluent-light.png" class="w-2rem h-2rem" alt="Fluent Light">
-            </button>
-        </div>
-    </div>
-
-    <h5>PrimeOne Design - 2022</h5>
-    <div class="grid">
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('lara-light-indigo', 'light')">
-                <img src="assets/layout/images/themes/lara-light-indigo.png" class="w-2rem h-2rem" alt="Lara Light Indigo">
-            </button>
-        </div>
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('lara-dark-indigo', 'dark')">
-                <img src="assets/layout/images/themes/lara-dark-indigo.png" class="w-2rem h-2rem" alt="Lara Dark Indigo">
-            </button>
-        </div>
-    </div>
-
-    <h5>PrimeOne Design - 2021</h5>
-    <div class="grid">
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('saga-blue', 'light')">
-                <img src="assets/layout/images/themes/saga-blue.png" class="w-2rem h-2rem" alt="Saga Blue">
-            </button>
-        </div>
-
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('vela-blue', 'dark')">
-                <img src="assets/layout/images/themes/vela-blue.png" class="w-2rem h-2rem" alt="Vela Blue">
-            </button>
-        </div>
-        
-        <div class="col-3">
-            <button class="p-link w-2rem h-2rem" (click)="changeTheme('arya-blue', 'dark')">
-                <img src="assets/layout/images/themes/arya-blue.png" class="w-2rem h-2rem" alt="Arya Blue">
-            </button>
+            <p>Dark</p>
         </div>
         
     </div>
+
+    <h6>Lara</h6>
+    <div class="grid">
+        <div class="col-6">
+            <button class="p-link w-6rem h-4rem" (click)="changeTheme('lara-light-indigo', 'light')">
+                <img src="assets/layout/images/themes/lara-light-red.png" class="w-6rem h-4rem" alt="Lara Light Indigo">
+            </button>
+            <p>Light</p>
+        </div>
+        <div class="col-6">
+            <button class="p-link w-6rem h-4rem" (click)="changeTheme('lara-dark-indigo', 'dark')">
+                <img src="assets/layout/images/themes/arya-red.png" class="w-6rem h-4rem" alt="Lara Dark Indigo">
+            </button>
+            <p>Dark</p>
+        </div>
+    </div>
+    
+    <div class="grid">
+        <div class="col-4">
+            <h6>Tailwind</h6>
+            <button class="p-link w-5rem h-4rem" (click)="changeTheme('tailwind-light', 'light')">
+                <img src="assets/layout/images/themes/lara-light-red.png" class="w-5rem h-4rem" alt="Tailwind Light">
+            </button>
+        </div>
+    
+        <div class="col-4">
+            <h6>Fluent</h6>
+            <button class="p-link w-5rem h-4rem" (click)="changeTheme('fluent-light', 'light')">
+                <img src="assets/layout/images/themes/lara-light-red.png" class="w-5rem h-4rem" alt="Fluent Light">
+            </button>
+        </div>
+    
+        <div class="col-4">
+            <h6>Saga</h6>
+            <button class="p-link w-5rem h-4rem" (click)="changeTheme('saga-blue', 'light')">
+                <img src="assets/layout/images/themes/saga-red.png" class="w-5rem h-4rem" alt="Saga Blue">
+            </button>
+        </div>
+    </div>
+        
+        <div class="grid">
+        <div class="col-6">
+            <h6>Vela</h6>
+            <button class="p-link w-6rem h-4rem" (click)="changeTheme('vela-blue', 'dark')">
+                <img src="assets/layout/images/themes/vela-red.png" class="w-6rem h-4rem" alt="Vela Blue">
+            </button>
+        </div>
+   
+        <div class="col-6">
+            <h6>Arya</h6>
+            <button class="p-link w-6rem h-4rem" (click)="changeTheme('arya-blue', 'dark')">
+                <img src="assets/layout/images/themes/arya-red.png" class="w-6rem h-4rem" alt="Arya Blue">
+            </button>
+        </div>
+    </div> 
+    
 </p-sidebar>

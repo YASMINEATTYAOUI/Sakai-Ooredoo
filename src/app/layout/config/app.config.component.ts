@@ -9,7 +9,7 @@ import { MenuService } from '../service/app.menu.service';
 export class AppConfigComponent {
     @Input() minimal: boolean = false;
 
-    scales: number[] = [12, 13, 14, 15, 16];
+    scales: number[] = [12, 13, 14, 15, 16, 17, 18, 19];
 
     constructor(
         public layoutService: LayoutService,
