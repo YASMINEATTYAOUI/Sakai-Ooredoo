@@ -34,7 +34,8 @@ import { RolesComponent } from './roles.component';
     DropdownModule,
     RadioButtonModule,
     InputNumberModule,
-    DialogModule
+    DialogModule,
+    
 ],
 declarations: [RolesComponent]
 })
