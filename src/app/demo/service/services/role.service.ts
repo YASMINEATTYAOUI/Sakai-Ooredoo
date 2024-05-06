@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { RoleDto } from '../../models/role';
+import { Role, RoleDto } from '../../models/role';
 import { PageEvent } from '../../utils/page-event';
 
 
@@ -63,6 +63,35 @@ private baseUrl = environment.apiUrl + '/roles';
       .set('page', pageNumber.toString())
       .set('size', rows.toString());
     return this.http.get<RoleDto[]>(`${this.baseUrl}/search`, { params });
+  }
+  
+  
+  getAll(): Observable<Role[]> {
+    return this.http.get<Role[]>(`${this.baseUrl}/sorted`);
+  }
+
+  get(id: any): Observable<Role> {
+    return this.http.get<Role>(`${this.baseUrl}/${id}`);
+  }
+
+  create(roleDto: RoleDto): Observable<any> {
+    return this.http.post(this.baseUrl, roleDto);
+  }
+
+  update(id: any, roleDto: RoleDto): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}`, roleDto);
+  }
+
+  delete(id: any): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
+
+  deleteAll(): Observable<any> {
+    return this.http.delete(this.baseUrl);
+  }
+
+  findByName(name: any): Observable<Role[]> {
+    return this.http.get<Role[]>(`${this.baseUrl}?name=${name}`);
   }
   countRoles(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/count`);

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -16,6 +16,15 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { RolesRoutingModule } from './roles-routing.module';
 import { RolesComponent } from './roles.component';
+import { ChipsModule } from 'primeng/chips';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DividerModule } from 'primeng/divider';
+import { FieldsetModule } from 'primeng/fieldset';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { MessagesModule } from 'primeng/messages';
+import { PaginatorModule } from 'primeng/paginator';
+import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   imports: [
@@ -35,6 +44,19 @@ import { RolesComponent } from './roles.component';
     RadioButtonModule,
     InputNumberModule,
     DialogModule,
+    
+
+    ReactiveFormsModule,
+    FormsModule,
+    PaginatorModule,
+    TagModule,
+    FieldsetModule,
+    MessagesModule,
+    InputSwitchModule,
+    ConfirmDialogModule, 
+    TooltipModule,
+    DividerModule,
+    ChipsModule,
     
 ],
 declarations: [RolesComponent]
