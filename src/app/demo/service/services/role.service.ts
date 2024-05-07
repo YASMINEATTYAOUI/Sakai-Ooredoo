@@ -27,12 +27,11 @@ private baseUrl = environment.apiUrl + '/roles';
     return this.http.put<RoleDto>(this.baseUrl, roleDto);
   }
 
-  getRoles(pageEvent: PageEvent): Observable<any> {
-    const rows = pageEvent.rows;
-    const pageNumber = pageEvent.first / pageEvent.rows;
-    const params = { page: pageNumber.toString(), size: rows.toString() };
-    return this.http.get<any>(`${this.baseUrl}/sorted`, { params });
-  }
+  getRoles(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/sorted`);
+}
+
+
 
   getAllRolesSortedByCreatorId(creatorId : string, name : string, pageEvent: PageEvent): Observable<any> {
     let params = new HttpParams()
@@ -66,9 +65,7 @@ private baseUrl = environment.apiUrl + '/roles';
   }
   
   
-  getAll(): Observable<Role[]> {
-    return this.http.get<Role[]>(`${this.baseUrl}/sorted`);
-  }
+ 
 
   get(id: any): Observable<Role> {
     return this.http.get<Role>(`${this.baseUrl}/${id}`);

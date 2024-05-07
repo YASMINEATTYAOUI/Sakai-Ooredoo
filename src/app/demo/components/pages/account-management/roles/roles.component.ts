@@ -36,12 +36,12 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   deleteRolesDialog: boolean = false;
 
-  selectedRoles: Role[] = [];
+  selectedRoles: Role[] ;
 
   submitted: boolean = false;
   cols: any[] = [];
   statuses: any[] = [];
-  rowsPerPageOptions = [5, 10, 20];
+  rowsPerPageOptions = [5, 10, 20, 30];
 
 
   constructor(
@@ -63,7 +63,6 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getRoles();
-    //this.retrieveRoles();
   }
 
   ngOnDestroy() {
@@ -98,20 +97,24 @@ export class RolesComponent implements OnInit, OnDestroy {
     } else {
       this.createRole(data);
     }
+    this.roleDialog = false;
+    this.router.navigate(['dashboard/pages/account-management/roles']);
+    this.getRoles()
   }
 
   private createRole(roleDto: RoleDto): void {
     this.roleService.createRole(roleDto).subscribe({
-      next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Created', life: 3000 }), 
+      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Created', life: 2000 }), 
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
-      complete: () => {} // No need to emit here as it's handled in the 'next' and 'error' callbacks
-    });
+      complete: () => {} 
+    })
+    this.roles.push(this.role);
   }
 
   private updateRole(roleDto: RoleDto): void {
     if (this.roleToUpdate) {
       this.roleService.updateRole(roleDto).subscribe({
-        next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 3000 }),
+        next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 2000 }),
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
         complete: () => {} // No need to emit here as it's handled in the 'next' and 'error' callbacks
       });
@@ -120,10 +123,11 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   getRoles() {
     this.tableLoading = true;
-    this.roleService.getRoles(this.pageEvent).subscribe({
+    this.roleService.getRoles().subscribe({
       next: (response: any) => {
-        this.roles = response.content; // Extract the 'content' array from the response
+        this.roles = response; // Extract the 'content' array from the response
         this.totalElements = response.totalElements;
+        
       },
       error: (e: any) => {
         this.messages = [{ severity: 'error', summary: 'Failed to load Data', detail: 'Server issue' }];
@@ -156,8 +160,41 @@ export class RolesComponent implements OnInit, OnDestroy {
       });
     }
   }
+/*
+  deleteRole(roleId: string): void {
+    this.deleteRoleDialog = true;
+    this.roleService.deleteRole(roleId).subscribe({
+      next: () => {
+        // Role deleted successfully
+        console.log('Role deleted successfully');
+        // Perform any additional actions (e.g., refresh roles list)
+      },
+      error: (error) => {
+        // Error occurred while deleting role
+        console.error('Error deleting role:', error);
+        // Handle error (e.g., display error message to user)
+      }
+    });
+  }
+*/
 
+deleteRole(role: Role): void {
+  this.deleteRoleDialog = true;
+  this.roleService.deleteRole(role.id).subscribe({
+    next: () => {
+      console.log('Role deleted successfully');
+      this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The entity has been deleted.' });
+      this.getRoles();
+    },
+    error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }),
+   
+  })
+  
+}
+
+/*
   deleteRole(role) {
+    this.deleteRoleDialog = true;
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected entity?',
       header: 'Confirm',
@@ -173,8 +210,9 @@ export class RolesComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+*/
   deleteSelectedRoles() {
+    this.deleteRolesDialog = true;
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected entities?',
       header: 'Confirm',
@@ -183,19 +221,16 @@ export class RolesComponent implements OnInit, OnDestroy {
         const idsToDelete = this.selectedRoles.map(role => role.id);
         this.roleService.deleteRoles(idsToDelete).subscribe({
           next: (response: any) => {
+            
             this.getRoles();
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Deleted', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Deleted', life: 2000 });
             this.selectedRoles = [];
           },
-          error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong with the deletion', life: 3000 })
+          error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong with the deletion', life: 2000 })
         });
       }
     });
   }
-
-
-
-
 
   //navigation to details
   toRole(role: RoleDto) {
@@ -204,32 +239,11 @@ export class RolesComponent implements OnInit, OnDestroy {
   currentRole: Role = {};
   currentIndex = -1;
 
-  retrieveRoles(): void {
-    this.roleService.getAll().subscribe({
-      next: (data) => {
-        this.roles = data;
-        console.log(data);
-      },
-      error: (e) => console.error(e)
-    });
-  }
-
-  refreshList(): void {
-    this.retrieveRoles();
-    this.currentRole = {};
-    this.currentIndex = -1;
-  }
-
-  setActiveRole(role: Role, index: number): void {
-    this.currentRole = role;
-    this.currentIndex = index;
-  }
-
   removeAllRoles(): void {
     this.roleService.deleteAll().subscribe({
       next: (res) => {
         console.log(res);
-        this.refreshList();
+        //this.refreshList();
       },
       error: (e) => console.error(e)
     });
@@ -261,7 +275,8 @@ export class RolesComponent implements OnInit, OnDestroy {
   }
 */
   editRole(role: Role) {
-    this.role = { ...role };
+    this.role = { ...role }
+    this.submitted = false;
     this.roleDialog = true;
   }
   /*
@@ -273,14 +288,12 @@ export class RolesComponent implements OnInit, OnDestroy {
   confirmDeleteSelected() {
     this.deleteRolesDialog = false;
     this.roles = this.roles.filter(val => !this.selectedRoles.includes(val));
-    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Roles Deleted', life: 3000 });
+    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Roles Deleted', life: 2000 });
     this.selectedRoles = [];
   }
 
   confirmDelete() {
     this.deleteRoleDialog = false;
-    this.roles = this.roles.filter(val => val.id !== this.role.id);
-    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Deleted', life: 3000 });
     this.role = {};
   }
 
@@ -288,59 +301,6 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.roleDialog = false;
     this.submitted = false;
   }
-
-  saveRole() {
-    this.submitted = true;
-
-    if (this.role.name?.trim()) {
-      if (this.role.id) {
-      // @ts-ignore
-        this.role.inventoryStatus = this.role.inventoryStatus.value ? this.role.inventoryStatus.value : this.role.inventoryStatus;
-        this.roles[this.findIndexById(this.role.id)] = this.role;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 3000 });
-      } else {
-        //this.role.id = this.createId();
-        //this.role.code = this.createId();
-        //this.role.image = 'product-placeholder.svg';
-        // @ts-ignore
-        this.role.inventoryStatus = this.role.inventoryStatus ? this.role.inventoryStatus.value : 'ADMIN';
-        this.roles.push(this.role);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Created', life: 3000 });
-      }
-
-      this.roles = [...this.roles];
-      this.roleDialog = false;
-      this.role = {};
-    }
-  }
-
-  findIndexById(id: string): number {
-    let index = -1;
-    for (let i = 0; i < this.roles.length; i++) {
-      if (this.roles[i].id === id) {
-        index = i;
-        break;
-      }
-    }
-
-    return index;
-  }
-  /*
-    createId(): string {
-      let id = '';
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      for (let i = 0; i < 5; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return id;
-    }
-  */
-  onGlobalFilter(table: Table, event: Event) {
-    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-  }
-
-
-
 
 }
 
