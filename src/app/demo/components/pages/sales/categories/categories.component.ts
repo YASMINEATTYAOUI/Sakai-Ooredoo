@@ -35,10 +35,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   submitted: boolean = false;
   categoryId: any;
-  
-  cols: any[] = [];
-
-  statuses: any[] = [];
 
   rowsPerPageOptions = [5, 10, 20];
 
@@ -53,22 +49,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
       name:['',[Validators.pattern('^[a-zA-Z0-9 ]*$'),Validators.maxLength(50),Validators.required    ]],
       description:[''],
     });
-
-
-    this.cols = [
-      { field: 'product', header: 'Product' },
-      { field: 'price', header: 'Price' },
-      { field: 'category', header: 'Category' },
-      { field: 'rating', header: 'Reviews' },
-      { field: 'inventoryStatus', header: 'Status' }
-  ];
-
-  this.statuses = [
-      { label: 'INSTOCK', value: 'instock' },
-      { label: 'LOWSTOCK', value: 'lowstock' },
-      { label: 'OUTOFSTOCK', value: 'outofstock' }
-  ];
-
   }
 
   ngOnInit(): void {
@@ -155,7 +135,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   //navigation to details
   toCategory(category: CategoryDto) { 
-    this.router.navigate(['dashboard/products/', category.id]); 
+    this.router.navigate(['dashboard/pages/sales/categories', category.id]); 
   }
 
   openNew() {
