@@ -2,9 +2,8 @@ import { SafeUrl } from '@angular/platform-browser';
 
 export interface User {
   id?: any;
-  userName?: string;
-  firstName?: string ;
-  lastName?: string;
+  username?: string;
+  fullName?: string ;
   phoneNumber?: number;
   email?: string;
   password?: string;
@@ -14,9 +13,8 @@ export interface User {
 
 export interface UserDto {
   id?: any;
-  userName?: string;
-  firstName?: string ;
-  lastName?: string;
+  username?: string;
+  fullName?: string ;
   phoneNumber?: number;
   email?: string;
   password?: string;

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersRoutingModule } from './users-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -23,6 +23,7 @@ import { UsersComponent } from './users.component';
     UsersRoutingModule,
     TableModule,
     FileUploadModule,
+    
     FormsModule,
     ButtonModule,
     RippleModule,

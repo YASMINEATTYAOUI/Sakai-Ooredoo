@@ -14,25 +14,20 @@ export class UserService {
     return null;
   }
   
-    private baseUrl = environment.apiUrl + '/users';
+    private baseUrl = environment.apiUrl + '/auth';
   
     constructor(private http: HttpClient) {}
   
     createUser(user: User): Observable<object> {
-      return this.http.post(this.baseUrl, user);
+      return this.http.post(`${this.baseUrl}/save`, user);
     }
   
     updateUser(userDto: UserDto): Observable<Object> {
       return this.http.put(this.baseUrl, userDto);
     }
   
-    getUsers(pageEvent: PageEvent): Observable<any> {
-      const rows = pageEvent.rows;
-      const pageNumber = pageEvent.first / pageEvent.rows;
-      const params = new HttpParams()
-        .set('page', pageNumber.toString())
-        .set('size', rows.toString());
-        return this.http.get<any>(`${this.baseUrl}/sorted`, { params });
+    getUsers(): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/users`);
     }
   
     getUserById(id: number): Observable<UserDto> {
