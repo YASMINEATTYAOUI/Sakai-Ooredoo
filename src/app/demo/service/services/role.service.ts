@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Role, RoleDto } from '../../models/role';
@@ -12,11 +11,11 @@ import { PageEvent } from '../../utils/page-event';
 })
 export class RoleService {
 
-private baseUrl = environment.apiUrl + '/roles';
+  private baseUrl = environment.apiUrl + '/roles';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getServiceUrl(){
+  getServiceUrl() {
     return this.baseUrl;
   }
   createRole(roleDto: RoleDto): Observable<RoleDto> {
@@ -29,15 +28,15 @@ private baseUrl = environment.apiUrl + '/roles';
 
   getRoles(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
-}
+  }
 
 
 
-  getAllRolesSortedByCreatorId(creatorId : string, name : string, pageEvent: PageEvent): Observable<any> {
+  getAllRolesSortedByCreatorId(creatorId: string, name: string, pageEvent: PageEvent): Observable<any> {
     let params = new HttpParams()
       .set('page', pageEvent.first.toString())
       .set('size', pageEvent.rows.toString());
-    if(name){
+    if (name) {
       params = params.set('name', name);
     }
     return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
@@ -63,33 +62,7 @@ private baseUrl = environment.apiUrl + '/roles';
       .set('size', rows.toString());
     return this.http.get<RoleDto[]>(`${this.baseUrl}/search`, { params });
   }
-  
-  
- 
 
-  get(id: any): Observable<Role> {
-    return this.http.get<Role>(`${this.baseUrl}/${id}`);
-  }
-
-  create(roleDto: RoleDto): Observable<any> {
-    return this.http.post(this.baseUrl, roleDto);
-  }
-
-  update(id: any, roleDto: RoleDto): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, roleDto);
-  }
-
-  delete(id: any): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
-  }
-
-  deleteAll(): Observable<any> {
-    return this.http.delete(this.baseUrl);
-  }
-
-  findByName(name: any): Observable<Role[]> {
-    return this.http.get<Role[]>(`${this.baseUrl}?name=${name}`);
-  }
   countRoles(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/count`);
   }

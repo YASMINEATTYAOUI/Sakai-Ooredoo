@@ -1,33 +1,30 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService, Message, ConfirmationService } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { MessageService, Message} from 'primeng/api';
 import { Role, RoleDto } from 'src/app/demo/models/role';
 import { RoleService } from 'src/app/demo/service/services/role.service';
-import { PageEvent } from 'src/app/demo/utils/page-event';
 
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService],
 })
 export class RolesComponent implements OnInit, OnDestroy {
 
   roles: Role[];
+  filteredData: Role[];
   name: any;
 
-  roleForm: FormGroup; 
+  roleForm: FormGroup;
   isUpdate: boolean = false;
 
-  pageEvent: PageEvent;
   messages: Message[];
   typing: boolean;
-  searchText: string = "";
+
   totalElements: number = 0;
   tableLoading: boolean = false;
 
-  selectedroles: RoleDto[];
   role: Role;
   roleDialog: boolean = false;
   roleToUpdate: RoleDto;
@@ -36,27 +33,22 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   deleteRolesDialog: boolean = false;
 
-  selectedRoles: Role[] ;
+  selectedRoles: Role[];
 
   submitted: boolean = false;
-  cols: any[] = [];
-  statuses: any[] = [];
-  rowsPerPageOptions = [5, 10, 20, 30];
-
+  
+  roleId: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private roleService: RoleService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
     private router: Router
   ) {
-    this.pageEvent = { first: 0, rows: 10 };
-
     this.roleForm = this.formBuilder.group({
       id: [''],
-      name:['',[Validators.pattern('^[a-zA-Z0-9 ]*$'),Validators.maxLength(50),Validators.required    ]],
-      description:[''],
+      name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
+      description: [''],
     });
 
   }
@@ -67,27 +59,7 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
-  openDialog(role?: RoleDto) {
-    this.roleToUpdate = role;
-    this.roleDialog = true;
-  }
-  onPageChange(event: PageEvent) {
-    this.pageEvent.first = event.first;
-    this.pageEvent.rows = event.rows;
-    this.getRoles();
-  }
-  onTyping() {
-    if (this.searchText == "" || null)
-      this.typing = false;
-    else
-      this.typing = true;
-  }
-
-  clearText() {
-    this.searchText = "";
-    this.typing = false;
-    this.getRoles();
-  }
+  
 
   save(): void {
     this.submitted = true;
@@ -99,14 +71,14 @@ export class RolesComponent implements OnInit, OnDestroy {
     }
     this.roleDialog = false;
     this.router.navigate(['dashboard/pages/account-management/roles']);
-    this.getRoles()
+    this.getRoles();
   }
 
   private createRole(roleDto: RoleDto): void {
     this.roleService.createRole(roleDto).subscribe({
-      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Created', life: 2000 }), 
+      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Created', life: 2000 }),
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
-      complete: () => {} 
+      complete: () => { }
     })
     this.roles.push(this.role);
   }
@@ -116,7 +88,7 @@ export class RolesComponent implements OnInit, OnDestroy {
       this.roleService.updateRole(roleDto).subscribe({
         next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 2000 }),
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => {} // No need to emit here as it's handled in the 'next' and 'error' callbacks
+        complete: () => { } // No need to emit here as it's handled in the 'next' and 'error' callbacks
       });
     }
   }
@@ -127,7 +99,8 @@ export class RolesComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         this.roles = response; // Extract the 'content' array from the response
         this.totalElements = response.totalElements;
-        
+        this.filteredData = this.roles;
+
       },
       error: (e: any) => {
         this.messages = [{ severity: 'error', summary: 'Failed to load Data', detail: 'Server issue' }];
@@ -139,162 +112,76 @@ export class RolesComponent implements OnInit, OnDestroy {
     });
   }
 
+  searchRoles(event) {
+    console.log("role selected is " + event);
+    this.filteredData = this.roles.filter(item => item.name.toLowerCase().startsWith(event.toLowerCase()));
+  }
 
-  searchRoles() {
-    if (this.searchText === "") {
-      this.getRoles();
-      return;
-    }
-    if (this.searchText.length > 0) {
-      this.tableLoading = true;
-      this.roleService.searchRolesByName(this.searchText, this.pageEvent).subscribe({
-        next: (response: any) => {
-          this.roles = response.content;
-          this.totalElements = response.totalElements;
-        },
-        error: (e: any) => {
-          this.tableLoading = false;
-          this.messages = [{ severity: 'error', summary: 'Failed to load Data', detail: 'Server issue' }];
-        },
-        complete: () => this.tableLoading = false
-      });
+  deleteRole(role: Role): void {
+    if (role) {
+      this.role = role;
+      this.roleId = role.id;
+      this.deleteRoleDialog = true;
     }
   }
-/*
-  deleteRole(roleId: string): void {
-    this.deleteRoleDialog = true;
-    this.roleService.deleteRole(roleId).subscribe({
-      next: () => {
-        // Role deleted successfully
-        console.log('Role deleted successfully');
-        // Perform any additional actions (e.g., refresh roles list)
-      },
-      error: (error) => {
-        // Error occurred while deleting role
-        console.error('Error deleting role:', error);
-        // Handle error (e.g., display error message to user)
-      }
-    });
-  }
-*/
 
-deleteRole(role: Role): void {
-  this.deleteRoleDialog = true;
-  this.roleService.deleteRole(role.id).subscribe({
-    next: () => {
-      console.log('Role deleted successfully');
-      this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The entity has been deleted.' });
-      this.getRoles();
-    },
-    error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }),
-   
-  })
-  
-}
-
-/*
-  deleteRole(role) {
-    this.deleteRoleDialog = true;
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected entity?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.roleService.deleteRole(role.id).subscribe({
-          next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The entity has been deleted.' });
-            this.getRoles();
-          },
-          error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' })
-        });
-      }
-    });
+  deleteSelectedRoles(roles: Role[]): void {
+    if (roles && roles.length > 0) {
+      this.selectedRoles = roles;
+      this.deleteRolesDialog = true;
+    }
   }
-*/
-  deleteSelectedRoles() {
-    this.deleteRolesDialog = true;
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected entities?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        const idsToDelete = this.selectedRoles.map(role => role.id);
-        this.roleService.deleteRoles(idsToDelete).subscribe({
-          next: (response: any) => {
-            
-            this.getRoles();
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Deleted', life: 2000 });
-            this.selectedRoles = [];
-          },
-          error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong with the deletion', life: 2000 })
-        });
-      }
-    });
-  }
-
   //navigation to details
   toRole(role: RoleDto) {
     this.router.navigate(['dashboard/products/', role.id]);
   }
-  currentRole: Role = {};
-  currentIndex = -1;
-
-  removeAllRoles(): void {
-    this.roleService.deleteAll().subscribe({
-      next: (res) => {
-        console.log(res);
-        //this.refreshList();
-      },
-      error: (e) => console.error(e)
-    });
-  }
-
-  searchName(): void {
-    this.currentRole = {};
-    this.currentIndex = -1;
-
-    this.roleService.findByName(this.name).subscribe({
-      next: (data) => {
-        this.roles = data;
-        console.log(data);
-      },
-      error: (e) => console.error(e)
-    });
-  }
-
-
 
   openNew() {
     this.role = {};
     this.submitted = false;
     this.roleDialog = true;
   }
-/*
-  deleteSelectedRoles() {
-    this.deleteRolesDialog = true;
-  }
-*/
-  editRole(role: Role) {
-    this.role = { ...role }
-    this.submitted = false;
+
+  openDialog(role?: RoleDto) {
+    this.roleToUpdate = role;
     this.roleDialog = true;
   }
-  /*
-    deleteRole(role: Role) {
-      this.deleteRoleDialog = true;
-      this.role = { ...role };
-    }
-  */
+
   confirmDeleteSelected() {
-    this.deleteRolesDialog = false;
-    this.roles = this.roles.filter(val => !this.selectedRoles.includes(val));
-    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Roles Deleted', life: 2000 });
-    this.selectedRoles = [];
+    if (this.selectedRoles && this.selectedRoles.length > 0) {
+      const roleIds = this.selectedRoles.map(role => role.id);
+
+      this.roleService.deleteRoles(roleIds).subscribe({
+        next: () => {
+          this.deleteRolesDialog = false;
+          this.selectedRoles = []; // Clear the roles to delete
+          console.log('Roles deleted successfully');
+          this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The roles have been deleted.' });
+          this.getRoles();
+        },
+        error: (e) => {
+          console.error('Error deleting roles', e);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' });
+        }
+      });
+    } else {
+      console.warn('No roles selected for deletion');
+      // Show a message to inform the user that no roles are selected for deletion
+    }
   }
 
   confirmDelete() {
-    this.deleteRoleDialog = false;
-    this.role = {};
+    this.roleService.deleteRole(this.roleId).subscribe({
+      next: () => {
+        this.deleteRoleDialog = false;
+        this.role = {};
+        console.log('Role deleted successfully');
+        this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The role has been deleted.' });
+        this.getRoles();
+      },
+      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }),
+
+    })
   }
 
   hideDialog() {
@@ -303,4 +190,3 @@ deleteRole(role: Role): void {
   }
 
 }
-

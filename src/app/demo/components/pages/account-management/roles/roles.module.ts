@@ -44,7 +44,6 @@ import { TooltipModule } from 'primeng/tooltip';
     RadioButtonModule,
     InputNumberModule,
     DialogModule,
-    
 
     ReactiveFormsModule,
     FormsModule,
@@ -53,12 +52,11 @@ import { TooltipModule } from 'primeng/tooltip';
     FieldsetModule,
     MessagesModule,
     InputSwitchModule,
-    ConfirmDialogModule, 
+    ConfirmDialogModule,
     TooltipModule,
     DividerModule,
     ChipsModule,
-    
-],
-declarations: [RolesComponent]
+  ],
+  declarations: [RolesComponent]
 })
 export class RolesModule { }
