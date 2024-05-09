@@ -41,7 +41,7 @@
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
 
-                        <th pSortableColumn="name">Username <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
                         <th>Image</th>
                         <th pSortableColumn="fullName">Full Name <p-sortIcon field="fullName"></p-sortIcon></th>
                         <th pSortableColumn="email">Email<p-sortIcon field="email"></p-sortIcon></th>
@@ -116,27 +116,27 @@
                         class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="user.image">
                     <div class="field">
                         <label for="username">Username</label>
-                        <input type="text" pInputText id="username" [(ngModel)]="user.name" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.name}" />
+                        <input type="text" pInputText id="username" [(ngModel)]="user.username" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.username}" />
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.name">Name is required.</small>
                     </div>
                     <div class="field">
                         <label for="fullName">Full Name</label>
-                        <input type="text" pInputText id="fullName" [(ngModel)]="user.name" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.name}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.name">Name is required.</small>
+                        <input type="text" pInputText id="fullName" [(ngModel)]="user.fullName" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.fullName}" />
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.fullName">Name is required.</small>
                     </div>
                     <div class="field">
                         <label for="email">Email</label>
-                        <input type="text" pInputText id="email" [(ngModel)]="user.name" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.name}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.name">Name is required.</small>
+                        <input type="text" pInputText id="email" [(ngModel)]="user.email" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.email}" />
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.email">Name is required.</small>
                     </div>
                     <div class="field">
                         <label for="phoneNumber">Phone Number</label>
-                        <input type="text" pInputText id="phoneNumber" [(ngModel)]="user.name" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.name}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.name">Name is required.</small>
+                        <input type="text" pInputText id="phoneNumber" [(ngModel)]="user.phoneNumber" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.phoneNumber}" />
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.phoneNumber">Name is required.</small>
                     </div>
                     <div class="field">
                         <label for="role">Role</label>

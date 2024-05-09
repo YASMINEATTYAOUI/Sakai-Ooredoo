@@ -97,6 +97,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.tableLoading = true;
     this.userService.getUsers().subscribe({
       next: (response: any) => {
+        console.log(response)
         this.users = response;
         this.totalElements = response.totalElements;
         this.filteredData = this.users;

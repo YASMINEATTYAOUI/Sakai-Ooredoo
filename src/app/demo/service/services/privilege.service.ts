@@ -17,18 +17,15 @@ private baseUrl = environment.apiUrl + '/privileges';
     return this.http.post<void>(this.baseUrl, privilegeDto);
   }
 
-  updateProduct(privilegeDto: PrivilegeDto): Observable<PrivilegeDto> {
+  updatePrivilege(privilegeDto: PrivilegeDto): Observable<PrivilegeDto> {
     return this.http.put<PrivilegeDto>(this.baseUrl, privilegeDto);
   }
 
-  getPrivileges(pageEvent: PageEvent): Observable<any> {
-    const rows = pageEvent.rows ?? 10 ;
-    const pageNumber = pageEvent.first ?? 0 / rows;
-    const params = { page: pageNumber.toString(), size: rows.toString() };
-    return this.http.get<any>(`${this.baseUrl}/sorted`, { params });
+  getPrivileges(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/sorted`);
   }
-/*
-  getAllPrivilegesSortedByCreatorId(creatorId : string, reference : string, pageEvent: Page): Observable<any> {
+
+  getAllPrivilegesSortedByCreatorId(creatorId : string, name : string, pageEvent: PageEvent): Observable<any> {
     let params = new HttpParams()
       .set('page', pageEvent.first.toString())
       .set('size', pageEvent.rows.toString());
@@ -37,7 +34,7 @@ private baseUrl = environment.apiUrl + '/privileges';
     }
     return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
   }
-*/
+
   getPrivilegeById(id: string): Observable<PrivilegeDto> {
     return this.http.get<PrivilegeDto>(`${this.baseUrl}/${id}`);
   }
@@ -46,7 +43,7 @@ private baseUrl = environment.apiUrl + '/privileges';
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  deletenames(ids: string[]): Observable<any> {
+  deletePrivileges(ids: string[]): Observable<any> {
     return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
   }
   searchPrivilegesByName(name: string, pageEvent: PageEvent): Observable<any> {

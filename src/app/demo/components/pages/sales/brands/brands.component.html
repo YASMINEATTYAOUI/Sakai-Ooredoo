@@ -25,8 +25,9 @@
         [rowsPerPageOptions]="[5, 10, 20]" 
         [(selection)]="selectedBrands" selectionMode="multiple" [rowHover]="true" dataKey="id">
         <ng-template pTemplate="caption">
+
           <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 class="m-0">Manage Brands</h5>
+            <h5 class="m-0">Brands Management</h5>
             <span class="block mt-2 md:mt-0 p-input-icon-left">
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="searchBrands($event.target.value)" placeholder="Search..." class="w-full sm:w-auto" />
@@ -39,13 +40,13 @@
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
             <th pSortableColumn="name">
-              <span class="font-semibold text-sm text-color-secondary">Name</span>
+              <span class="">Name</span><p-sortIcon field="name"></p-sortIcon>
             </th>
             <th pSortableColumn="image">
-              <span class="font-semibold text-sm text-color-secondary">Image</span>
+              <span class="">Image</span>
             </th>
             <th pSortableColumn="products">
-              <span class="font-semibold text-sm text-color-secondary">Products</span>
+              <span class="">Products</span><p-sortIcon field="products"></p-sortIcon>
             </th>
             <th pSortableColumn="edit"><span></span></th>
           </tr>
@@ -57,8 +58,8 @@
               <p-tableCheckbox [value]="brand"></p-tableCheckbox>
             </td>
             <td>
-              <div class="flex align-items-center">
-                <span class="border-circle mr-2 bg-red-500" style="width: 7px; height: 7px"></span>
+              <div class="">
+                <span class="" style=""></span>
                 {{ brand.name }}
               </div>
             </td>
