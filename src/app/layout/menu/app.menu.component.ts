@@ -41,14 +41,14 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Orders',
                 items: [
-                    { label: 'Orders', icon: 'pi pi-fw pi-tags' },
-                    { label: 'Delivery', icon: 'pi pi-fw pi-th-large' },
+                    { label: 'Orders', icon: 'pi pi-fw pi-tags', routerLink: ['/dashboard/pages/order/orders']  },
+                    { label: 'Delivery', icon: 'pi pi-fw pi-th-large',routerLink: ['/dashboard/pages/order/deliveies'] },
                 ]
             },
             {
                 label: 'Reports',
                 items: [
-                    { label: 'Revenue', icon: 'pi pi-fw pi-dollar', routerLink: ['/dashboard'] },
+                    { label: 'Revenue', icon: 'pi pi-fw pi-dollar',routerLink: ['/dashboard']  },
                     { label: 'Expenses', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/dashboard'] },
                     {
                         label: 'Clients', icon: 'pi pi-fw pi-users',
