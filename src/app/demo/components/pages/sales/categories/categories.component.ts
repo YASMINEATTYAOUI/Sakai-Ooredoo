@@ -61,17 +61,19 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   save(): void {
     this.submitted = true;
     const data = this.categoryForm.value;
-    if (this.categoryToUpdate) {
-      this.updateCategory(data); 
-    } else {
-      this.createCategory(data); 
-    }
+   console.log(this.category)
+   this.createCategory(this.category);
+    // if (this.categoryToUpdate) {
+    //   this.updateCategory(data); 
+    // } else {
+    //   this.createCategory(data); 
+    // }
     this.categoryDialog = false;
-    this.router.navigate(['dashboard/pages/sales/categories']); 
-    this.getCategories();
+    //this.router.navigate(['dashboard/pages/sales/categories']); 
+   // this.getCategories();
   }
 
-  private createCategory(categoryDto: CategoryDto): void { 
+  private createCategory(categoryDto: Category): void { 
     this.categoryService.createCategory(categoryDto).subscribe({ 
       next: (response) =>  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Category Created', life: 2000 }), 
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),

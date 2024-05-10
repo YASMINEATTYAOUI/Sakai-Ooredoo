@@ -17,7 +17,7 @@ export class CategoryService {
     return this.baseUrl;
   }
 
-  createCategory(categoryDto: CategoryDto): Observable<CategoryDto> {
+  createCategory(categoryDto: Category): Observable<CategoryDto> {
     return this.http.post<CategoryDto>(this.baseUrl, categoryDto);
   }
 

@@ -86,27 +86,27 @@
         <p-dialog [(visible)]="categoryDialog" [style]="{width: '450px'}" header="Category Details" [modal]="true"
             class="p-fluid">
             <ng-template pTemplate="content">
-                <form [formGroup]="categoryForm">
+                <form >
                     <div class="field">
                         <label for="name">Name</label>
-                        <input type="text" pInputText id="name" [(ngModel)]="category.name" required autofocus
+                        <input type="text" pInputText id="name" name="name" [(ngModel)]="category.name" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !category.name">Name is required.</small>
+                    </div>
+                    <div class="field">
+                        <label for="name">Creation Date</label>
+                        <input type="date" pInputText id="name" name="name" [(ngModel)]="category.creationDate" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !category.name">Name is required.</small>
+                    </div>
+                    <div class="field">
+                        <label for="name">Last</label>
+                        <input type="date" pInputText id="last" name="lastModifiedDate" [(ngModel)]="category.lastModifiedDate" required autofocus
                             [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !category.name">Name is required.</small>
                     </div>
 
-                    <div class="field">
-                        <label for="description">Description</label>
-                        <textarea id="description" pInputTextarea [(ngModel)]="category.description" required rows="3"
-                            cols="20"></textarea>
-                    </div>
-
-                    <div class="formgrid grid">
-                        
-                        <div class="field col">
-                            <label for="quantity">Quantity</label>
-                            <p-inputNumber id="quantity" [(ngModel)]="category.products"></p-inputNumber>
-                        </div>
-                    </div>
+                    
                 </form>
             </ng-template>
 
