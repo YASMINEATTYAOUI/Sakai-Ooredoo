@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PackageDto } from '../../models/package';
-import { PageEvent } from '../../utils/page-event';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PackageService {
-  private baseUrl = environment.apiUrl + '/package';
+  private baseUrl = environment.apiUrl + '/packages';
 
   constructor(private http: HttpClient) {}
 
@@ -25,14 +25,11 @@ export class PackageService {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
   }
 /*
-  getAllPackagesSortedByCreatorId(creatorId : string, reference : string, pageEvent: Page): Observable<any> {
-    let params = new HttpParams()
-      .set('page', pageEvent.first.toString())
-      .set('size', pageEvent.rows.toString());
+  getAllPackagesSortedByCreatorId(creatorId : string, reference : string): Observable<any> {
     if(name){
       params = params.set('name', name);
     }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
+    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`);
   }
 */
   getPackageById(id: string): Observable<PackageDto> {
@@ -46,14 +43,9 @@ export class PackageService {
   deletePackages(ids: string[]): Observable<any> {
     return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
   }
-  searchPackagesByName(name: string, pageEvent: PageEvent): Observable<any> {
-    const rows = pageEvent.rows??10;
-    const pageNumber = pageEvent.first??0 / rows;
-    const params = new HttpParams()
-      .set('name', name)
-      .set('page', pageNumber.toString())
-      .set('size', rows.toString());
-    return this.http.get<PackageDto[]>(`${this.baseUrl}/search`, { params });
+  searchPackagesByName(name: string): Observable<any> {
+   
+    return this.http.get<PackageDto[]>(`${this.baseUrl}/search`);
   }
   countPackages(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/count`);
