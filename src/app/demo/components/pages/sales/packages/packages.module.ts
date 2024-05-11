@@ -25,9 +25,13 @@ import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
+import { PackageDetailsComponent } from './package-details/package-details.component';
 
 @NgModule({
-  declarations: [PackagesComponent],
+  declarations: [
+    PackagesComponent,
+    PackageDetailsComponent
+  ],
   imports: [
     CommonModule,
     PackagesRoutingModule,

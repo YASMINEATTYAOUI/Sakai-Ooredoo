@@ -16,9 +16,13 @@ import { RippleModule } from 'primeng/ripple';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { OrderDetailsComponent } from './order-details/order-details.component';
 
 @NgModule({
-  declarations: [OrdersComponent],
+  declarations: [
+    OrdersComponent,
+    OrderDetailsComponent
+  ],
   imports: [
     CommonModule,
     OrdersRoutingModule,

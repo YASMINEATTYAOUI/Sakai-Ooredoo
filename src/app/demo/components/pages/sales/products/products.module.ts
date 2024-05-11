@@ -16,6 +16,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
+import { OverlayModule } from 'primeng/overlay';
+import { ProductDetailsComponent } from './product-details/product-details.component';
 
 @NgModule({
     imports: [
@@ -34,8 +36,13 @@ import { DialogModule } from 'primeng/dialog';
         DropdownModule,
         RadioButtonModule,
         InputNumberModule,
-        DialogModule
+        DialogModule,
+        OverlayModule,
+        
     ],
-    declarations: [ProductsComponent]
+    declarations: [
+        ProductsComponent,
+        ProductDetailsComponent
+    ]
 })
 export class ProductsModule { }
