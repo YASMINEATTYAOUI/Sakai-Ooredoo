@@ -21,11 +21,8 @@ export class PackageService {
     return this.http.put<PackageDto>(this.baseUrl, packageDto);
   }
 
-  getPackages(pageEvent: PageEvent): Observable<any> {
-    const rows = pageEvent.rows ?? 10 ;
-    const pageNumber = pageEvent.first ?? 0 / rows;
-    const params = { page: pageNumber.toString(), size: rows.toString() };
-    return this.http.get<any>(`${this.baseUrl}/sorted`, { params });
+  getPackages(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/sorted`);
   }
 /*
   getAllPackagesSortedByCreatorId(creatorId : string, reference : string, pageEvent: Page): Observable<any> {

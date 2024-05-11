@@ -1,19 +1,21 @@
 export interface Order {
   id?: any;
-  name?: string;
-  description?:string;
-  creatorId?:string ;
+  numberOrder?: number;
+  articlesNumber?:number;
+  totalPrice?:any ;
+  orderStatus?: string;
+  deliveryType?: string;
   creationDate?: Date;
-  lastModifierId?: Date;
-  lastModifiedDate?: Date;
+  creatorId?: any;
 }
 
 export interface OrderDto {
   id?: any;
-  name?: string;
-  description?:string;
-  creatorId?:string ;
+  numberOrder?: number;
+  articlesNumber?:number;
+  totalPrice?:any ;
+  orderStatus?: string;
+  deliveryType?: string;
   creationDate?: Date;
-  lastModifierId?: Date;
-  lastModifiedDate?: Date;
+  creatorId?: any;
 }

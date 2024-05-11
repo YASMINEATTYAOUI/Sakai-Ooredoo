@@ -115,7 +115,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   searchOrders(event) {
     console.log("order selected is " + event);
-    this.filteredData = this.orders.filter(item => item.name.toLowerCase().startsWith(event.toLowerCase()));
+    this.filteredData = this.orders.filter(item => item.numberOrder.toString().startsWith(event.toLowerCase()));
   }
 
   deleteOrder(order: Order): void {

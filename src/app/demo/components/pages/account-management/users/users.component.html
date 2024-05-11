@@ -111,14 +111,14 @@
         <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="User Details" [modal]="true"
             class="p-fluid">
             <ng-template pTemplate="content">
-                <form [formGroup]="userForm">
+                <form >
                     <img [src]="'assets/demo/images/user/' + user.image" [alt]="user.image" width="150"
                         class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="user.image">
                     <div class="field">
                         <label for="username">Username</label>
                         <input type="text" pInputText id="username" [(ngModel)]="user.username" required autofocus
                             [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.username}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.name">Name is required.</small>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.username">Name is required.</small>
                     </div>
                     <div class="field">
                         <label for="fullName">Full Name</label>

@@ -95,7 +95,7 @@
                     </div>
                     <div class="field">
                         <label for="name">Creation Date</label>
-                        <input type="date" pInputText id="name" name="name" [(ngModel)]="category.creationDate" required autofocus
+                        <input type="date" pInputText id="name" name="creationDate" [(ngModel)]="category.creationDate" required autofocus
                             [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !category.name">Name is required.</small>
                     </div>
@@ -144,3 +144,4 @@
         </p-dialog>
     </div>
 </div>
+
