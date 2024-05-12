@@ -16,6 +16,15 @@ export class BrandService {
   getServiceUrl() {
     return this.baseUrl;
   }
+
+  saveBrand(file: File, name: string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('name', name);
+    return this.http.post(this.baseUrl, formData);
+  }
+
+
   createBrand(brandDto: BrandDto): Observable<BrandDto> {
     return this.http.post<BrandDto>(this.baseUrl, brandDto);
   }

@@ -63,7 +63,8 @@
 
             </td>
             <td>
-              {{ brand.pictureId }}
+              <img alt="" th:src="*{'file:image/jpeg;base64,'+{brand.image}}" style="width: 100px;height: 100px;">
+              
             </td>
             <td>
               {{ brand.products }}
@@ -98,17 +99,25 @@
               [ngClass]="{'ng-invalid ng-dirty' : submitted && !brand.name}" />
             <small class="ng-dirty ng-invalid" *ngIf="submitted && !brand.name">Name is required.</small>
           </div>
+          
           <div class="field">
             <label for="description">Description</label>
             <textarea id="description" formControlName="description" pInputTextarea [(ngModel)]="brand.description"
               required rows="3" cols="20"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="brandLogo">Brand Logo</label>
+            <p-fileUpload type="file" id="brandLogo" mode="basic" accept="image/*"  label="Import Image" chooseLabel="Import"
+            class="mr-2 inline-block" (change)="onFileSelected($event)"></p-fileUpload>
+            
           </div>
         </form>
       </ng-template>
 
       <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="onSave()"
           [disabled]="brandForm.invalid || brandForm.pristine"></button>
       </ng-template>
     </p-dialog>

@@ -1,7 +1,7 @@
 export interface Brand {
   id?: any;
   name?: string;
-  pictureId?: string;
+  image?: string;
   creatorId?:string ;
   creationDate?: Date;
   lastModifierId?: Date;
@@ -11,7 +11,7 @@ export interface Brand {
 export interface BrandDto {
   id?: any;
   name?: string;
-  pictureId?: string;
+  image?: string;
   creatorId?:string ;
   creationDate?: Date;
   lastModifierId?: Date;

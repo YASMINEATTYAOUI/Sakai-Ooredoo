@@ -1,4 +1,5 @@
 import { SafeUrl } from '@angular/platform-browser';
+import { Role } from './role';
 
 export interface User {
   id?: any;
@@ -9,6 +10,7 @@ export interface User {
   password?: string;
   creationDate?: Date;
   lastModifiedDate?: Date;
+  roles: Role[];
 }
 
 export interface UserDto {
@@ -20,5 +22,6 @@ export interface UserDto {
   password?: string;
   creationDate?: Date;
   lastModifiedDate?: Date;
+  roles: Role[];
 }
 

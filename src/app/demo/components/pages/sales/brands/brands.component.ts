@@ -16,6 +16,12 @@ export class BrandsComponent implements OnInit, OnDestroy {
   filteredData: Brand[];
   name: any;
 
+  file: File;
+
+
+  brandName: string = '';
+  selectedFile: File | null = null;
+
   brandForm: FormGroup; 
   isUpdate: boolean = false;
 
@@ -58,6 +64,30 @@ export class BrandsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  onSave(): void {
+    this.submitted = true;
+    if (this.file && this.name) {
+      this.brandService.saveBrand(this.file, this.name).subscribe({
+        next: (response) => {
+          console.log('Brand saved successfully', response);
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Created', life: 2000 });
+        },
+        error: (error) => {
+          console.error('Error saving brand', error);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' });
+        },
+        complete: () => {} 
+    });
+    } else {
+      console.error('File and name are required');
+    }
+    this.brandDialog = false;
+  }
+
   save(): void {
     this.submitted = true;
     const data = this.brandForm.value;
@@ -67,8 +97,7 @@ export class BrandsComponent implements OnInit, OnDestroy {
       this.createBrand(data);
     }
     this.brandDialog = false;
-    this.router.navigate(['dashboard/pages/sales/brands']);
-    this.getBrands()
+    
   }
 
   private createBrand(brandDto: BrandDto): void {

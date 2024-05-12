@@ -69,8 +69,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     //   this.createCategory(data); 
     // }
     this.categoryDialog = false;
-    //this.router.navigate(['dashboard/pages/sales/categories']); 
-   // this.getCategories();
   }
 
   private createCategory(categoryDto: Category): void { 

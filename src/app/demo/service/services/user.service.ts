@@ -66,4 +66,11 @@ export class UserService {
       return this.http.post<void>(`${this.baseUrl}/changePassword`, changePasswordRequest);
     }
   */
+    assignRole(userId: number, roleId: number): Observable<void> {
+      return this.http.post<void>(`${this.baseUrl}/users/${userId}/roles/${roleId}`, {});
+    }
+  
+    revokeRole(userId: number, roleId: number): Observable<void> {
+      return this.http.delete<void>(`${this.baseUrl}/users/${userId}/roles/${roleId}`);
+    }
   }
