@@ -71,8 +71,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
     //   this.createPackage(data); 
     // }
     this.packageDialog = false;
-    //this.router.navigate(['dashboard/pages/sales/packages']); 
-   // this.getPackages();
+
   }
 
   private createPackage(packageDto: Package): void { 

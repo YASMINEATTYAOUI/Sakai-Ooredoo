@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message} from 'primeng/api';
@@ -38,6 +38,7 @@ export class RolesComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
   
   roleId: any;
+  showRoleDetailsPopup: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -188,5 +189,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.roleDialog = false;
     this.submitted = false;
   }
+
+  
 
 }

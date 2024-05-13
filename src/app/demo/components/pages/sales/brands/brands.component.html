@@ -53,7 +53,7 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-brand>
-          <tr class="ng-star-inserted">
+          <tr class="ng-star-inserted" (click)="viewRoleDetails(brand.id)" >
             <td>
               <p-tableCheckbox [value]="brand"></p-tableCheckbox>
             </td>

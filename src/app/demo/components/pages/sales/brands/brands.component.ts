@@ -163,8 +163,8 @@ deleteBrand(brand: Brand): void {
   }
 
   //navigation to details
-  toBrand(brand: BrandDto) {
-    this.router.navigate(['dashboard/products/', brand.id]);
+  viewRoleDetails(brand: BrandDto) {
+    this.router.navigate(['dashboard/pages/sales/brands/', brand.id]); // Navigate to the details route with the role ID as parameter
   }
 
   openNew() {
