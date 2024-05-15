@@ -1,6 +1,7 @@
 export interface Brand {
   id?: any;
   name?: string;
+  description?: string;
   image?: string;
   creatorId?:string ;
   creationDate?: Date;
@@ -11,6 +12,7 @@ export interface Brand {
 export interface BrandDto {
   id?: any;
   name?: string;
+  description?: string;
   image?: string;
   creatorId?:string ;
   creationDate?: Date;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Brand, BrandDto } from '../../models/brand';
 import { PageEvent } from '../../utils/page-event';
@@ -17,24 +17,39 @@ export class BrandService {
     return this.baseUrl;
   }
 
-  saveBrand(file: File, name: string): Observable<any> {
-    const formData: FormData = new FormData();
-    formData.append('file', file, file.name);
+  saveBrand(name: string, file: File): Observable<Brand> {
+    const formData = new FormData();
     formData.append('name', name);
-    return this.http.post(this.baseUrl, formData);
+    formData.append('file', file, file.name);
+    return this.http.post<Brand>(`${this.baseUrl}/save`, formData);
   }
 
-
+  updateBrand(name: string, file: File): Observable<Brand> {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('file', file, file.name);
+    return this.http.put<Brand>(`${this.baseUrl}`, formData);
+  }
+  /*
   createBrand(brandDto: BrandDto): Observable<BrandDto> {
     return this.http.post<BrandDto>(this.baseUrl, brandDto);
   }
-
   updateBrand(brandDto: BrandDto): Observable<BrandDto> {
     return this.http.put<BrandDto>(this.baseUrl, brandDto);
   }
+*/
+  getBrands(): Observable<Brand[]> {
+    return this.http.get<Brand[]>(`${this.baseUrl}/sorted`).pipe(
+      map((brands: any[]) => {
+        brands.forEach(brand => {
+          if (brand.image) {
+            brand.image = 'data:image/png;base64,' + brand.image;
+          }
+        });
+        return brands;
 
-  getBrands(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/sorted`);
+      })
+    );
   }
 
   getAllBrandsSortedByCreatorId(creatorId: string, name: string, pageEvent: PageEvent): Observable<any> {
@@ -69,7 +84,7 @@ export class BrandService {
     return this.http.get<BrandDto[]>(`${this.baseUrl}/search`, { params });
   }
 
-  countBrands(): Observable<number> { // Updated method name
-    return this.http.get<number>(`${this.baseUrl}/count`); // Updated baseUrl and method name
+  countBrands(): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/count`);
   }
 }

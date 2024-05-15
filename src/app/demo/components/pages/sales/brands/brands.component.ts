@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService, Message, ConfirmationService } from 'primeng/api';
-import { Brand, BrandDto } from 'src/app/demo/models/brand'; 
+import { MessageService, Message } from 'primeng/api';
+import { Brand } from 'src/app/demo/models/brand';
 import { BrandService } from 'src/app/demo/service/services/brand.service';
 
 @Component({
@@ -12,37 +12,26 @@ import { BrandService } from 'src/app/demo/service/services/brand.service';
 })
 export class BrandsComponent implements OnInit, OnDestroy {
 
-  brands: Brand[];
   filteredData: Brand[];
-  name: any;
-
+  brands: Brand[];
+  brand: Brand;
+  name: string;
   file: File;
+  brandId: any;
 
-
-  brandName: string = '';
-  selectedFile: File | null = null;
-
-  brandForm: FormGroup; 
-  isUpdate: boolean = false;
+  brandForm: FormGroup;
+  brandDialog: boolean = false;
+  brandToUpdate: Brand;
+  deleteBrandDialog: boolean = false;
+  deleteBrandsDialog: boolean = false;
+  selectedBrands: Brand[];
 
   messages: Message[];
-  typing: boolean;
   totalElements: number = 0;
   tableLoading: boolean = false;
-
-  brand: Brand;
-  brandDialog: boolean = false;
-  brandToUpdate: BrandDto;
-
-  deleteBrandDialog: boolean = false;
-
-  deleteBrandsDialog: boolean = false;
-
-  selectedBrands: Brand[] ;
-
   submitted: boolean = false;
-  brandId: any;
-  
+  isUpdate: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private brandService: BrandService,
@@ -51,10 +40,10 @@ export class BrandsComponent implements OnInit, OnDestroy {
   ) {
     this.brandForm = this.formBuilder.group({
       id: [''],
-      name:['',[Validators.pattern('^[a-zA-Z0-9 ]*$'),Validators.maxLength(50),Validators.required    ]],
-      description:[''],
+      name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
+      description: [''],
+      file: []
     });
-
   }
 
   ngOnInit(): void {
@@ -64,70 +53,45 @@ export class BrandsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
-  }
-
-  onSave(): void {
-    this.submitted = true;
-    if (this.file && this.name) {
-      this.brandService.saveBrand(this.file, this.name).subscribe({
-        next: (response) => {
-          console.log('Brand saved successfully', response);
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Created', life: 2000 });
-        },
-        error: (error) => {
-          console.error('Error saving brand', error);
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' });
-        },
-        complete: () => {} 
-    });
-    } else {
-      console.error('File and name are required');
-    }
-    this.brandDialog = false;
-  }
-
-  save(): void {
-    this.submitted = true;
-    const data = this.brandForm.value;
-    if (this.brandToUpdate) {
-      this.updateBrand(data);
-    } else {
-      this.createBrand(data);
-    }
-    this.brandDialog = false;
-    
-  }
-
-  private createBrand(brandDto: BrandDto): void {
-    this.brandService.createBrand(brandDto).subscribe({
-      next: (response) =>  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Created', life: 2000 }), 
+  createBrand() {
+    this.brandService.saveBrand(this.brandForm.get('name').value, this.file).subscribe({
+      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Created', life: 2000 }),
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
-      complete: () => {} 
-    })
-    this.brands.push(this.brand);
+      complete: () => { }
+    });
+    this.brands.push(this.brandForm.value);
+    //this.brands.push(this.brand);
   }
-
-  private updateBrand(brandDto: BrandDto): void {
+  private updateBrand(): void {
     if (this.brandToUpdate) {
-      this.brandService.updateBrand(brandDto).subscribe({
-        next: (response) => {
-          console.log('Brand updated successfully');
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Updated', life: 2000 });
-          this.getBrands();
-        },
+      this.brandService.updateBrand(this.brandForm.get('name').value, this.file).subscribe({
+        next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Updated', life: 2000 }),
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => {} // No need to emit here as it's handled in the 'next' and 'error' callbacks
+        complete: () => { }
       });
     }
   }
 
+  onFileSelected(event: any) {
+    this.file = <File>event.target.files[0];
+  }
+
+  save(): void {
+    this.submitted = true;
+    if (this.brandToUpdate) {
+      this.updateBrand();
+    } else {
+      this.createBrand();
+    }
+    this.brandDialog = false;
+  }
+
+  
   getBrands() {
     this.tableLoading = true;
     this.brandService.getBrands().subscribe({
       next: (response: any) => {
-        this.brands = response; // Extract the 'content' array from the response
+        this.brands = response;
         this.totalElements = response.totalElements;
         this.filteredData = this.brands;
       },
@@ -142,18 +106,18 @@ export class BrandsComponent implements OnInit, OnDestroy {
   }
 
   searchBrands(event) {
-    console.log("brand selected is " +event);
+    console.log("brand selected is " + event);
     this.filteredData = this.brands.filter(item => item.name.toLowerCase().startsWith(event.toLowerCase()));
-  
+
   }
 
-deleteBrand(brand: Brand): void {
-  if (brand) {
-    this.brand = brand;
-    this.brandId = brand.id;
-    this.deleteBrandDialog = true;
+  deleteBrand(brand: Brand): void {
+    if (brand) {
+      this.brand = brand;
+      this.brandId = brand.id;
+      this.deleteBrandDialog = true;
+    }
   }
-}
 
   deleteSelectedBrands(brands: Brand[]) {
     if (brands && brands.length > 0) {
@@ -162,9 +126,8 @@ deleteBrand(brand: Brand): void {
     }
   }
 
-  //navigation to details
-  viewRoleDetails(brand: BrandDto) {
-    this.router.navigate(['dashboard/pages/sales/brands/', brand.id]); // Navigate to the details route with the role ID as parameter
+  viewRoleDetails(brand: Brand) {
+    this.router.navigate(['dashboard/pages/sales/brands/', brand.id]);
   }
 
   openNew() {
@@ -173,7 +136,7 @@ deleteBrand(brand: Brand): void {
     this.brandDialog = true;
   }
 
-  openDialog(brand?: BrandDto) {
+  openDialog(brand?: Brand) {
     this.brandToUpdate = brand;
     this.brandDialog = true;
   }
@@ -185,7 +148,7 @@ deleteBrand(brand: Brand): void {
       this.brandService.deleteBrands(brandIds).subscribe({
         next: () => {
           this.deleteBrandsDialog = false;
-          this.selectedBrands = []; // Clear the roles to delete
+          this.selectedBrands = [];
           console.log('Brands deleted successfully');
           this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The brands have been deleted.' });
           this.getBrands();
@@ -197,7 +160,7 @@ deleteBrand(brand: Brand): void {
       });
     } else {
       console.warn('No brands selected for deletion');
-      // Show a message to inform the user that no roles are selected for deletion
+
     }
   }
 
@@ -211,7 +174,6 @@ deleteBrand(brand: Brand): void {
         this.getBrands();
       },
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }),
-
     })
   }
 
@@ -219,5 +181,4 @@ deleteBrand(brand: Brand): void {
     this.brandDialog = false;
     this.submitted = false;
   }
-
 }

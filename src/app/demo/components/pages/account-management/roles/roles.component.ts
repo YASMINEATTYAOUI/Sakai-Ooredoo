@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message} from 'primeng/api';
-import { Role, RoleDto } from 'src/app/demo/models/role';
+import { Role } from 'src/app/demo/models/role';
 import { RoleService } from 'src/app/demo/service/services/role.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   role: Role;
   roleDialog: boolean = false;
-  roleToUpdate: RoleDto;
+  roleToUpdate: Role;
 
   deleteRoleDialog: boolean = false;
 
@@ -75,7 +75,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.getRoles();
   }
 
-  private createRole(roleDto: RoleDto): void {
+  private createRole(roleDto: Role): void {
     this.roleService.createRole(roleDto).subscribe({
       next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Created', life: 2000 }),
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
@@ -84,7 +84,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.roles.push(this.role);
   }
 
-  private updateRole(roleDto: RoleDto): void {
+  private updateRole(roleDto: Role): void {
     if (this.roleToUpdate) {
       this.roleService.updateRole(roleDto).subscribe({
         next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 2000 }),
@@ -133,7 +133,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     }
   }
   //navigation to details
-  toRole(role: RoleDto) {
+  toRole(role: Role) {
     this.router.navigate(['dashboard/products/', role.id]);
   }
 
@@ -143,7 +143,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.roleDialog = true;
   }
 
-  openDialog(role?: RoleDto) {
+  openDialog(role?: Role) {
     this.roleToUpdate = role;
     this.roleDialog = true;
   }

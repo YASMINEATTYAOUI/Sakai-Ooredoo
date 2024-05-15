@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import axios from 'axios';
 
 @Component({
     selector: 'app-login',
@@ -15,11 +19,46 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
     `],
    providers: [MessageService] 
 })
-export class LoginComponent {
+ 
+export class LoginComponent implements OnInit {
 
     valCheck: string[] = ['remember'];
 
     password!: string;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(
+        public layoutService: LayoutService,
+        private router: Router
+    ) { }
+
+  ngOnInit(): void {
+    // test si utilisateur connecter
+    if (
+      localStorage.getItem('token') != null &&
+      localStorage.getItem('token') != undefined
+    ) {
+      // redirection
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
+  login(loginForm: NgForm) {
+    console.log(loginForm.value);
+    console.log('Before request');
+    axios
+      .post(`http://localhost:8080/api/auth/login`, loginForm.value)
+      .then((res) => {
+        console.log(res.data);
+        // sauvegarder accessToken , user
+        // localStorage.setItem('user', JSON.stringify(res.data.user));
+        localStorage.setItem('token', res.data.accessToken);
+        // redirection vers dashboard
+        this.router.navigate(['/dashboard']);
+      })
+      .catch((err) => {
+        console.log('Erreur');
+      });
+    console.log('After response');
+  }
 }
+

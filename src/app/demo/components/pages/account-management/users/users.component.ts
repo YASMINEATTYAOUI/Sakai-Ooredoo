@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
-import { User, UserDto } from 'src/app/demo/models/user';
+import { User } from 'src/app/demo/models/user';
 import { UserService } from 'src/app/demo/service/services/user.service';
 import { RoleService } from 'src/app/demo/service/services/role.service';
 import { Role } from 'src/app/demo/models/role';
@@ -16,8 +16,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   users: User[];
   filteredData: User[];
   name: any;
+  selectedRoleId: Role;
 
-  roles: Role[];
+  roles: any[] = [];
 
   userForm: FormGroup;
   isUpdate: boolean = false;
@@ -30,7 +31,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   user: User;
   userDialog: boolean = false;
-  userToUpdate: UserDto;
+  userToUpdate: User;
   deleteUserDialog: boolean = false;
 
   deleteUsersDialog: boolean = false;
@@ -49,7 +50,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     private roleService: RoleService,
     private messageService: MessageService,
     private router: Router) {
-    this.userForm = this.formBuilder.group({
+    /*this.userForm = this.formBuilder.group({
       id: [''],
       username: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
       fullName: ['', [Validators.pattern('^[a-zA-Z]*$'), Validators.maxLength(50), Validators.required]],
@@ -57,11 +58,13 @@ export class UsersComponent implements OnInit, OnDestroy {
       email: ['', [Validators.pattern('^[a-zA-Z]*$'), Validators.maxLength(50), Validators.required]],
       password: ['', [Validators.pattern('^[a-zA-Z]*$'), Validators.maxLength(50), Validators.required]],
       role: [''],
-    });
+    });*/
   }
 
   ngOnInit() {
     this.getUsers();
+    this.loadRoles(); 
+    
   }
   ngOnDestroy(): void {
 
@@ -73,45 +76,34 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
-  assignRole(user: User, roleId: number) {
-    this.userService.assignRole(user.id, roleId).subscribe(() => {
-      // Update user roles locally
-      user.roles.push(this.roles.find(role => role.id === roleId));
-    });
-  }
-
-  revokeRole(user: User, roleId: number) {
-    this.userService.revokeRole(user.id, roleId).subscribe(() => {
-      // Update user roles locally
-      user.roles = user.roles.filter(role => role.id !== roleId);
-    });
-  }
-
-
-
-
   save(): void {
     this.submitted = true;
-    const data = this.userForm.value;
     console.log(this.user)
+   
     if (this.userToUpdate) {
-      this.updateUser(data);
+      this.updateUser(this.user);
     } else {
-      this.createUser(data);
+      this.createUser(this.user);
     }
     this.userDialog = false;
 
   }
 
-  private createUser(userDto: UserDto): void {
+  private createUser(userDto: User): void {
     this.userService.createUser(userDto).subscribe({
-      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 2000 }),
+      next: (response) => {
+        this.users.push(response);
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 2000 
+
+        }
+      )
+    },
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
     })
   }
 
-  private updateUser(userDto: UserDto): void {
+  private updateUser(userDto: User): void {
     if (this.userToUpdate) {
       this.userService.updateUser(userDto).subscribe({
         next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 2000 }),
@@ -125,7 +117,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.tableLoading = true;
     this.userService.getUsers().subscribe({
       next: (response: any) => {
-        console.log(response)
         this.users = response;
         this.totalElements = response.totalElements;
         this.filteredData = this.users;
@@ -160,29 +151,24 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.deleteUsersDialog = true;
     }
   }
-  //navigation to details
-  toUser(user: UserDto) {
+
+  toUser(user: User) {
     this.router.navigate(['dashboard/pages/account-management/users', user.id]);
   }
 
-  openNew() {
-    this.loadRoles() 
-    this.user = {
-      id: 0, // Or appropriate default for ID
-      username: '',
-      fullName: '',
-      email: '',
-      phoneNumber: 0,
-      password: '',
-      creationDate: null,
-      lastModifiedDate: null,
-      roles: [], // Initialize roles as an empty array
-    } as User;
-    this.submitted = false;
-    this.userDialog = true;
+  roleSelectedEvent(event: any){
+    this.user.roles =event.value;
   }
 
-  openDialog(user?: UserDto) {
+  openNew() {
+   this.user = new User();
+    this.submitted = false;
+    this.userDialog = true;
+
+    console.log(this.roles)
+  }
+
+  openDialog(user?: User) {
     this.userToUpdate = user;
     this.userDialog = true;
   }
@@ -214,7 +200,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       next: () => {
         this.deleteUserDialog = false;
         this.user = {
-          id: 0, // Or appropriate default for ID
+          id: 0,
           username: '',
           fullName: '',
           email: '',
@@ -222,7 +208,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           password: '',
           creationDate: null,
           lastModifiedDate: null,
-          roles: [], // Initialize roles as an empty array
+          roles: [],
         } as User;
         console.log('User deleted successfully');
         this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The user has been deleted.' });
