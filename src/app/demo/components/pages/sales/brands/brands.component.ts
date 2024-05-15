@@ -54,7 +54,7 @@ export class BrandsComponent implements OnInit, OnDestroy {
   }
 
   createBrand() {
-    this.brandService.saveBrand(this.brandForm.get('name').value, this.file).subscribe({
+    this.brandService.createBrand(this.brandForm.get('name').value, this.brandForm.get('description').value, this.file).subscribe({
       next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Created', life: 2000 }),
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
@@ -64,7 +64,8 @@ export class BrandsComponent implements OnInit, OnDestroy {
   }
   private updateBrand(): void {
     if (this.brandToUpdate) {
-      this.brandService.updateBrand(this.brandForm.get('name').value, this.file).subscribe({
+      this.submitted = true;
+      this.brandService.updateBrand(this.brandForm.get('name').value, this.brandForm.get('description').value, this.file).subscribe({
         next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Updated', life: 2000 }),
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
         complete: () => { }

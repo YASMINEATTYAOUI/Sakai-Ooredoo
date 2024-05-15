@@ -17,27 +17,22 @@ export class BrandService {
     return this.baseUrl;
   }
 
-  saveBrand(name: string, file: File): Observable<Brand> {
+  createBrand(name: string, description: string, file: File): Observable<Brand> {
     const formData = new FormData();
     formData.append('name', name);
+    formData.append('description', description);
     formData.append('file', file, file.name);
-    return this.http.post<Brand>(`${this.baseUrl}/save`, formData);
+    return this.http.post<Brand>(`${this.baseUrl}`, formData);
   }
 
-  updateBrand(name: string, file: File): Observable<Brand> {
+  updateBrand(name: string, description: string, file: File): Observable<Brand> {
     const formData = new FormData();
     formData.append('name', name);
+    formData.append('description', description);
     formData.append('file', file, file.name);
     return this.http.put<Brand>(`${this.baseUrl}`, formData);
   }
-  /*
-  createBrand(brandDto: BrandDto): Observable<BrandDto> {
-    return this.http.post<BrandDto>(this.baseUrl, brandDto);
-  }
-  updateBrand(brandDto: BrandDto): Observable<BrandDto> {
-    return this.http.put<BrandDto>(this.baseUrl, brandDto);
-  }
-*/
+
   getBrands(): Observable<Brand[]> {
     return this.http.get<Brand[]>(`${this.baseUrl}/sorted`).pipe(
       map((brands: any[]) => {
