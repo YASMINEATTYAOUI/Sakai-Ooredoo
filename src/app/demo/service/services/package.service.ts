@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Package } from '../../models/package';
 
@@ -11,27 +11,90 @@ import { Package } from '../../models/package';
 export class PackageService {
   private baseUrl = environment.apiUrl + '/packages';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  createPackage(_package: Package): Observable<void> {
-    return this.http.post<void>(this.baseUrl, _package);
+  getServiceUrl() {
+    return this.baseUrl;
   }
 
+  createPackage(
+    file: File,
+    reference: string,
+    description: string,
+    nbProduct: number,
+    price: number,
+    soldQuantity: number,
+    availableQuantity: number
+  ): Observable<Package> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('reference', reference);
+    formData.append('description', description);
+    formData.append('nbProduct', nbProduct.toString());
+    formData.append('price', price.toString());
+    formData.append('soldQuantity', soldQuantity.toString());
+    formData.append('availableQuantity', availableQuantity.toString());
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+
+    return this.http.post<Package>(this.baseUrl, formData, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  private handleError(error: any) {
+    console.error('An error occurred:', error);
+    return throwError('Something went wrong; please try again later.');
+  }
+/*
+  createPackage(file: File,
+    reference: string,
+    description: string,
+    nbProduct: any,
+    price: any,
+    soldQuantity: string,
+    availableQuantity: string): Observable<Package> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('name', reference);
+    formData.append('description', description);
+    formData.append('nbProduct', nbProduct);
+    formData.append('price', price);
+    formData.append('soldQuantity', soldQuantity);
+    formData.append('availableQuantity', availableQuantity);
+    return this.http.post<Package>(`${this.baseUrl}`, formData);
+  }
+*/
   updatePackage(_package: Package): Observable<Package> {
     return this.http.put<Package>(this.baseUrl, Package);
   }
 
-  getPackages(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/sorted`);
+  getPackages(): Observable<Package[]> {
+    return this.http.get<Package[]>(`${this.baseUrl}/sorted`).pipe(
+      map((packages: any[]) => {
+        packages.forEach(_package => {
+          if (_package.image) {
+            _package.image = 'data:image/png;base64,' + _package.image;
+          }
+        });
+        return packages;
+      })
+    );
   }
-/*
-  getAllPackagesSortedByCreatorId(creatorId : string, reference : string): Observable<any> {
-    if(name){
-      params = params.set('name', name);
+
+  /*
+    getAllPackagesSortedByCreatorId(creatorId : string, reference : string): Observable<any> {
+      if(name){
+        params = params.set('name', name);
+      }
+      return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`);
     }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`);
-  }
-*/
+  */
   getPackageById(id: string): Observable<Package> {
     return this.http.get<Package>(`${this.baseUrl}/${id}`);
   }
@@ -44,7 +107,7 @@ export class PackageService {
     return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
   }
   searchPackagesByName(reference: string): Observable<any> {
-   
+
     return this.http.get<Package[]>(`${this.baseUrl}/search`);
   }
   countPackages(): Observable<number> {

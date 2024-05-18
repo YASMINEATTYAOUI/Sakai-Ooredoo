@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Brand } from 'src/app/demo/models/brand';
@@ -18,32 +19,42 @@ export class PackagesComponent implements OnInit, OnDestroy {
   packages: Package[];
   filteredData: Package[];
   name: any;
-
+  file: File;
   _package: Package;
+  selectedBrandId: Brand;
+  brands: any[] = [];
+
+  packageForm: FormGroup;
+
   packageDialog: boolean = false;
   packageToUpdate: Package;
   deletePackageDialog: boolean = false;
   deletePackagesDialog: boolean = false;
   selectedPackages: Package[];
 
-  selectedBrandId: Brand;
-  brands: any[] = [];
-
   messages: Message[];
-  typing: boolean;
   totalElements: number = 0;
   tableLoading: boolean = false;
-
   submitted: boolean = false;
   packageId: any;
 
-  rowsPerPageOptions = [5, 10, 20];
 
   constructor(
+    private formBuilder: FormBuilder,
     private packageService: PackageService,
-    private brandService : BrandService,
+    private brandService: BrandService,
     private messageService: MessageService,
-    private router: Router) {}
+    private router: Router) {
+    this.packageForm = this.formBuilder.group({
+      id: [''],
+      reference: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
+      description: [''],
+      nbProduct: [],
+      price: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
+      soldQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
+      availableQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
+    });
+  }
 
   ngOnInit(): void {
     this.getPackages();
@@ -58,8 +69,8 @@ export class PackagesComponent implements OnInit, OnDestroy {
       this.brands = brands;
     });
   }
-  brandSelectedEvent(event: any){
-    this._package.brands =event.value;
+  brandSelectedEvent(event: any) {
+    this._package.brands = event.value;
   }
 
   save(): void {
@@ -67,17 +78,23 @@ export class PackagesComponent implements OnInit, OnDestroy {
     if (this.packageToUpdate) {
       this.updatePackage(this._package);
     } else {
-      this.createPackage(this._package);
+      this.createPackage();
     }
     this.packageDialog = false;
   }
 
-  private createPackage(_package: Package): void {
-    this.packageService.createPackage(_package).subscribe({
-      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Created', life: 2000 }),
-      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
-      complete: () => { }
-    })
+  private createPackage(): void {
+    this.packageService.createPackage(this.file,
+      this.packageForm.get('reference').value,
+      this.packageForm.get('description').value,
+      this.packageForm.get('nbProduct').value,
+      this.packageForm.get('price').value,
+      this.packageForm.get('soldQuantity').value,
+      this.packageForm.get('availableQuantity').value).subscribe({
+        next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Created', life: 2000 }),
+        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
+        complete: () => { }
+      })
     this.packages.push(this._package);
   }
 
@@ -134,9 +151,12 @@ export class PackagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  //navigation to details
   toPackage(_package: Package) {
     this.router.navigate(['dashboard/pages/sales/packages', _package.id]);
+  }
+
+  onFileSelected(event: any) {
+    this.file = <File>event.target.files[0];
   }
 
   openNew() {

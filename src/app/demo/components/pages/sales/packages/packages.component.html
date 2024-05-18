@@ -90,40 +90,45 @@
     <p-dialog [(visible)]="packageDialog" [style]="{width: '450px'}" header="Package Details" [modal]="true"
       class="p-fluid">
       <ng-template pTemplate="content">
-       
+        <form [formGroup]="packageForm">
           <div class="field">
             <label for="reference">Reference</label>
-            <input type="text" pInputText id="reference" [(ngModel)]="_package.reference" required autofocus
-              [ngClass]="{'ng-invalid ng-dirty' : submitted && !_package.reference}" name="reference" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !_package.reference">Reference is
+            <input type="text" pInputText id="reference" formControlName="reference" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && packageForm.controls['reference'].invalid">Reference
+              is
               required.</small>
           </div>
           <div class="field">
             <label for="description">Description</label>
-            <textarea id="description" pInputTextarea [(ngModel)]="_package.description" required rows="3"
+            <textarea id="description" pInputTextarea formControlName="description" required rows="3"
               cols="20"></textarea>
           </div>
-
+<!--
           <div class="field">
             <label for="brands">Brand</label>
             <p-dropdown [options]="brands" [(ngModel)]="selectedBrandId" optionLabel="name" placeholder="Select Brand"
               (onChange)="brandSelectedEvent($event)">
             </p-dropdown>
           </div>
+        -->
+          <div class="field">
+            <label for="nbProduct">Number of articles</label>
+            <p-inputNumber id="nbProduct" formControlName="nbProduct"></p-inputNumber>
+          </div>
 
           <div class="field">
-            <label class="mb-3">Category</label>
+            <label for="price">Price</label>
+            <p-inputNumber id="price" formControlName="price" mode="currency" currency="TND"></p-inputNumber>
           </div>
 
           <div class="formgrid grid">
             <div class="field col">
-              <label for="price">Price</label>
-              <p-inputNumber id="price" [(ngModel)]="_package.price" mode="currency" currency="TND"
-                ></p-inputNumber>
+              <label for="soldQuantity">Sold Quantity</label>
+              <p-inputNumber id="soldQuantity" formControlName="soldQuantity"></p-inputNumber>
             </div>
             <div class="field col">
-              <label for="quantity">Quantity</label>
-              <p-inputNumber id="quantity"></p-inputNumber>
+              <label for="availableQuantity">Available Quantity</label>
+              <p-inputNumber id="availableQuantity" formControlName="availableQuantity"></p-inputNumber>
             </div>
           </div>
 
@@ -132,7 +137,7 @@
             <input id="file-upload" class=" w-full" type="file" class="custom-file-input"
               (change)="onFileSelected($event)" accept="image/*">
           </div>
-       
+        </form>
       </ng-template>
 
       <ng-template pTemplate="footer">
