@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Brand, BrandDto } from '../../models/brand';
+import { Brand } from '../../models/brand';
 import { PageEvent } from '../../utils/page-event';
 
 @Injectable({
@@ -57,8 +57,8 @@ export class BrandService {
     return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
   }
 
-  getBrandById(id: string): Observable<BrandDto> {
-    return this.http.get<BrandDto>(`${this.baseUrl}/${id}`);
+  getBrandById(id: string): Observable<Brand> {
+    return this.http.get<Brand>(`${this.baseUrl}/${id}`);
   }
 
   deleteBrand(id: string): Observable<void> {
@@ -76,7 +76,7 @@ export class BrandService {
       .set('Name', name)
       .set('page', pageNumber.toString())
       .set('size', rows.toString());
-    return this.http.get<BrandDto[]>(`${this.baseUrl}/search`, { params });
+    return this.http.get<Brand[]>(`${this.baseUrl}/search`, { params });
   }
 
   countBrands(): Observable<number> {

@@ -41,14 +41,9 @@
             <th style="width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
-            <th pSortableColumn="name">
-              <span class="">Name</span><p-sortIcon field="name"></p-sortIcon>
-            </th>
-            <th pSortableColumn="image">
-              <span class="">Image</span>
-            </th>
-            <th pSortableColumn="products">
-              <span class="">Description</span><p-sortIcon field="products"></p-sortIcon>
+            <th pSortableColumn="name"><span>Name</span><p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="image"><span>Image</span></th>
+            <th pSortableColumn="description"><span>Description</span><p-sortIcon field="description"></p-sortIcon>
             </th>
             <th pSortableColumn="edit"><span></span></th>
           </tr>
@@ -110,7 +105,6 @@
             <label for="file">Brand Logo</label>
             <input id="file-upload" class=" w-full" type="file" class="custom-file-input" formControlName="file"
               (change)="onFileSelected($event)" accept="image/*">
-
           </div>
         </form>
       </ng-template>

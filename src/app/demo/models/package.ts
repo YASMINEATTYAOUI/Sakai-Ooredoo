@@ -1,27 +1,16 @@
-export interface Package {
-  id?: any;
-  reference?: string;
-  description?: string;
-  nbProduct?: number;
-  pictureId?: string;
-  tags?: string;
-  price?: string;
-  creatorId?:string ;
-  creationDate?: Date;
-  lastModifierId?: Date;
-  lastModifiedDate?: Date;
-}
+import { Brand } from './brand';
 
-export interface PackageDto {
+export class Package {
   id?: any;
   reference?: string;
   description?: string;
   nbProduct?: number;
-  pictureId?: string;
-  tags?: string;
-  price?: string;
+  image?: string;
+  price?: any;
   creatorId?:string ;
   creationDate?: Date;
   lastModifierId?: Date;
   lastModifiedDate?: Date;
+  
+  brands?:Brand[];
 }

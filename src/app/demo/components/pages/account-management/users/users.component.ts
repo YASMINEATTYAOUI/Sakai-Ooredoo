@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { User } from 'src/app/demo/models/user';
@@ -16,19 +15,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   users: User[];
   filteredData: User[];
   name: any;
-  selectedRoleId: Role;
-
-  roles: any[] = [];
-
-  userForm: FormGroup;
-  isUpdate: boolean = false;
-
-  messages: Message[];
-  typing: boolean;
-
-  totalElements: number = 0;
-  tableLoading: boolean = false;
-
   user: User;
   userDialog: boolean = false;
   userToUpdate: User;
@@ -37,34 +23,27 @@ export class UsersComponent implements OnInit, OnDestroy {
   deleteUsersDialog: boolean = false;
 
   selectedUsers: User[];
+  selectedRoleId: Role;
+  roles: any[] = [];
+
+  messages: Message[];
+
+  totalElements: number = 0;
+  tableLoading: boolean = false;
 
   submitted: boolean = false;
 
   userId: any;
 
-  rowsPerPageOptions = [5, 10, 20];
-
   constructor(
-    private formBuilder: FormBuilder,
     private userService: UserService,
     private roleService: RoleService,
     private messageService: MessageService,
-    private router: Router) {
-    /*this.userForm = this.formBuilder.group({
-      id: [''],
-      username: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
-      fullName: ['', [Validators.pattern('^[a-zA-Z]*$'), Validators.maxLength(50), Validators.required]],
-      phoneNumber: ['', [Validators.pattern('^[0-9]*$'), Validators.maxLength(50), Validators.required]],
-      email: ['', [Validators.pattern('^[a-zA-Z]*$'), Validators.maxLength(50), Validators.required]],
-      password: ['', [Validators.pattern('^[a-zA-Z]*$'), Validators.maxLength(50), Validators.required]],
-      role: [''],
-    });*/
-  }
+    private router: Router) {}
 
   ngOnInit() {
     this.getUsers();
     this.loadRoles(); 
-    
   }
   ngOnDestroy(): void {
 
@@ -78,25 +57,19 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   save(): void {
     this.submitted = true;
-    console.log(this.user)
-   
     if (this.userToUpdate) {
       this.updateUser(this.user);
     } else {
       this.createUser(this.user);
     }
     this.userDialog = false;
-
   }
 
-  private createUser(userDto: User): void {
-    this.userService.createUser(userDto).subscribe({
+  private createUser(user: User): void {
+    this.userService.createUser(user).subscribe({
       next: (response) => {
         this.users.push(response);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 2000 
-
-        }
-      )
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 2000 })
     },
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }

@@ -52,14 +52,7 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     { label: 'Revenue', icon: 'pi pi-fw pi-dollar',routerLink: ['/dashboard']  },
                     { label: 'Expenses', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/dashboard'] },
-                    {
-                        label: 'Clients', icon: 'pi pi-fw pi-users',
-                        items: [
-                            { label: 'Search', icon: 'pi pi-fw pi-search', routerLink: ['/dashboard/clients'] },
-                            { label: 'Block', icon: 'pi pi-fw pi-ban', routerLink: ['/dashboard/client-profile'] },
-                            { label: 'Active', icon: 'pi pi-fw pi-check', routerLink: ['/dashboard/clients'] },
-                        ]
-                    }
+                    {label: 'Clients', icon: 'pi pi-fw pi-users',routerLink: ['/dashboard/pages/clients']}
                 ]
             },
             {
@@ -88,83 +81,8 @@ export class AppMenuComponent implements OnInit {
                             { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['dashboard/uikit/charts'] },
                             { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['dashboard/uikit/misc'] }
                         ]
-                    },
-                    {
-                        label: 'Prime Blocks',
-                        items: [
-                            { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['dashboard/blocks'], badge: 'NEW' },
-
-                        ]
-                    },
-                    {
-                        label: 'Utilities',
-                        items: [
-                            { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', routerLink: ['dashboard/utilities/icons'] },
-                        ]
-                    },
-                    {
-                        label: 'Pages',
-                        icon: 'pi pi-fw pi-briefcase',
-                        items: [
-                            {
-                                label: 'Landing', icon: 'pi pi-fw pi-globe', routerLink: ['/']
-                            },
-                            {
-                                label: 'Auth',
-                                icon: 'pi pi-fw pi-user',
-                                items: [
-                                    { label: 'Login', icon: 'pi pi-fw pi-sign-in', routerLink: ['/auth/login'] },
-                                    { label: 'Error', icon: 'pi pi-fw pi-times-circle', routerLink: ['/auth/error'] },
-                                    { label: 'Access Denied', icon: 'pi pi-fw pi-lock', routerLink: ['/auth/access'] }
-                                ]
-                            },
-                        ]
-                    },
+                    },  
                     { label: 'Timeline', icon: 'pi pi-fw pi-calendar', routerLink: ['dashboard/pages/timeline'] },
-                    { label: 'Not Found', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['dashboard/notfound'] },
-                    { label: 'Empty', icon: 'pi pi-fw pi-circle-off', routerLink: ['dashboard/pages/empty'] },
-                    {
-                        label: 'Hierarchy',
-                        items: [
-                            {
-                                label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    {
-                                        label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
-                                        items: [
-                                            { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                            { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                            { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
-                                        ]
-                                    },
-                                    {
-                                        label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
-                                        items: [
-                                            { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }
-                                        ]
-                                    },
-                                ]
-                            },
-                            {
-                                label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    {
-                                        label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-                                        items: [
-                                            { label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                            { label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                        ]
-                                    },
-                                    {
-                                        label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-                                        items: [
-                                            { label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark' },
-                                        ]
-                                    },
-                                ]
-                            }
-                        ]
-                    },
 
                 ]
             }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Category, CategoryDto } from '../../models/category'; // Assuming you have Category and CategoryDto defined
+import { Category } from '../../models/category';
 import { PageEvent } from '../../utils/page-event';
 
 @Injectable({
@@ -17,12 +17,12 @@ export class CategoryService {
     return this.baseUrl;
   }
 
-  createCategory(categoryDto: Category): Observable<CategoryDto> {
-    return this.http.post<CategoryDto>(this.baseUrl, categoryDto);
+  createCategory(category: Category): Observable<Category> {
+    return this.http.post<Category>(this.baseUrl, category);
   }
 
-  updateCategory(categoryDto: CategoryDto): Observable<CategoryDto> {
-    return this.http.put<CategoryDto>(this.baseUrl, categoryDto);
+  updateCategory(category: Category): Observable<Category> {
+    return this.http.put<Category>(this.baseUrl, category);
   }
 
   getCategories(): Observable<any> {
@@ -39,8 +39,8 @@ export class CategoryService {
     return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
   }
 
-  getCategoryById(id: string): Observable<CategoryDto> {
-    return this.http.get<CategoryDto>(`${this.baseUrl}/${id}`);
+  getCategoryById(id: string): Observable<Category> {
+    return this.http.get<Category>(`${this.baseUrl}/${id}`);
   }
 
   deleteCategory(id: string): Observable<void> {
@@ -58,7 +58,7 @@ export class CategoryService {
       .set('Name', name)
       .set('page', pageNumber.toString())
       .set('size', rows.toString());
-    return this.http.get<CategoryDto[]>(`${this.baseUrl}/search`, { params });
+    return this.http.get<Category[]>(`${this.baseUrl}/search`, { params });
   }
 
   countCategories(): Observable<number> {

@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "../service/app.layout.service";
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 
 @Component({
     selector: 'app-topbar',
@@ -9,6 +10,7 @@ import { LayoutService } from "../service/app.layout.service";
 export class AppTopBarComponent {
 
     items!: MenuItem[];
+    refreshToken: string;
 
     @ViewChild('menubutton') menuButton!: ElementRef;
 
@@ -16,5 +18,22 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService) { }
+
+    constructor(
+        public layoutService: LayoutService,
+        private authService: AuthenticationService
+    ) { }
+
+    onLogout(refreshToken: string): void {
+        this.authService.logout(refreshToken).subscribe({
+          next: () => {
+            // Handle successful logout, such as clearing user data or navigating to the login page
+            console.log('Logout successful');
+          },
+          error: (error) => {
+            // Handle error, such as displaying an error message
+            console.error('Logout failed', error);
+          }
+        });
+      }
 }

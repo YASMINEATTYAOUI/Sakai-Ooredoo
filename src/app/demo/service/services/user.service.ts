@@ -22,8 +22,8 @@ export class UserService {
       return this.http.post(`${this.baseUrl}/save`, user);
     }
   
-    updateUser(userDto: User): Observable<Object> {
-      return this.http.put(this.baseUrl, userDto);
+    updateUser(user: User): Observable<Object> {
+      return this.http.put(this.baseUrl, user);
     }
     getUsers(): Observable<User[]> {
       return this.http.get<User[]>(`${this.baseUrl}/users`).pipe(

@@ -21,8 +21,6 @@
         </ng-template>
       </p-toolbar>
 
-
-
       <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="4"
         [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [rowsPerPageOptions]="[5, 10, 20]" [(selection)]="selectedRoles" selectionMode="multiple" [rowHover]="true"
@@ -43,20 +41,22 @@
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
             <th pSortableColumn="name">
-              <span class="font-semibold text-sm text-color-secondary">Name</span>
+              <span>Name</span>
+              <p-sortIcon field="name"></p-sortIcon>
             </th>
-            <th pSortableColumn="lastEdit">
-              <span class="font-semibold text-sm text-color-secondary">Last Edit</span>
+            <th pSortableColumn="description">
+              <span>description</span>
+              <p-sortIcon field="description"></p-sortIcon>
             </th>
             <th pSortableColumn="users">
-              <span class="font-semibold text-sm text-color-secondary">Users</span>
+              <span>Status</span>
             </th>
             <th pSortableColumn="edit"><span></span></th>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-role>
-          <tr class="ng-star-inserted" >
+          <tr class="ng-star-inserted">
             <td>
               <p-tableCheckbox [value]="role"></p-tableCheckbox>
             </td>
@@ -67,10 +67,10 @@
               </div>
             </td>
             <td>
-              {{ role.lastModifiedDate }}
+              {{ role.description }}
             </td>
             <td>
-              {{ role.nbUsers }}
+              {{ role.Status }}
             </td>
             <td>
               <div class="flex">

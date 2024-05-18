@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
-import { Order, OrderDto } from 'src/app/demo/models/order';
+import { Order } from 'src/app/demo/models/order';
 import { OrderService } from 'src/app/demo/service/services/order.service';
 
 @Component({
@@ -19,14 +19,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
   isUpdate: boolean = false;
 
   messages: Message[];
-  typing: boolean;
 
   totalElements: number = 0;
   tableLoading: boolean = false;
 
   order: Order;
   orderDialog: boolean = false;
-  orderToUpdate: OrderDto;
+  orderToUpdate: Order;
   deleteOrderDialog: boolean = false;
 
   deleteOrdersDialog: boolean = false;
@@ -40,19 +39,9 @@ export class OrdersComponent implements OnInit, OnDestroy {
   rowsPerPageOptions = [5, 10, 20];
 
   constructor(
-    private formBuilder: FormBuilder,
     private orderService: OrderService,
     private messageService: MessageService,
     private router: Router) {
-    this.orderForm = this.formBuilder.group({
-      id: [''],
-      username: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
-      fullName: ['', [Validators.pattern('^[a-zA-Z]*$'), Validators.maxLength(50), Validators.required]],
-      phoneNumber: ['', [Validators.pattern('^[0-9]*$'), Validators.maxLength(50), Validators.required]],
-      email: ['', [Validators.pattern('^[a-zA-Z]*$'), Validators.maxLength(50), Validators.required]],
-      password: ['', [Validators.pattern('^[a-zA-Z]*$'), Validators.maxLength(50), Validators.required]],
-      role: [''],
-    });
   }
 
   ngOnInit() {
@@ -60,37 +49,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
 
-  }
-
-  save(): void {
-    this.submitted = true;
-    const data = this.orderForm.value;
-    if (this.orderToUpdate) {
-      this.updateOrder(data);
-    } else {
-      this.createOrder(data);
-    }
-    this.orderDialog = false;
-    this.router.navigate(['dashboard/pages/account-management/orders']);
-    this.getOrders();
-  }
-
-  private createOrder(orderDto: OrderDto): void {
-    this.orderService.createOrder(orderDto).subscribe({
-      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Order Created', life: 2000 }),
-      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
-      complete: () => { }
-    })
-  }
-
-  private updateOrder(orderDto: OrderDto): void {
-    if (this.orderToUpdate) {
-      this.orderService.updateOrder(orderDto).subscribe({
-        next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Order Updated', life: 2000 }),
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => { }
-      });
-    }
   }
 
   getOrders() {
@@ -118,7 +76,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.filteredData = this.orders.filter(item => item.numberOrder.toString().startsWith(event.toLowerCase()));
   }
 
-  deleteOrder(order: Order): void {
+  BlockOrder(order: Order): void {
     if (order) {
       this.order = order;
       this.orderId = order.id;
@@ -126,29 +84,18 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteSelectedOrders(orders: Order[]): void {
+  BlockSelectedOrders(orders: Order[]): void {
     if (orders && orders.length > 0) {
       this.selectedOrders = orders;
       this.deleteOrdersDialog = true;
     }
   }
-  //navigation to details
-  toOrder(order: OrderDto) {
+  toOrder(order: Order) {
     this.router.navigate(['dashboard/pages/account-management/orders', order.id]);
   }
 
-  openNew() {
-    this.order = {};
-    this.submitted = false;
-    this.orderDialog = true;
-  }
 
-  openDialog(order?: OrderDto) {
-    this.orderToUpdate = order;
-    this.orderDialog = true;
-  }
-
-  confirmDeleteSelected() {
+  confirmBlockSelected() {
     if (this.selectedOrders && this.selectedOrders.length > 0) {
       const orderIds = this.selectedOrders.map(order => order.id);
 
@@ -170,7 +117,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
   }
 
-  confirmDelete() {
+  confirmBlock() {
     this.orderService.deleteOrder(this.orderId).subscribe({
       next: () => {
         this.deleteOrderDialog = false;

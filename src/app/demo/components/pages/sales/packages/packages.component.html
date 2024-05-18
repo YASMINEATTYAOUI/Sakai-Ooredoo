@@ -8,8 +8,8 @@
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
               (click)="openNew()"></button>
             <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-              (click)="deleteSelectedCategories(selectedCategories)"
-              [disabled]="!selectedCategories || !selectedCategories.length"></button>
+              (click)="deleteSelectedPackages(selectedPackages)"
+              [disabled]="!selectedPackages || !selectedPackages.length"></button>
           </div>
         </ng-template>
 
@@ -42,10 +42,9 @@
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
             <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
-            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="name">Reference <p-sortIcon field="Reference"></p-sortIcon></th>
             <th>Image</th>
             <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-            <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
             <th pSortableColumn="brand">Brand <p-sortIcon field="brand"></p-sortIcon></th>
             <th pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
             <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
@@ -53,52 +52,33 @@
             <th pSortableColumn="edit"><span></span></th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-package>
+        <ng-template pTemplate="body" let-_package>
           <tr class="ng-star-inserted">
             <td>
-              <p-tableCheckbox [value]="package"></p-tableCheckbox>
+              <p-tableCheckbox [value]="_package"></p-tableCheckbox>
             </td>
+            <td>{{_package.code || _package.id}} </td>
+            <td>{{_package.reference}}</td>
             <td>
-              {{package.code || package.id}}
+              <img [src]="_package.image" style="width: 100px; height: 100px;">
             </td>
-            <td>
-              <span class="p-column-title">Name</span>
-              {{package.name}}
+            <td>{{_package.price | currency:" " }}TND</td>
+            <td>{{_package.brand}}</td>
+            <td><p-rating [ngModel]="_package.rating" [readonly]="true" [cancel]="false"></p-rating> </td>
+            <td><span
+                [class]="'product-badge status-' + (_package.inventoryStatus ? _package.inventoryStatus.toLowerCase() : '')">{{_package.inventoryStatus}}</span>
             </td>
-            <td style="width:14%; min-width:10rem;"><span class="p-column-title">Image</span>
-              <img [src]="'assets/demo/images/product/' + package.image" [alt]="package.name" width="100"
-                class="shadow-4" />
-            </td>
-            <td style="width:14%; min-width:8rem;">
-              <span class="p-column-title">Price</span>
-              {{product.price | currency:'TND'}}
-            </td>
-            <td style="width:14%; min-width:10rem;">
-              <span class="p-column-title">Category</span>
-              {{product.category}}
-            </td>
-            <td style="width:14%; min-width:10rem;">
-              <span class="p-column-title">Brand</span>
-              {{product.brand}}
-            </td>
-            <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Reviews</span>
-              <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
-            </td>
-            <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Status</span>
-              <span
-                [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span>
-            </td>
-
             <td>
               <div class="flex">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-                  (click)="editPackage(package)"></button>
+                  (click)="updatePackage(_package)"></button>
                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                  (click)="deletePackage(package)"></button>
+                  (click)="deletePackage(_package)"></button>
               </div>
             </td>
           </tr>
         </ng-template>
+
         <ng-template pTemplate="summary">
           <div class="flex align-items-center justify-content-between">
             In total there are {{ packages ? packages.length : 0 }} packages.
@@ -110,70 +90,49 @@
     <p-dialog [(visible)]="packageDialog" [style]="{width: '450px'}" header="Package Details" [modal]="true"
       class="p-fluid">
       <ng-template pTemplate="content">
-        <img [src]="'assets/demo/images/product/' + package.image" [alt]="package.image" width="150"
-          class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="package.image">
-        <div class="field">
-          <label for="name">Name</label>
-          <input type="text" pInputText id="name" [(ngModel)]="package.name" required autofocus
-            [ngClass]="{'ng-invalid ng-dirty' : submitted && !package.name}" />
-          <small class="ng-dirty ng-invalid" *ngIf="submitted && !package.name">Name is required.</small>
-        </div>
-        <div class="field">
-          <label for="description">Description</label>
-          <textarea id="description" pInputTextarea [(ngModel)]="package.description" required rows="3"
-            cols="20"></textarea>
-        </div>
-        <div class="field">
-          <label for="status">Brand</label>
-          <p-dropdown [(ngModel)]="package.brand" inputId="inventoryStatus" optionValue="label"
-            [options]="brands" placeholder="Select">
-            <ng-template pTemplate="selectedItem">
-              <span *ngIf="prpackageoduct && package.inventoryStatus"
-                [class]="'package-badge status-' + package.brand.toString().toLowerCase()">{{package.brand}}</span>
-            </ng-template>
-            <ng-template let-option pTemplate="item">
-              <span [class]="'package-badge status-' + option.value">{{option.label}}</span>
-            </ng-template>
-          </p-dropdown>
-        </div>
+       
+          <div class="field">
+            <label for="reference">Reference</label>
+            <input type="text" pInputText id="reference" [(ngModel)]="_package.reference" required autofocus
+              [ngClass]="{'ng-invalid ng-dirty' : submitted && !_package.reference}" name="reference" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !_package.reference">Reference is
+              required.</small>
+          </div>
+          <div class="field">
+            <label for="description">Description</label>
+            <textarea id="description" pInputTextarea [(ngModel)]="_package.description" required rows="3"
+              cols="20"></textarea>
+          </div>
 
-        <div class="field">
-          <label class="mb-3">Category</label>
+          <div class="field">
+            <label for="brands">Brand</label>
+            <p-dropdown [options]="brands" [(ngModel)]="selectedBrandId" optionLabel="name" placeholder="Select Brand"
+              (onChange)="brandSelectedEvent($event)">
+            </p-dropdown>
+          </div>
+
+          <div class="field">
+            <label class="mb-3">Category</label>
+          </div>
+
           <div class="formgrid grid">
-            <div class="field-radiobutton col-6">
-              <p-radioButton id="category1" name="category" value="Accessories"
-                [(ngModel)]="package.category"></p-radioButton>
-              <label for="category1">Accessories</label>
+            <div class="field col">
+              <label for="price">Price</label>
+              <p-inputNumber id="price" [(ngModel)]="_package.price" mode="currency" currency="TND"
+                ></p-inputNumber>
             </div>
-            <div class="field-radiobutton col-6">
-              <p-radioButton id="category2" name="category" value="Clothing"
-                [(ngModel)]="package.category"></p-radioButton>
-              <label for="category2">Clothing</label>
-            </div>
-            <div class="field-radiobutton col-6">
-              <p-radioButton id="category3" name="category" value="Electronics"
-                [(ngModel)]="package.category"></p-radioButton>
-              <label for="category3">Electronics</label>
-            </div>
-            <div class="field-radiobutton col-6">
-              <p-radioButton id="category4" name="category" value="Fitness"
-                [(ngModel)]="package.category"></p-radioButton>
-              <label for="category4">Fitness</label>
+            <div class="field col">
+              <label for="quantity">Quantity</label>
+              <p-inputNumber id="quantity"></p-inputNumber>
             </div>
           </div>
-        </div>
 
-        <div class="formgrid grid">
-          <div class="field col">
-            <label for="price">Price</label>
-            <p-inputNumber id="price" [(ngModel)]="package.price" mode="currency" currency="USD"
-              locale="en-US"></p-inputNumber>
+          <div class="field">
+            <label for="file">Package Picture</label>
+            <input id="file-upload" class=" w-full" type="file" class="custom-file-input"
+              (change)="onFileSelected($event)" accept="image/*">
           </div>
-          <div class="field col">
-            <label for="quantity">Quantity</label>
-            <p-inputNumber id="quantity" [(ngModel)]="package.quantity"></p-inputNumber>
-          </div>
-        </div>
+       
       </ng-template>
 
       <ng-template pTemplate="footer">
@@ -185,7 +144,7 @@
     <p-dialog [(visible)]="deletePackageDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
       <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="package">Are you sure you want to delete <b>{{package.name}}</b>?</span>
+        <span *ngIf="_package">Are you sure you want to delete <b>{{_package.reference}}</b>?</span>
       </div>
       <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Order, OrderDto } from '../../models/order';
+import { Order } from '../../models/order';
 import { PageEvent } from '../../utils/page-event';
 
 
@@ -18,12 +18,12 @@ export class OrderService {
   getServiceUrl() {
     return this.baseUrl;
   }
-  createOrder(orderDto: OrderDto): Observable<OrderDto> {
-    return this.http.post<OrderDto>(this.baseUrl, orderDto);
+  createOrder(order: Order): Observable<Order> {
+    return this.http.post<Order>(this.baseUrl, order);
   }
 
-  updateOrder(orderDto: OrderDto): Observable<OrderDto> {
-    return this.http.put<OrderDto>(this.baseUrl, orderDto);
+  updateOrder(order: Order): Observable<Order> {
+    return this.http.put<Order>(this.baseUrl, order);
   }
 
   getOrders(): Observable<any> {
@@ -42,8 +42,8 @@ export class OrderService {
     return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
   }
 
-  getOrderById(id: string): Observable<OrderDto> {
-    return this.http.get<OrderDto>(`${this.baseUrl}/${id}`);
+  getOrderById(id: string): Observable<Order> {
+    return this.http.get<Order>(`${this.baseUrl}/${id}`);
   }
 
   deleteOrder(id: string): Observable<void> {
@@ -60,7 +60,7 @@ export class OrderService {
       .set('Name', name)
       .set('page', pageNumber.toString())
       .set('size', rows.toString());
-    return this.http.get<OrderDto[]>(`${this.baseUrl}/search`, { params });
+    return this.http.get<Order[]>(`${this.baseUrl}/search`, { params });
   }
 
   countOrders(): Observable<number> {

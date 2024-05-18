@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { PackageDto } from '../../models/package';
+import { Package } from '../../models/package';
 
 
 @Injectable({
@@ -13,12 +13,12 @@ export class PackageService {
 
   constructor(private http: HttpClient) {}
 
-  createPackage(packageDto: PackageDto): Observable<void> {
-    return this.http.post<void>(this.baseUrl, packageDto);
+  createPackage(_package: Package): Observable<void> {
+    return this.http.post<void>(this.baseUrl, _package);
   }
 
-  updatePackage(packageDto: PackageDto): Observable<PackageDto> {
-    return this.http.put<PackageDto>(this.baseUrl, packageDto);
+  updatePackage(_package: Package): Observable<Package> {
+    return this.http.put<Package>(this.baseUrl, Package);
   }
 
   getPackages(): Observable<any> {
@@ -32,8 +32,8 @@ export class PackageService {
     return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`);
   }
 */
-  getPackageById(id: string): Observable<PackageDto> {
-    return this.http.get<PackageDto>(`${this.baseUrl}/${id}`);
+  getPackageById(id: string): Observable<Package> {
+    return this.http.get<Package>(`${this.baseUrl}/${id}`);
   }
 
   deletePackage(id: string): Observable<void> {
@@ -43,9 +43,9 @@ export class PackageService {
   deletePackages(ids: string[]): Observable<any> {
     return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
   }
-  searchPackagesByName(name: string): Observable<any> {
+  searchPackagesByName(reference: string): Observable<any> {
    
-    return this.http.get<PackageDto[]>(`${this.baseUrl}/search`);
+    return this.http.get<Package[]>(`${this.baseUrl}/search`);
   }
   countPackages(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/count`);

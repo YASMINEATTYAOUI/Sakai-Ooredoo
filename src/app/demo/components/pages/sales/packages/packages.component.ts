@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService, Message} from 'primeng/api';
-import { Package, PackageDto } from 'src/app/demo/models/package'; 
+import { MessageService, Message } from 'primeng/api';
+import { Brand } from 'src/app/demo/models/brand';
+import { Package } from 'src/app/demo/models/package';
+import { BrandService } from 'src/app/demo/service/services/brand.service';
 import { PackageService } from 'src/app/demo/service/services/package.service';
 
 @Component({
@@ -14,26 +15,24 @@ import { PackageService } from 'src/app/demo/service/services/package.service';
 
 export class PackagesComponent implements OnInit, OnDestroy {
 
-  packages: Package[]; 
-  filteredData: Package[]; 
+  packages: Package[];
+  filteredData: Package[];
   name: any;
 
-  packageForm: FormGroup; 
-  isUpdate: boolean = false;
+  _package: Package;
+  packageDialog: boolean = false;
+  packageToUpdate: Package;
+  deletePackageDialog: boolean = false;
+  deletePackagesDialog: boolean = false;
+  selectedPackages: Package[];
+
+  selectedBrandId: Brand;
+  brands: any[] = [];
 
   messages: Message[];
   typing: boolean;
   totalElements: number = 0;
   tableLoading: boolean = false;
-
-  package: Package; 
-  packageDialog: boolean = false; 
-  packageToUpdate: PackageDto;
-  deletePackageDialog: boolean = false;
-
-  deletePackagesDialog: boolean = false; 
-
-  selectedPackages: Package[];
 
   submitted: boolean = false;
   packageId: any;
@@ -41,69 +40,68 @@ export class PackagesComponent implements OnInit, OnDestroy {
   rowsPerPageOptions = [5, 10, 20];
 
   constructor(
-    private formBuilder: FormBuilder,
-    private packageService: PackageService, 
+    private packageService: PackageService,
+    private brandService : BrandService,
     private messageService: MessageService,
-    private router: Router
-  ) {
-    this.packageForm = this.formBuilder.group({
-      id: [''],
-      name:['',[Validators.pattern('^[a-zA-Z0-9 ]*$'),Validators.maxLength(50),Validators.required    ]],
-      description:[''],
-    });
-  }
+    private router: Router) {}
 
   ngOnInit(): void {
-    this.getPackages(); 
+    this.getPackages();
+    this.loadBrands();
   }
 
   ngOnDestroy() {
   }
 
+  loadBrands() {
+    this.brandService.getBrands().subscribe(brands => {
+      this.brands = brands;
+    });
+  }
+  brandSelectedEvent(event: any){
+    this._package.brands =event.value;
+  }
+
   save(): void {
     this.submitted = true;
-    const data = this.packageForm.value;
-   console.log(this.package)
-   this.createPackage(this.package);
-    // if (this.packageToUpdate) {
-    //   this.updatePackage(data); 
-    // } else {
-    //   this.createPackage(data); 
-    // }
-    this.packageDialog = false;
-
-  }
-
-  private createPackage(packageDto: Package): void { 
-    this.packageService.createPackage(packageDto).subscribe({ 
-      next: (response) =>  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Created', life: 2000 }), 
-      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
-      complete: () => {} 
-    })
-    this.packages.push(this.package); 
-  }
-
-  private updatePackage(packageDto: PackageDto): void {
     if (this.packageToUpdate) {
-      this.packageService.updatePackage(packageDto).subscribe({ 
+      this.updatePackage(this._package);
+    } else {
+      this.createPackage(this._package);
+    }
+    this.packageDialog = false;
+  }
+
+  private createPackage(_package: Package): void {
+    this.packageService.createPackage(_package).subscribe({
+      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Created', life: 2000 }),
+      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
+      complete: () => { }
+    })
+    this.packages.push(this._package);
+  }
+
+  private updatePackage(_package: Package): void {
+    if (this.packageToUpdate) {
+      this.packageService.updatePackage(_package).subscribe({
         next: (response) => {
           console.log('Package updated successfully');
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Updated', life: 2000 });
-          this.getPackages(); 
+          this.getPackages();
         },
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => {} 
+        complete: () => { }
       });
     }
   }
 
-  getPackages() { 
+  getPackages() {
     this.tableLoading = true;
-    this.packageService.getPackages().subscribe({ 
+    this.packageService.getPackages().subscribe({
       next: (response: any) => {
-        this.packages = response; 
+        this.packages = response;
         this.totalElements = response.totalElements;
-        this.filteredData = this.packages; 
+        this.filteredData = this.packages;
       },
       error: (e: any) => {
         this.messages = [{ severity: 'error', summary: 'Failed to load Data', detail: 'Server issue' }];
@@ -115,54 +113,54 @@ export class PackagesComponent implements OnInit, OnDestroy {
     });
   }
 
-  searchPackages(event) { 
-    console.log("package selected is " +event);
+  searchPackages(event) {
+    console.log("package selected is " + event);
     this.filteredData = this.packages.filter(item => item.reference.toLowerCase().startsWith(event.toLowerCase()));
-  
+
   }
 
-  deletePackage(_package: Package): void { 
+  deletePackage(_package: Package): void {
     if (_package) {
-      this.package = _package; 
-      this.packageId = _package.id; 
+      this._package = _package;
+      this.packageId = _package.id;
       this.deletePackageDialog = true;
     }
   }
 
-  deleteSelectedPackages(packages: Package[]) { 
+  deleteSelectedPackages(packages: Package[]) {
     if (packages && packages.length > 0) {
-      this.selectedPackages = packages; 
-      this.deletePackagesDialog = true; 
+      this.selectedPackages = packages;
+      this.deletePackagesDialog = true;
     }
   }
 
   //navigation to details
-  toPackage(_package: PackageDto) { 
-    this.router.navigate(['dashboard/pages/sales/packages', _package.id]); 
+  toPackage(_package: Package) {
+    this.router.navigate(['dashboard/pages/sales/packages', _package.id]);
   }
 
   openNew() {
-    this.package = {}; 
+    this._package = {};
     this.submitted = false;
     this.packageDialog = true;
   }
 
-  openDialog(_package?: PackageDto) {
-    this.packageToUpdate = _package; 
+  openDialog(_package?: Package) {
+    this.packageToUpdate = _package;
     this.packageDialog = true;
   }
-_package
-  confirmDeleteSelected() {
-    if (this.selectedPackages && this.selectedPackages.length > 0) { 
-      const packageIds = this.selectedPackages.map(_package => _package.id); 
 
-      this.packageService.deletePackages(packageIds).subscribe({ 
+  confirmDeleteSelected() {
+    if (this.selectedPackages && this.selectedPackages.length > 0) {
+      const packageIds = this.selectedPackages.map(_package => _package.id);
+
+      this.packageService.deletePackages(packageIds).subscribe({
         next: () => {
           this.deletePackagesDialog = false;
           this.selectedPackages = [];
           console.log('Packages deleted successfully');
           this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The packages have been deleted.' });
-          this.getPackages(); 
+          this.getPackages();
         },
         error: (e) => {
           console.error('Error deleting packages', e);
@@ -170,19 +168,19 @@ _package
         }
       });
     } else {
-      console.warn('No packages selected for deletion'); 
-      
+      console.warn('No packages selected for deletion');
+
     }
   }
 
   confirmDelete() {
     this.packageService.deletePackage(this.packageId).subscribe({
       next: () => {
-        this.deletePackageDialog = false; 
-        this.package = {}; 
+        this.deletePackageDialog = false;
+        this._package = {};
         console.log('Package deleted successfully');
         this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The package has been deleted.' });
-        this.getPackages(); 
+        this.getPackages();
       },
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }),
 
