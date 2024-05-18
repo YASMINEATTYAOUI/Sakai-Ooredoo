@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductsRoutingModule } from './products-routing.module';
 import { ProductsComponent } from './products.component';
 import { TableModule } from 'primeng/table';
@@ -18,11 +18,21 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { OverlayModule } from 'primeng/overlay';
 import { ProductDetailsComponent } from './product-details/product-details.component';
+import { ChipsModule } from 'primeng/chips';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DividerModule } from 'primeng/divider';
+import { FieldsetModule } from 'primeng/fieldset';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { MessagesModule } from 'primeng/messages';
+import { PaginatorModule } from 'primeng/paginator';
+import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
     imports: [
         CommonModule,
         ProductsRoutingModule,
+
         TableModule,
         FileUploadModule,
         FormsModule,
@@ -36,9 +46,18 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
         DropdownModule,
         RadioButtonModule,
         InputNumberModule,
+
         DialogModule,
-        OverlayModule,
-        
+        ReactiveFormsModule,
+        PaginatorModule,
+        TagModule,
+        FieldsetModule,
+        MessagesModule,
+        InputSwitchModule,
+        ConfirmDialogModule,
+        TooltipModule,
+        DividerModule,
+        ChipsModule,
     ],
     declarations: [
         ProductsComponent,

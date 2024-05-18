@@ -1,141 +1,210 @@
-import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/demo/api/product';
-import { MessageService } from 'primeng/api';
-import { Table } from 'primeng/table';
-import { ProductService } from 'src/app/demo/service/product.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MessageService, Message } from 'primeng/api';
+import { Brand } from 'src/app/demo/models/brand';
+import { Product } from 'src/app/demo/models/product';
+import { BrandService } from 'src/app/demo/service/services/brand.service';
+import { ProductService } from 'src/app/demo/service/services/product.service';
 
 @Component({
-    templateUrl: './products.component.html',
-    providers: [MessageService]
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  providers: [MessageService],
 })
-export class ProductsComponent implements OnInit {
 
-    productDialog: boolean = false;
+export class ProductsComponent implements OnInit, OnDestroy {
 
-    deleteProductDialog: boolean = false;
+  products: Product[]; 
+  filteredData: Product[]; 
+  name: any;
+  file: File;
+  product: Product; 
+  selectedBrandId: Brand;
+  brands: any[] = [];
 
-    deleteProductsDialog: boolean = false;
+  productForm: FormGroup; 
 
-    products: Product[] = [];
+  productDialog: boolean = false;
+  productToUpdate: Product;
+  deleteProductDialog: boolean = false; 
+  deleteProductsDialog: boolean = false; 
+  selectedProducts: Product[]; 
 
-    product: Product = {};
+  messages: Message[];
+  totalElements: number = 0;
+  tableLoading: boolean = false;
+  submitted: boolean = false;
+  productId: any;
 
-    selectedProducts: Product[] = [];
+  constructor(
+    private formBuilder: FormBuilder,
+    private productService: ProductService, 
+    private brandService: BrandService,
+    private messageService: MessageService,
+    private router: Router) {
+    this.productForm = this.formBuilder.group({
+      id: [''],
+      reference: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
+      description: [''],
+      price: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
+      soldQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
+      availableQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
+    });
+  }
 
-    submitted: boolean = false;
+  ngOnInit(): void {
+    this.getProducts(); 
+    this.loadBrands();
+  }
 
-    cols: any[] = [];
+  ngOnDestroy() {
+  }
 
-    statuses: any[] = [];
+  loadBrands() {
+    this.brandService.getBrands().subscribe(brands => {
+      this.brands = brands;
+    });
+  }
 
-    rowsPerPageOptions = [5, 10, 20];
+  brandSelectedEvent(event: any) {
+    this.product.brands = event.value;
+  }
 
-    constructor(private productService: ProductService, private messageService: MessageService) { }
-
-    ngOnInit() {
-        this.productService.getProducts().then(data => this.products = data);
-
-        this.cols = [
-            { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' },
-            { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' }
-        ];
-
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' }
-        ];
+  save(): void {
+    this.submitted = true;
+    if (this.productToUpdate) {
+      this.updateProduct(this.product); 
+    } else {
+      this.createProduct();
     }
+    this.productDialog = false;
+  }
 
-    openNew() {
-        this.product = {};
-        this.submitted = false;
-        this.productDialog = true;
+  private createProduct(): void {
+    this.productService.createProduct(this.file,
+      this.productForm.get('reference').value,
+      this.productForm.get('description').value,
+      this.productForm.get('price').value,
+      this.productForm.get('soldQuantity').value,
+      this.productForm.get('availableQuantity').value).subscribe({
+        next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 2000 }),
+        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
+        complete: () => { }
+      })
+    this.products.push(this.product); 
+  }
+
+  private updateProduct(product: Product): void {
+    if (this.productToUpdate) {
+      this.productService.updateProduct(product).subscribe({
+        next: (response) => {
+          console.log('Product updated successfully'); 
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 2000 });
+          this.getProducts();
+        },
+        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+        complete: () => { }
+      });
     }
+  }
 
-    deleteSelectedProducts() {
-        this.deleteProductsDialog = true;
+  getProducts() {
+    this.tableLoading = true;
+    this.productService.getProducts().subscribe({
+      next: (response: any) => {
+        this.products = response;
+        this.totalElements = response.totalElements;
+        this.filteredData = this.products; 
+      },
+      error: (e: any) => {
+        this.messages = [{ severity: 'error', summary: 'Failed to load Data', detail: 'Server issue' }];
+        this.tableLoading = false;
+      },
+      complete: () => {
+        this.tableLoading = false;
+      }
+    });
+  }
+
+  searchProducts(event) {
+    console.log("product selected is " + event); 
+    this.filteredData = this.products.filter(item => item.reference.toLowerCase().startsWith(event.toLowerCase())); // Changed "packages" to "products"
+  }
+
+  deleteProduct(product: Product): void { 
+    if (product) {
+      this.product = product;
+      this.productId = product.id;
+      this.deleteProductDialog = true; 
     }
+  }
 
-    editProduct(product: Product) {
-        this.product = { ...product };
-        this.productDialog = true;
+  deleteSelectedProducts(products: Product[]) { 
+    if (products && products.length > 0) {
+      this.selectedProducts = products;
+      this.deleteProductsDialog = true; 
     }
+  }
 
-    deleteProduct(product: Product) {
-        this.deleteProductDialog = true;
-        this.product = { ...product };
-    }
+  toProduct(product: Product) { 
+    this.router.navigate(['dashboard/pages/sales/packages', product.id]); 
+  }
 
-    confirmDeleteSelected() {
-        this.deleteProductsDialog = false;
-        this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-        this.selectedProducts = [];
-    }
+  onFileSelected(event: any) {
+    this.file = <File>event.target.files[0];
+  }
 
-    confirmDelete() {
-        this.deleteProductDialog = false;
-        this.products = this.products.filter(val => val.id !== this.product.id);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-        this.product = {};
-    }
+  openNew() {
+    this.product = new Product;
+    this.submitted = false;
+    this.productDialog = true;
+    console.log("opened");
+  }
 
-    hideDialog() {
-        this.productDialog = false;
-        this.submitted = false;
-    }
+  openDialog(product?: Product) { 
+    this.productToUpdate = product; 
+    this.productDialog = true; 
+  }
 
-    saveProduct() {
-        this.submitted = true;
+  confirmDeleteSelected() {
+    if (this.selectedProducts && this.selectedProducts.length > 0) { 
+      const productIds = this.selectedProducts.map(product => product.id);
 
-        if (this.product.name?.trim()) {
-            if (this.product.id) {
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
-                this.products[this.findIndexById(this.product.id)] = this.product;
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-            } else {
-                this.product.id = this.createId();
-                this.product.code = this.createId();
-                this.product.image = 'product-placeholder.svg';
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus ? this.product.inventoryStatus.value : 'INSTOCK';
-                this.products.push(this.product);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-            }
-
-            this.products = [...this.products];
-            this.productDialog = false;
-            this.product = {};
+      this.productService.deleteProducts(productIds).subscribe({
+        next: () => {
+          this.deleteProductsDialog = false; 
+          this.selectedProducts = []; 
+          console.log('Products deleted successfully'); 
+          this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The products have been deleted.' }); // Changed "Packages" to "Products"
+          this.getProducts();
+        },
+        error: (e) => {
+          console.error('Error deleting products', e); 
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' });
         }
+      });
+    } else {
+      console.warn('No products selected for deletion');
     }
+  }
 
-    findIndexById(id: string): number {
-        let index = -1;
-        for (let i = 0; i < this.products.length; i++) {
-            if (this.products[i].id === id) {
-                index = i;
-                break;
-            }
-        }
+  confirmDelete() {
+    this.productService.deleteProduct(this.productId).subscribe({
+      next: () => {
+        this.deleteProductDialog = false; 
+        this.product = {}; 
+        console.log('Product deleted successfully');
+        this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The product has been deleted.' }); // Changed "Package" to "Product"
+        this.getProducts();
+      },
+      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }),
+    });
+  }
 
-        return index;
-    }
+  hideDialog() {
+    this.productDialog = false; 
+    this.submitted = false;
+  }
 
-    createId(): string {
-        let id = '';
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
-    }
-
-    onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-    }
 }

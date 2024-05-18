@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PrivilegeDto } from '../../models/privilege';
 import { PageEvent } from '../../utils/page-event';
+
 @Injectable({
   providedIn: 'root'
 })

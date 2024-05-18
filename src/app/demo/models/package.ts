@@ -1,4 +1,5 @@
 import { Brand } from './brand';
+import { Product } from './product';
 
 export class Package {
   id?: any;
@@ -15,4 +16,5 @@ export class Package {
   lastModifiedDate?: Date;
   
   brands?:Brand[];
+  Products?:Product[];
 }

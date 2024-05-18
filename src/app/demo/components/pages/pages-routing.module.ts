@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 @NgModule({
     imports: [RouterModule.forChild([
         { path: 'account-management', loadChildren: () => import('./account-management/account-management.module').then(m => m.AccountManagementModule) },
+        { path: 'discount', loadChildren: () => import('./discount/discount.module').then(m=> m.DiscountModule)},
         { path: 'sales', loadChildren: () => import('./sales/sales.module').then(m => m.SalesModule) },
         { path: 'order', loadChildren: () => import('./orders/order.module').then(m=> m.OrderModule)},
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },

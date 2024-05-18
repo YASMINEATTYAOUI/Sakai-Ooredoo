@@ -1,94 +1,89 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Product } from '../../api/product';
-import { ProductDto } from '../../models/product';
-import { PageEvent } from '../../utils/page-event';
+import { Package } from '../../models/package';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-
   private baseUrl = environment.apiUrl + '/products';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  createProduct(product: Product): Observable<Object>{
-    return this.http.post(`${this.baseUrl}`, product);
+  getServiceUrl() {
+    return this.baseUrl;
   }
 
-  updateProduct(productDto: ProductDto): Observable<Object> {
-    return this.http.put(`${this.baseUrl}`, productDto);
+  createProduct(
+    file: File,
+    reference: string,
+    description: string,
+    price: number,
+    soldQuantity: number,
+    availableQuantity: number
+  ): Observable<Package> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('reference', reference);
+    formData.append('description', description);
+    formData.append('price', price.toString());
+    formData.append('soldQuantity', soldQuantity.toString());
+    formData.append('availableQuantity', availableQuantity.toString());
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+
+    return this.http.post<Package>(this.baseUrl, formData, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
-  getProducts(pageEvent: PageEvent): Observable<any> {
-    const rows = pageEvent.rows;
-    const pageNumber = pageEvent.first / pageEvent.rows;
-    const params = { page: pageNumber.toString(),
-       size: rows.toString() };
-    return this.http.get<any>(`${this.baseUrl}/sorted`, { params });
+  private handleError(error: any) {
+    console.error('An error occurred:', error);
+    return throwError('Something went wrong; please try again later.');
   }
 
-  getAllProductsSortedByCreatorId(creatorId : string, reference : string, pageEvent: PageEvent): Observable<any> {
-    let params = new HttpParams()
-      .set('page', pageEvent.first.toString())
-      .set('size', pageEvent.rows.toString());
-    if(reference){
-      params = params.set('reference', reference);
-    }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
+  updateProduct(product: Package): Observable<Package> {
+    return this.http.put<Package>(`${this.baseUrl}/${product.id}`, product);
   }
 
-  getProductById(id: string): Observable<ProductDto> {
-    return this.http.get<ProductDto>(`${this.baseUrl}/${id}`);
+  getProducts(): Observable<Package[]> {
+    return this.http.get<Package[]>(`${this.baseUrl}/sorted`).pipe(
+      map((products: any[]) => {
+        products.forEach(product => {
+          if (product.image) {
+            product.image = 'data:image/png;base64,' + product.image;
+          }
+        });
+        return products;
+      })
+    );
   }
 
-  deleteProduct(id: string): Observable<Object> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  getProductById(id: string): Observable<Package> {
+    return this.http.get<Package>(`${this.baseUrl}/${id}`);
+  }
+
+  deleteProduct(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
   deleteProducts(ids: string[]): Observable<any> {
     return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
   }
 
-  searchProductsByKeyword(keyword: string, pageEvent: PageEvent): Observable<any> {
-    const rows = pageEvent.rows;
-    const pageNumber = pageEvent.first / pageEvent.rows;
-    const params = new HttpParams()
-      .set('keyword', keyword)
-      .set('page', pageNumber.toString())
-      .set('size', rows.toString());
-    return this.http.get<ProductDto[]>(`${this.baseUrl}/search`, { params });
-  }
-
-  searchProductsByCategory(category: string, pageEvent: PageEvent): Observable<any> {
-    const rows = pageEvent.rows;
-    const pageNumber = pageEvent.first / pageEvent.rows;
-    const params = new HttpParams()
-      .set('category', category)
-      .set('page', pageNumber.toString())
-      .set('size', rows.toString());
-    return this.http.get<ProductDto[]>(`${this.baseUrl}/category`, { params });
-  }
-
-  searchProductssByCategoryAndReference(category: string, reference: string, pageEvent: PageEvent): Observable<any> {
-    const rows = pageEvent.rows;
-    const pageNumber = pageEvent.first / pageEvent.rows;
-    const params = new HttpParams()
-      .set('category', category)
-      .set('reference',reference)
-      .set('page', pageNumber.toString())
-      .set('size', rows.toString());
-    return this.http.get<ProductDto[]>(`${this.baseUrl}/category/reference`, { params });
+  searchProductsByName(reference: string): Observable<any> {
+    return this.http.get<Package[]>(`${this.baseUrl}/search`);
   }
 
   countProducts(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/count`);
-  }
-
-  countProductsByTag(tag: string) : Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/tags/count/${tag}`);
   }
 }

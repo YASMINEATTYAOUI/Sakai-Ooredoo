@@ -1,29 +1,19 @@
-export interface Product {
-  id?: any;
-  reference?: string;
-  description?: string;
-  tags?: string;
-  price?: string;
-  pictureId?: string;
-  soldQuantity?: string;
-  avalableQuantity?: string;
-  creatorId?:string ;
-  creationDate?: Date;
-  lastModifierId?: Date;
-  lastModifiedDate?: Date;
-}
+import { Brand } from "./brand";
+import { Category } from "./category";
 
-export interface ProductDto {
+export class Product {
   id?: any;
   reference?: string;
   description?: string;
-  tags?: string;
-  price?: string;
-  pictureId?: string;
-  soldQuantity?: string;
-  avalableQuantity?: string;
-  creatorId?:string ;
+  image?: string;
+  price?: any;
+  soldQuantity?: any;
+  avalableQuantity?: any;
+  creatorId?:any ;
   creationDate?: Date;
-  lastModifierId?: Date;
+  lastModifierId?: any;
   lastModifiedDate?: Date;
+
+  brands?:Brand[];
+  categories?:Category[];
 }
