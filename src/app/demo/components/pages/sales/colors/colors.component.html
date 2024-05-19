@@ -1,0 +1,140 @@
+<div class="grid ">
+  <div class="col-12">
+    <div class="card px-6 py-6">
+      <p-toast></p-toast>
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+          <div class="my-2">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+              (click)="openNew()"></button>
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+              (click)="deleteSelectedColors(selectedColors)"
+              [disabled]="!selectedColors || !selectedColors.length"></button>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+          <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
+            class="mr-2 inline-block"></p-fileUpload>
+          <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
+            (click)="dt.exportCSV()"></button>
+        </ng-template>
+      </p-toolbar>
+
+      <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="4"
+        [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[5, 10, 20]" [(selection)]="selectedColors" selectionMode="multiple" [rowHover]="true"
+        dataKey="id">
+        <ng-template pTemplate="caption">
+          <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 class="m-0">Manage Colors</h5>
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="searchColors($event.target.value)" placeholder="Search..."
+                class="w-full sm:w-auto" />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="name">
+              <span>Name</span>
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="description">
+              <span>Color Code</span>
+              <p-sortIcon field="colorCode"></p-sortIcon>
+            </th>
+            <th pSortableColumn="edit"><span></span></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-color>
+          <tr class="ng-star-inserted">
+            <td>
+              <p-tableCheckbox [value]="color"></p-tableCheckbox>
+            </td>
+            <td>
+              <div class="flex align-items-center">
+                <span class="border-circle mr-2 bg-red-500" style="width: 7px; height: 7px"></span>
+                {{ color.name }}
+              </div>
+            </td>
+            <td>
+              {{ color.colorCode }}
+            </td>
+            <td>
+              <div class="flex">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                  (click)="editColor(color)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                  (click)="deleteColor(color)"></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">
+            In total there are {{ colors ? colors.length : 0 }} colors.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+
+
+    <p-dialog [(visible)]="colorDialog" [style]="{width: '450px'}" header="Color Details" [modal]="true"
+      class="p-fluid">
+      <ng-template pTemplate="content">
+        <form [formGroup]="colorForm">
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" pInputText id="name" formControlName="name" [(ngModel)]="color.name" required autofocus
+              [ngClass]="{'ng-invalid ng-dirty' : submitted && !color.name}" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !color.name">Name is required.</small>
+          </div>
+          <div class="field">
+            <label for="colorCode">Color Code</label>
+            <input type="text" pInputText id="colorCode" formControlName="colorCode" [(ngModel)]="color.colorCode" required autofocus
+              [ngClass]="{'ng-invalid ng-dirty' : submitted && !color.colorCode}" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !color.colorCode">Name is required.</small>
+          </div>
+        </form>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"
+          [disabled]="colorForm.invalid || colorForm.pristine"></button>
+      </ng-template>
+    </p-dialog>
+
+    <p-dialog [(visible)]="deleteColorDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+      <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="color">Are you sure you want to delete this color <b>{{color.name}}</b>?</span>
+      </div>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+          (click)="deleteColorDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+      </ng-template>
+    </p-dialog>
+
+    <p-dialog [(visible)]="deleteColorsDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+      <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>Are you sure you want to delete selected colors?</span>
+      </div>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+          (click)="deleteColorsDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+          (click)="confirmDeleteSelected()"></button>
+      </ng-template>
+    </p-dialog>
+
+  </div>
+</div>
