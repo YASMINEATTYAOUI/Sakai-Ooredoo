@@ -23,7 +23,6 @@
             </th>
 
             <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
-
             <th pSortableColumn="fullName">Full Name <p-sortIcon field="fullName"></p-sortIcon></th>
             <th pSortableColumn="email">Email<p-sortIcon field="email"></p-sortIcon></th>
             <th pSortableColumn="phoneNumber">Phone Number <p-sortIcon field="phoneNumber"></p-sortIcon>
@@ -55,10 +54,6 @@
             <td style="width:14%; min-width:10rem;">
               <span class="p-column-title">Phone Number</span>
               {{client.phoneNumber}}
-            </td>
-            <td style="width:14%; min-width: 10rem;">
-              <span class="p-column-title">Role</span>
-              {{client.roles.name}}
             </td>
             <td style="width:14%; min-width: 10rem;">
               <span class="p-column-title">Account Status</span>
@@ -122,15 +117,6 @@
               required.</small>
           </div>
 
-
-          <div class="field">
-            <label for="roles">Assign Role</label>
-            <p-dropdown [options]="roles" [(ngModel)]="selectedRoleId" optionLabel="name" placeholder="Select Role"
-              (onChange)="roleSelectedEvent($event)">
-            </p-dropdown>
-          </div>
-
-
           <div class="field">
             <label class="mb-3">Account Status</label>
             <div class="formgrid grid">
@@ -144,7 +130,6 @@
                   [(ngModel)]="client.category"></p-radioButton>
                 <label for="category2">Blocked</label>
               </div>
-
 
             </div>
           </div>
