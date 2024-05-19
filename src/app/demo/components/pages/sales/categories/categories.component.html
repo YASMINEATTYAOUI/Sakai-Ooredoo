@@ -21,12 +21,12 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [rows]="10" [paginator]="true" 
+            <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [rows]="10" [paginator]="true"
                 [rowsPerPageOptions]="[5,10,20]" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [(selection)]="selectedCategories" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
-                    
+
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Categories Management</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
@@ -50,20 +50,10 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-category>
                     <tr class="ng-star-inserted">
-                        <td>
-                            <p-tableCheckbox [value]="category"></p-tableCheckbox>
-                        </td>
-                        <td >
-                            {{category.code || category.id}}
-                        </td>
-                        <td >
-                            
-                            {{category.name}}
-                        </td>
-                        <td >
-                            
-                            {{category.products}}
-                        </td>
+                        <td><p-tableCheckbox [value]="category"></p-tableCheckbox></td>
+                        <td>{{category.code || category.id}}</td>
+                        <td>{{category.name}}</td>
+                        <td>{{category.products}}</td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
@@ -86,27 +76,28 @@
         <p-dialog [(visible)]="categoryDialog" [style]="{width: '450px'}" header="Category Details" [modal]="true"
             class="p-fluid">
             <ng-template pTemplate="content">
-                <form >
+                <form>
                     <div class="field">
                         <label for="name">Name</label>
-                        <input type="text" pInputText id="name" name="name" [(ngModel)]="category.name" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
+                        <input type="text" pInputText id="name" name="name" [(ngModel)]="category.name" required
+                            autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !category.name">Name is required.</small>
                     </div>
                     <div class="field">
                         <label for="name">Creation Date</label>
-                        <input type="date" pInputText id="name" name="creationDate" [(ngModel)]="category.creationDate" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
+                        <input type="date" pInputText id="name" name="creationDate" [(ngModel)]="category.creationDate"
+                            required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !category.name">Name is required.</small>
                     </div>
                     <div class="field">
                         <label for="name">Last</label>
-                        <input type="date" pInputText id="last" name="lastModifiedDate" [(ngModel)]="category.lastModifiedDate" required autofocus
+                        <input type="date" pInputText id="last" name="lastModifiedDate"
+                            [(ngModel)]="category.lastModifiedDate" required autofocus
                             [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !category.name">Name is required.</small>
                     </div>
 
-                    
+
                 </form>
             </ng-template>
 
@@ -144,4 +135,3 @@
         </p-dialog>
     </div>
 </div>
-
