@@ -76,13 +76,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.filteredData = this.orders.filter(item => item.numberOrder.toString().startsWith(event.toLowerCase()));
   }
 
-  BlockOrder(order: Order): void {
-    if (order) {
-      this.order = order;
-      this.orderId = order.id;
-      this.deleteOrderDialog = true;
-    }
-  }
+  
 
   BlockSelectedOrders(orders: Order[]): void {
     if (orders && orders.length > 0) {
@@ -92,43 +86,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
   toOrder(order: Order) {
     this.router.navigate(['dashboard/pages/account-management/orders', order.id]);
-  }
-
-
-  confirmBlockSelected() {
-    if (this.selectedOrders && this.selectedOrders.length > 0) {
-      const orderIds = this.selectedOrders.map(order => order.id);
-
-      this.orderService.deleteOrders(orderIds).subscribe({
-        next: () => {
-          this.deleteOrdersDialog = false;
-          this.selectedOrders = [];
-          console.log('Orders deleted successfully');
-          this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The orders have been deleted.' });
-        },
-        error: (e) => {
-          console.error('Error deleting orders', e);
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' });
-        }
-      });
-    } else {
-      console.warn('No orders selected for deletion');
-
-    }
-  }
-
-  confirmBlock() {
-    this.orderService.deleteOrder(this.orderId).subscribe({
-      next: () => {
-        this.deleteOrderDialog = false;
-        this.order = {};
-        console.log('Order deleted successfully');
-        this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The order has been deleted.' });
-        this.getOrders();
-      },
-      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }),
-
-    })
   }
 
   hideDialog() {

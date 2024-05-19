@@ -71,7 +71,7 @@ export class ColorsComponent implements OnInit, OnDestroy {
       this.createColor(data);
     }
     this.colorDialog = false;
-    this.getColors();
+    this.colors.push(this.color);
   }
 
   private createColor(color: Color): void {
@@ -80,7 +80,7 @@ export class ColorsComponent implements OnInit, OnDestroy {
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
     });
-    this.colors.push(this.color);
+
   }
 
   private updateColor(color: Color): void {

@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
         { path: 'discount', loadChildren: () => import('./discount/discount.module').then(m=> m.DiscountModule)},
         { path: 'sales', loadChildren: () => import('./sales/sales.module').then(m => m.SalesModule) },
         { path: 'order', loadChildren: () => import('./orders/order.module').then(m=> m.OrderModule)},
+        { path: 'clients', loadChildren: () => import('./clients/clients.module').then(m=> m.ClientsModule)},
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
         { path: '**', redirectTo: '/notfound' }
