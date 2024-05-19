@@ -43,7 +43,7 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Discount',
                 items: [
-                    { label: 'Discount', icon: 'pi pi-fw pi-percentage', routerLink: ['/dashboard/pages/discount']  },
+                    { label: 'Discount', icon: 'pi pi-fw pi-percentage', routerLink: ['/dashboard/pages/discount']  }
                     ]
             },
             {
