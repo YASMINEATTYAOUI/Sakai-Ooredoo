@@ -50,6 +50,7 @@ export class RolesComponent implements OnInit, OnDestroy {
       id: [''],
       name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
       description: [''],
+      active:[''],
     });
 
   }
@@ -60,7 +61,24 @@ export class RolesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
-  
+
+  private createRole(role: Role): void {
+    this.roleService.createRole(role).subscribe({
+      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Created', life: 2000 }),
+      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
+      complete: () => { }
+    })
+  }
+
+  private updateRole(role: Role): void {
+    if (this.roleToUpdate) {
+      this.roleService.updateRole(role).subscribe({
+        next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 2000 }),
+        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+        complete: () => { }
+      });
+    }
+  }
 
   save(): void {
     this.submitted = true;
@@ -71,34 +89,14 @@ export class RolesComponent implements OnInit, OnDestroy {
       this.createRole(data);
     }
     this.roleDialog = false;
-    this.router.navigate(['dashboard/pages/account-management/roles']);
-    this.getRoles();
-  }
-
-  private createRole(roleDto: Role): void {
-    this.roleService.createRole(roleDto).subscribe({
-      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Created', life: 2000 }),
-      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
-      complete: () => { }
-    })
     this.roles.push(this.role);
-  }
-
-  private updateRole(roleDto: Role): void {
-    if (this.roleToUpdate) {
-      this.roleService.updateRole(roleDto).subscribe({
-        next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 2000 }),
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => { } // No need to emit here as it's handled in the 'next' and 'error' callbacks
-      });
-    }
   }
 
   getRoles() {
     this.tableLoading = true;
     this.roleService.getRoles().subscribe({
       next: (response: any) => {
-        this.roles = response; // Extract the 'content' array from the response
+        this.roles = response; 
         this.totalElements = response.totalElements;
         this.filteredData = this.roles;
 
@@ -118,21 +116,6 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.filteredData = this.roles.filter(item => item.name.toLowerCase().startsWith(event.toLowerCase()));
   }
 
-  deleteRole(role: Role): void {
-    if (role) {
-      this.role = role;
-      this.roleId = role.id;
-      this.deleteRoleDialog = true;
-    }
-  }
-
-  deleteSelectedRoles(roles: Role[]): void {
-    if (roles && roles.length > 0) {
-      this.selectedRoles = roles;
-      this.deleteRolesDialog = true;
-    }
-  }
-  //navigation to details
   toRole(role: Role) {
     this.router.navigate(['dashboard/products/', role.id]);
   }
@@ -143,46 +126,17 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.roleDialog = true;
   }
 
-  openDialog(role?: Role) {
+  openDialog(role: Role) {
     this.roleToUpdate = role;
+    this.roleService.getRoleById(role.id);
+    
     this.roleDialog = true;
-  }
-
-  confirmDeleteSelected() {
-    if (this.selectedRoles && this.selectedRoles.length > 0) {
-      const roleIds = this.selectedRoles.map(role => role.id);
-
-      this.roleService.deleteRoles(roleIds).subscribe({
-        next: () => {
-          this.deleteRolesDialog = false;
-          this.selectedRoles = []; // Clear the roles to delete
-          console.log('Roles deleted successfully');
-          this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The roles have been deleted.' });
-          this.getRoles();
-        },
-        error: (e) => {
-          console.error('Error deleting roles', e);
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' });
-        }
-      });
-    } else {
-      console.warn('No roles selected for deletion');
-      // Show a message to inform the user that no roles are selected for deletion
-    }
-  }
-
-  confirmDelete() {
-    this.roleService.deleteRole(this.roleId).subscribe({
-      next: () => {
-        this.deleteRoleDialog = false;
-        this.role = {};
-        console.log('Role deleted successfully');
-        this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The role has been deleted.' });
-        this.getRoles();
-      },
-      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }),
-
-    })
+    this.roleForm.patchValue({
+      id: role.id,
+      name: role.name,
+      description: role.description,
+      status: role.active
+    });
   }
 
   hideDialog() {
