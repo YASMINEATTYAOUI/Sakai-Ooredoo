@@ -69,16 +69,25 @@ export class RolesComponent implements OnInit, OnDestroy {
       complete: () => { }
     })
   }
-
   private updateRole(role: Role): void {
-    if (this.roleToUpdate) {
-      this.roleService.updateRole(role).subscribe({
-        next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 2000 }),
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => { }
-      });
+    if (role.id) {
+        console.log(role.id);
+        
+        // Ensure active is set to a valid boolean value
+        if (role.active === null || role.active === undefined) {
+            role.active = false; // Default to false if not set
+        }
+
+        this.roleService.updateRole(role.id, role).subscribe({
+            next: (response: any) => {
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 2000 });
+                this.getRoles(); // Refresh roles list after update
+            },
+            error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+            complete: () => { }
+        });
     }
-  }
+}
 
   save(): void {
     this.submitted = true;

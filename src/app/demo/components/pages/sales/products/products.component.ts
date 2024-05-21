@@ -36,6 +36,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   tableLoading: boolean = false;
   submitted: boolean = false;
   productId: any;
+  selectedFile: File;
+  imageUrl: string | ArrayBuffer;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -205,6 +207,18 @@ export class ProductsComponent implements OnInit, OnDestroy {
   hideDialog() {
     this.productDialog = false; 
     this.submitted = false;
+  }
+
+  onFileSelectedd(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedFile = file; // Update selectedFile with the selected file
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageUrl = reader.result;
+      };
+    }
   }
 
 }

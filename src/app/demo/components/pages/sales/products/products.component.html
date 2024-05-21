@@ -74,7 +74,7 @@
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-success mr-2"
-                                    (click)="updateProduct(product)"></button>
+                                    (click)="openDialog(product)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                                     (click)="deleteProduct(product)"></button>
                             </div>
@@ -135,7 +135,7 @@
                     <div class="field">
                         <label for="file">Product Picture</label>
                         <input id="file-upload" class="w-full" type="file" class="custom-file-input"
-                            (change)="onFileSelected($event)" accept="image/*">
+                            (change)="onFileSelected($event)" accept="image/*"><img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" class="uploaded-image" style="width: 100px; height: 100px; border-radius: 8px;">
                     </div>
                 </form>
             </ng-template>

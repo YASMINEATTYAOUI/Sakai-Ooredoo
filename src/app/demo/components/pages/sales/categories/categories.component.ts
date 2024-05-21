@@ -83,7 +83,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   save(): void {
     this.submitted = true;
     const data = this.categoryForm.value;
-    this.createCategory(this.category);
     if (this.categoryToUpdate) {
       this.updateCategory(data);
     } else {
@@ -143,6 +142,13 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   openDialog(category?: Category) {
     this.categoryToUpdate = category;
     this.categoryDialog = true;
+
+    this.categoryService.getCategoryById(category.id);
+    this.categoryForm.patchValue({
+      id: category.id,
+      name: category.name,
+    });
+
   }
 
   confirmDeleteSelected() {

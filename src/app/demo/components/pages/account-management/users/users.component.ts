@@ -143,7 +143,9 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   openDialog(user?: User) {
     this.userToUpdate = user;
+    this.userService.getUserById(user.id);
     this.userDialog = true;
+
   }
 
   confirmDeleteSelected() {

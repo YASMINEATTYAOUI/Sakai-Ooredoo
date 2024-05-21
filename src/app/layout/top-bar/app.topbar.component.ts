@@ -23,7 +23,7 @@ export class AppTopBarComponent {
         public layoutService: LayoutService,
         private authService: AuthenticationService
     ) { }
-
+/*
     onLogout(refreshToken: string): void {
         this.authService.logout(refreshToken).subscribe({
           next: () => {
@@ -36,4 +36,5 @@ export class AppTopBarComponent {
           }
         });
       }
+      */
 }

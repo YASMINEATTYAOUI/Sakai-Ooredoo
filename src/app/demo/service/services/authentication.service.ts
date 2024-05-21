@@ -1,12 +1,9 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-//import { decodeUsername, decodeExp } from '../../jwt/tokens';
-import { User } from '../../models/user';
-import { UserService } from './user.service';
-import { Role } from '../../models/role';
 
 @Injectable({
   providedIn: 'root'
@@ -14,100 +11,71 @@ import { Role } from '../../models/role';
 export class AuthenticationService {
 
   private baseUrl = environment.apiUrl + '/auth';
-  private user: User ;  
 
-  isAuth : boolean = false
-  email : string = ""
-  name : string = ""
-  token : string = ''
-  httpOptions = {
-    headers:new HttpHeaders({'content-type' : 'application/json'})
+  private readonly JWT_TOKEN = 'JWT_TOKEN';
+  private loggedUser?: string;
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private router = inject(Router);
+  private http = inject(HttpClient);
+
+  constructor() {}
+
+  login(user: { email: string; password: string }): Observable<any> {
+    return this.http
+      .post(`${this.baseUrl}/login`, user)
+      .pipe(
+        tap((tokens: any) =>
+          this.doLoginUser(user.email, JSON.stringify(tokens))
+        )
+      );
   }
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private userService: UserService,
-    //private processHTTPMsgService : ProcessHttpmsgService,
-    private activatedRoute : ActivatedRoute
-  ) {}
-
-  signIn(email : string, password : string) : Observable<{token : string, nom:string}>{
-    let user : User = {
-      email: email,
-      password: password,
-      roles: new Role
-    }
-    return this.http.post<{token:string, nom:string}>(this.baseUrl+"login", user, this.httpOptions)
+  private doLoginUser(email: string, token: any) {
+    this.loggedUser = email;
+    this.storeJwtToken(token);
+    this.isAuthenticatedSubject.next(true);
   }
 
-/*
+  private storeJwtToken(jwt: string) {
+    localStorage.setItem(this.JWT_TOKEN, jwt);
+  }
+
   logout() {
-    this.token = ''
-    this.isAuth = false
+    localStorage.removeItem(this.JWT_TOKEN);
+    this.isAuthenticatedSubject.next(false);
+    this.router.navigate(['/login']);
+  }
+
+  getCurrentAuthUser() {
+    return this.http.get(`${this.baseUrl}`);
+  }
+
+  isLoggedIn() {
+    return !!localStorage.getItem(this.JWT_TOKEN);
   }
 /*
-  /*
-  login(authData: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/auth`, authData, { observe: 'response' });
-  }
+  isTokenExpired() {
+    const tokens = localStorage.getItem(this.JWT_TOKEN);
+    if (!tokens) return true;
+    const token = JSON.parse(tokens).access_token;
+    const decoded = jwtDecode(token);
+    if (!decoded.exp) return true;
+    const expirationDate = decoded.exp * 1000;
+    const now = new Date().getTime();
 
-   setAuthToken(token: string): void {
-    localStorage.setItem("token", token);
-  }
-
-  getAuthToken(): string | null {
-    return localStorage.getItem("token");
+    return expirationDate < now;
   }
 */
-  /*
-  logout(): void {
-    localStorage.removeItem("token");
-    this.router.navigate(['/auth/login']);
+  refreshToken() {
+    let tokens: any = localStorage.getItem(this.JWT_TOKEN);
+    if (!tokens) return null ;
+    tokens = JSON.parse(tokens);
+    let refreshToken = tokens.refresh_token;
+    return this.http
+      .post<any>(`${this.baseUrl}/refresh-token`, {
+        refreshToken,
+      })
+      .pipe(tap((tokens: any) => this.storeJwtToken(JSON.stringify(tokens))));
   }
-  */
-
-  setUser(user: User) {
-    this.user = user;
-  }
-
-  getUser() {
-    return this.user;
-  }
-
-  getUserId() {
-    return this.user.id;
-  }
-
-/*
-  getUsername(){
-    return decodeUsername(localStorage.getItem("token"));
-  }
-
-  isLoggedIn(): boolean {
-    const token = this.getAuthToken();
-    if (!token) {
-      return false; // Token doesn't exist
-    }
-    const decodedToken = decodeExp(token);
-    if (!decodedToken) {
-      return false; // Token couldn't be decoded
-    }
-    const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
-    return currentTime < decodedToken;
-  }
-  */
- /*
-  requestPasswordReset(email: string): Observable<any> {
-    const body = { email };
-    return this.http.post<any>(`${this.baseUrl}/forget-pwd`, body);
-  }
-*/
-  logout(refreshToken: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/logout`, { refreshToken });
-    this.router.navigate(['/auth/login']);
-  }
-
-}
-
   
+}

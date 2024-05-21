@@ -63,6 +63,7 @@ export class ThemesComponent implements OnInit, OnDestroy {
       complete: () => { }
     });
     this.themes.push(this.theme);
+  
   }
 
   private updateTheme(theme: Theme): void {
@@ -83,7 +84,6 @@ export class ThemesComponent implements OnInit, OnDestroy {
   save(): void {
     this.submitted = true;
     const data = this.themeForm.value;
-    this.createTheme(this.theme);
     if (this.themeToUpdate) {
       this.updateTheme(data);
     } else {

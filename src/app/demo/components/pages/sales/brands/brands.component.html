@@ -7,17 +7,14 @@
           <div class="my-2">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
               (click)="openNew()"></button>
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-              (click)="deleteSelectedBrands(selectedBrands)"
-              [disabled]="!selectedBrands || !selectedBrands.length"></button>
+           
           </div>
         </ng-template>
 
         <ng-template pTemplate="right">
-          <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
-            class="mr-2 inline-block"></p-fileUpload>
-          <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
-            (click)="dt.exportCSV()"></button>
+          <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+              (click)="deleteSelectedBrands(selectedBrands)"
+              [disabled]="!selectedBrands || !selectedBrands.length"></button>
         </ng-template>
       </p-toolbar>
 
@@ -50,7 +47,7 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-brand>
-          <tr class="ng-star-inserted" (click)="viewRoleDetails(brand.id)">
+          <tr class="ng-star-inserted">
             <td>
               <p-tableCheckbox [value]="brand"></p-tableCheckbox>
             </td>
@@ -67,7 +64,7 @@
             <td>
               <div class="flex">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-                  (click)="save()"></button>
+                  (click)="openDialog(brand)"></button>
                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                   (click)="deleteBrand(brand)"></button>
               </div>

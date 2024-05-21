@@ -84,14 +84,14 @@
         <form [formGroup]="roleForm">
           <div class="field">
             <label for="name">Name</label>
-            <input type="text" pInputText id="name" formControlName="name" [(ngModel)]="role.name" required autofocus
-              [ngClass]="{'ng-invalid ng-dirty' : submitted && !role.name}" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !role.name">Name is required.</small>
+            <input type="text" pInputText id="name" formControlName="name"
+              />
+            <small class="ng-dirty ng-invalid">Name is required.</small>
           </div>
 
           <div class="field">
             <label for="description">Description</label>
-            <textarea id="description" formControlName="description" pInputTextarea [(ngModel)]="role.description"
+            <textarea id="description" formControlName="description" pInputTextarea
               required rows="3" cols="20"></textarea>
           </div>
         </form>

@@ -167,6 +167,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
 
   openDialog(_package?: Package) {
     this.packageToUpdate = _package;
+    this.packageService.getPackageById(_package.id);
     this.packageDialog = true;
   }
 

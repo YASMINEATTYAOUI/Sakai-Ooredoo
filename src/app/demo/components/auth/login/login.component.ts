@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import axios from 'axios';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 
 @Component({
     selector: 'app-login',
@@ -21,7 +22,7 @@ import axios from 'axios';
 })
  
 export class LoginComponent implements OnInit {
-
+  
     valCheck: string[] = ['remember'];
 
     password!: string;
@@ -62,3 +63,30 @@ export class LoginComponent implements OnInit {
   }
 }
 
+/*
+constructor(
+  public layoutService: LayoutService,
+  
+) { }
+
+email = '';
+  password = '';
+  authService = inject(AuthenticationService);
+  router = inject(Router);
+
+  login(event: Event) {
+    event.preventDefault();
+    console.log(`Login: ${this.email} / ${this.password}`);
+    this.authService
+      .login({
+        email: this.email,
+        password: this.password,
+      })
+      .subscribe(() => {
+        alert('Login success!');
+        this.router.navigate(['/']);
+      });
+  }
+}
+
+*/
