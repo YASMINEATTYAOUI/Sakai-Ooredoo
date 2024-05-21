@@ -1,11 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
-import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import axios from 'axios';
-import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 
 @Component({
     selector: 'app-login',
@@ -25,11 +23,13 @@ export class LoginComponent implements OnInit {
   
     valCheck: string[] = ['remember'];
 
+    username!: string;
     password!: string;
 
     constructor(
         public layoutService: LayoutService,
-        private router: Router
+        private router: Router,
+        private messageService : MessageService
     ) { }
 
   ngOnInit(): void {
@@ -43,50 +43,20 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  login(loginForm: NgForm) {
-    console.log(loginForm.value);
-    console.log('Before request');
+  login() {
     axios
-      .post(`http://localhost:8080/api/auth/login`, loginForm.value)
+      .post("http://localhost:8089/login?username=" + this.username + "&password=" + this.password, null)
       .then((res) => {
         console.log(res.data);
-        // sauvegarder accessToken , user
-        // localStorage.setItem('user', JSON.stringify(res.data.user));
-        localStorage.setItem('token', res.data.accessToken);
+        localStorage.setItem('token', res.headers.access_token);
+        console.log(res.headers.access_token)
         // redirection vers dashboard
         this.router.navigate(['/dashboard']);
       })
       .catch((err) => {
-        console.log('Erreur');
-      });
-    console.log('After response');
-  }
-}
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err, life: 3000 });
 
-/*
-constructor(
-  public layoutService: LayoutService,
-  
-) { }
-
-email = '';
-  password = '';
-  authService = inject(AuthenticationService);
-  router = inject(Router);
-
-  login(event: Event) {
-    event.preventDefault();
-    console.log(`Login: ${this.email} / ${this.password}`);
-    this.authService
-      .login({
-        email: this.email,
-        password: this.password,
-      })
-      .subscribe(() => {
-        alert('Login success!');
-        this.router.navigate(['/']);
       });
   }
 }
 
-*/

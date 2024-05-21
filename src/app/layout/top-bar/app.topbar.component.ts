@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "../service/app.layout.service";
 import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-topbar',
@@ -20,9 +21,15 @@ export class AppTopBarComponent {
 
 
     constructor(
+      private router : Router,
         public layoutService: LayoutService,
         private authService: AuthenticationService
     ) { }
+
+    logout(){
+      localStorage.removeItem("token");
+      this.router.navigate(['/auth/login']);
+    }
 /*
     onLogout(refreshToken: string): void {
         this.authService.logout(refreshToken).subscribe({
