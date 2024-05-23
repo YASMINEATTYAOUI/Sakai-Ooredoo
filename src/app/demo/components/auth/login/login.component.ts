@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     axios
-      .post("http://localhost:8089/api/auth/login?username=" + this.username + "&password=" + this.password, null)
+      .post("http://localhost:8089/login?username=" + this.username + "&password=" + this.password, null)
       .then((res) => {
         console.log(res.data);
         localStorage.setItem('token', res.headers.access_token);
@@ -55,8 +55,7 @@ export class LoginComponent implements OnInit {
       })
       .catch((err) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: err, life: 3000 });
-        this.router.navigate(['/auth/unauthorized']);
+
       });
   }
 }
-
