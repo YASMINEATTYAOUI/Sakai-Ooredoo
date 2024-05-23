@@ -25,7 +25,6 @@ import { MessagesModule } from 'primeng/messages';
 import { PaginatorModule } from 'primeng/paginator';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
-import { BrandDetailsComponent } from './brand-details/brand-details.component';
 
 @NgModule({
   imports: [
@@ -60,7 +59,6 @@ import { BrandDetailsComponent } from './brand-details/brand-details.component';
   ],
   declarations: [
     BrandsComponent,
-    BrandDetailsComponent
   ]
 })
 export class BrandsModule { }

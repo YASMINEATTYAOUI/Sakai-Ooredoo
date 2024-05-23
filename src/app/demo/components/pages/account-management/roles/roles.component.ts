@@ -38,7 +38,7 @@ export class RolesComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
   
   roleId: any;
-  showRoleDetailsPopup: boolean;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -125,10 +125,6 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.filteredData = this.roles.filter(item => item.name.toLowerCase().startsWith(event.toLowerCase()));
   }
 
-  toRole(role: Role) {
-    this.router.navigate(['dashboard/products/', role.id]);
-  }
-
   openNew() {
     this.role = {};
     this.submitted = false;
@@ -152,7 +148,5 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.roleDialog = false;
     this.submitted = false;
   }
-
-  
 
 }

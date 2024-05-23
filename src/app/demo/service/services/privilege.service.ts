@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { PrivilegeDto } from '../../models/privilege';
+import { Privilege } from '../../models/privilege';
 import { PageEvent } from '../../utils/page-event';
 
 @Injectable({
@@ -14,12 +14,12 @@ private baseUrl = environment.apiUrl + '/privileges';
 
   constructor(private http: HttpClient) {}
 
-  createPrivilege(privilegeDto: PrivilegeDto): Observable<void> {
-    return this.http.post<void>(this.baseUrl, privilegeDto);
+  createPrivilege(privilege: Privilege): Observable<void> {
+    return this.http.post<void>(this.baseUrl, privilege);
   }
 
-  updatePrivilege(privilegeDto: PrivilegeDto): Observable<PrivilegeDto> {
-    return this.http.put<PrivilegeDto>(this.baseUrl, privilegeDto);
+  updatePrivilege(privilege: Privilege): Observable<Privilege> {
+    return this.http.put<Privilege>(this.baseUrl, privilege);
   }
 
   getPrivileges(): Observable<any> {
@@ -36,8 +36,8 @@ private baseUrl = environment.apiUrl + '/privileges';
     return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
   }
 
-  getPrivilegeById(id: string): Observable<PrivilegeDto> {
-    return this.http.get<PrivilegeDto>(`${this.baseUrl}/${id}`);
+  getPrivilegeById(id: string): Observable<Privilege> {
+    return this.http.get<Privilege>(`${this.baseUrl}/${id}`);
   }
 
   deletePrivilege(id: string): Observable<void> {
@@ -54,7 +54,7 @@ private baseUrl = environment.apiUrl + '/privileges';
       .set('name', name)
       .set('page', pageNumber.toString())
       .set('size', rows.toString());
-    return this.http.get<PrivilegeDto[]>(`${this.baseUrl}/search`, { params });
+    return this.http.get<Privilege[]>(`${this.baseUrl}/search`, { params });
   }
   countPrivileges(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}/count`);

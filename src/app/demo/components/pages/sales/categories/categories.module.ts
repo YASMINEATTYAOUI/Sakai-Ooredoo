@@ -25,7 +25,6 @@ import { MessagesModule } from 'primeng/messages';
 import { PaginatorModule } from 'primeng/paginator';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
-import { CategoryDetailsComponent } from './category-details/category-details.component';
 
 @NgModule({
   imports: [
@@ -59,7 +58,6 @@ import { CategoryDetailsComponent } from './category-details/category-details.co
   ],
   declarations: [
     CategoriesComponent,
-    CategoryDetailsComponent
   ]
 })
 export class CategoriesModule { }

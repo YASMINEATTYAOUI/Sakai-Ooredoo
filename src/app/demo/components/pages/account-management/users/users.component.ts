@@ -39,11 +39,11 @@ export class UsersComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private roleService: RoleService,
     private messageService: MessageService,
-    private router: Router) {}
+    private router: Router) { }
 
   ngOnInit() {
     this.getUsers();
-    this.loadRoles(); 
+    this.loadRoles();
   }
   ngOnDestroy(): void {
 
@@ -70,7 +70,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       next: (response) => {
         this.users.push(response);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 2000 })
-    },
+      },
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
     })
@@ -129,12 +129,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.router.navigate(['dashboard/pages/account-management/users', user.id]);
   }
 
-  roleSelectedEvent(event: any){
-    this.user.roles =event.value;
+  roleSelectedEvent(event: any) {
+    this.user.roles = event.value;
   }
 
   openNew() {
-   this.user = new User();
+    this.user = new User();
     this.submitted = false;
     this.userDialog = true;
 
@@ -143,9 +143,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   openDialog(user?: User) {
     this.userToUpdate = user;
-    this.userService.getUserById(user.id);
     this.userDialog = true;
-
   }
 
   confirmDeleteSelected() {
@@ -181,6 +179,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           email: '',
           phoneNumber: 0,
           password: '',
+          status: null,
           creationDate: null,
           lastModifiedDate: null,
           roles: [],

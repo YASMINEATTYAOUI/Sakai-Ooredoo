@@ -42,9 +42,14 @@
             <th pSortableColumn="name">Reference <p-sortIcon field="Reference"></p-sortIcon></th>
             <th>Image</th>
             <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-            <th pSortableColumn="brand">Brand <p-sortIcon field="brand"></p-sortIcon></th>
-            <th pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
+            <th pSortableColumn="product">Products <p-sortIcon field="product"></p-sortIcon></th>
             <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
+            </th>
+            <th  pSortableColumn="creationDate">
+              <span>Creation Date</span>
+            </th>
+            <th pSortableColumn="lastModifiedDate">
+              <span>Last Modified Date</span>
             </th>
             <th pSortableColumn="edit"><span></span></th>
           </tr>
@@ -60,10 +65,15 @@
               <img class=" w-auto" [src]="_package.image" style="width: 50px; height: 25px;">
             </td>
             <td>{{_package.price | currency:" " }}TND</td>
-            <td>{{_package.brand}}</td>
-            <td><p-rating [ngModel]="_package.rating" [readonly]="true" [cancel]="false"></p-rating> </td>
+            <td>{{_package.product}}</td>
             <td><span
                 [class]="'product-badge status-' + (_package.inventoryStatus ? _package.inventoryStatus.toLowerCase() : '')">{{_package.inventoryStatus}}</span>
+            </td>
+            <td>
+              {{ _package.creationDate }}
+            </td>
+            <td>
+              {{ _package.lastModifiedDate }}
             </td>
             <td>
               <div class="flex">

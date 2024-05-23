@@ -5,8 +5,7 @@ export class Client {
   email?: string;
   phoneNumber?: number;
   password?: string;
-  creationDate?: Date;
-  lastModifiedDate?: Date;
+
 }
 
 

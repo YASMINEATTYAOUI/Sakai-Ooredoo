@@ -7,14 +7,14 @@
                     <div class="my-2">
                         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
                             (click)="openNew()"></button>
-                       
+
                     </div>
                 </ng-template>
 
                 <ng-template pTemplate="right">
                     <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-                            (click)="deleteSelectedCategories(selectedCategories)"
-                            [disabled]="!selectedCategories || !selectedCategories.length"></button>
+                        (click)="deleteSelectedCategories(selectedCategories)"
+                        [disabled]="!selectedCategories || !selectedCategories.length"></button>
                 </ng-template>
             </p-toolbar>
 
@@ -40,8 +40,8 @@
                         </th>
                         <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
                         <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-                        <th pSortableColumn="inventoryStatus">Products <p-sortIcon field="inventoryStatus"></p-sortIcon>
-                        </th>
+                        <th pSortableColumn="creationDate"><span>Creation Date</span></th>
+                        <th pSortableColumn="lastModifiedDate"><span>Last Modified Date</span></th>
                         <th pSortableColumn="edit"><span></span></th>
                     </tr>
                 </ng-template>
@@ -50,7 +50,8 @@
                         <td><p-tableCheckbox [value]="category"></p-tableCheckbox></td>
                         <td>{{category.code || category.id}}</td>
                         <td>{{category.name}}</td>
-                        <td>{{category.products}}</td>
+                        <td>{{ category.creationDate }}</td>
+                        <td>{{ category.lastModifiedDate }}</td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
@@ -73,27 +74,12 @@
         <p-dialog [(visible)]="categoryDialog" [style]="{width: '450px'}" header="Category Details" [modal]="true"
             class="p-fluid">
             <ng-template pTemplate="content">
-                <form>
+                <form [formGroup]="categoryForm">
                     <div class="field">
                         <label for="name">Name</label>
-                        <input type="text" pInputText id="name" name="name" [(ngModel)]="category.name" required
-                            autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !category.name">Name is required.</small>
+                        <input type="text" pInputText id="name" name="name" formControlName="name" />
+                        <small class="ng-dirty ng-invalid">Name is required.</small>
                     </div>
-                    <div class="field">
-                        <label for="name">Creation Date</label>
-                        <input type="date" pInputText id="name" name="creationDate" [(ngModel)]="category.creationDate"
-                            required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !category.name">Name is required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="name">Last</label>
-                        <input type="date" pInputText id="last" name="lastModifiedDate"
-                            [(ngModel)]="category.lastModifiedDate" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !category.name}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !category.name">Name is required.</small>
-                    </div>
-
 
                 </form>
             </ng-template>

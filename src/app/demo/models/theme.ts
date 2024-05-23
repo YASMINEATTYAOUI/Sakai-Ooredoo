@@ -1,8 +1,7 @@
 export class Theme {
   id?: any;
   name?: string;
-  creatorId?:string ;
+  caracteristics?:string;
   creationDate?: Date;
-  lastModifierId?: Date;
   lastModifiedDate?: Date;
 }

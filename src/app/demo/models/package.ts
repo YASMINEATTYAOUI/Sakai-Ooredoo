@@ -10,9 +10,7 @@ export class Package {
   price?: any;
   soldQuantity?:any;
   availableQuantity?:any;
-  creatorId?:string ;
   creationDate?: Date;
-  lastModifierId?: Date;
   lastModifiedDate?: Date;
   
   brands?:Brand[];

@@ -3,8 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Brand } from 'src/app/demo/models/brand';
+import { Category } from 'src/app/demo/models/category';
 import { Product } from 'src/app/demo/models/product';
 import { BrandService } from 'src/app/demo/service/services/brand.service';
+import { CategoryService } from 'src/app/demo/service/services/category.service';
 import { ProductService } from 'src/app/demo/service/services/product.service';
 
 @Component({
@@ -19,9 +21,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
   filteredData: Product[]; 
   name: any;
   file: File;
-  product: Product; 
+  product: Product;
+
   selectedBrandId: Brand;
   brands: any[] = [];
+
+  selectedCategoryId: Category;
+  categories: any[] = [];
 
   productForm: FormGroup; 
 
@@ -43,6 +49,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private productService: ProductService, 
     private brandService: BrandService,
+    private categoryService : CategoryService,
     private messageService: MessageService,
     private router: Router) {
     this.productForm = this.formBuilder.group({
@@ -58,6 +65,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getProducts(); 
     this.loadBrands();
+    this.loadCategories();
   }
 
   ngOnDestroy() {
@@ -70,7 +78,17 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   brandSelectedEvent(event: any) {
-    this.product.brands = event.value;
+    this.product.brand = event.value;
+  }
+
+  loadCategories() {
+    this.categoryService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    });
+  }
+
+  categorySelectedEvent(event: any) {
+    this.product.category = event.value;
   }
 
   save(): void {

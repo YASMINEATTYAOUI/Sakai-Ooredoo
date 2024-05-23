@@ -45,7 +45,6 @@
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
                         <th pSortableColumn="brand">Brand <p-sortIcon field="brand"></p-sortIcon></th>
-                        <th pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
                         <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
                         </th>
                         <th pSortableColumn="edit"><span></span></th>
@@ -62,10 +61,9 @@
                             <img class="w-auto" [src]="product.image" style="width: 50px; height: 25px;">
                         </td>
                         <td>{{ product.price | currency:" " }}TND</td>
-                        <td>{{ product.category }}</td>
+                        <td>{{ product.category}}</td>
 
-                        <td>{{ product.brand }}</td>
-                        <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating></td>
+                        <td>{{ product.brand}}</td>
                         <td><span
                                 [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{
                                 product.inventoryStatus }}</span>
@@ -108,10 +106,17 @@
                             cols="20"></textarea>
                     </div>
 
-                    <div class="field">
+                    <div class="field ">
                         <label for="brands">Brand</label>
                         <p-dropdown [options]="brands" [(ngModel)]="selectedBrandId" optionLabel="name"
                             placeholder="Select Brand" (onChange)="brandSelectedEvent($event)">
+                        </p-dropdown>
+                    </div>
+
+                    <div class="field">
+                        <label for="categories">Category</label>
+                        <p-dropdown [options]="categories" [(ngModel)]="selectedCategoryId" optionLabel="name"
+                            placeholder="Select Category" (onChange)="categorySelectedEvent($event)">
                         </p-dropdown>
                     </div>
 
@@ -135,7 +140,9 @@
                     <div class="field">
                         <label for="file">Product Picture</label>
                         <input id="file-upload" class="w-full" type="file" class="custom-file-input"
-                            (change)="onFileSelected($event)" accept="image/*"><img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" class="uploaded-image" style="width: 100px; height: 100px; border-radius: 8px;">
+                            (change)="onFileSelected($event)" accept="image/*"><img *ngIf="imageUrl" [src]="imageUrl"
+                            alt="Uploaded Image" class="uploaded-image"
+                            style="width: 100px; height: 100px; border-radius: 8px;">
                     </div>
                 </form>
             </ng-template>

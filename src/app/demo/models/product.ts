@@ -9,11 +9,9 @@ export class Product {
   price?: any;
   soldQuantity?: any;
   avalableQuantity?: any;
-  creatorId?:any ;
   creationDate?: Date;
-  lastModifierId?: any;
   lastModifiedDate?: Date;
 
-  brands?:Brand[];
-  categories?:Category[];
+  brand?:Brand;
+  category?:Category;
 }
