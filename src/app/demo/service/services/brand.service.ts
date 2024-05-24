@@ -24,7 +24,7 @@ export class BrandService {
     formData.append('file', file, file.name);
     return this.http.post<Brand>(`${this.baseUrl}`, formData);
   }
-
+/*
   updateBrand(name: string, description: string, file: File): Observable<Brand> {
     const formData = new FormData();
     formData.append('name', name);
@@ -32,6 +32,15 @@ export class BrandService {
     formData.append('file', file, file.name);
     return this.http.put<Brand>(`${this.baseUrl}`, formData);
   }
+  */
+ 
+  updateBrand(brandId: string, name: string, description: string, file: File): Observable<Brand> {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('file', file, file.name);
+    return this.http.put<Brand>(`${this.baseUrl}/${brandId}`, formData);
+}
 
   getBrands(): Observable<Brand[]> {
     return this.http.get<Brand[]>(`${this.baseUrl}/sorted`).pipe(

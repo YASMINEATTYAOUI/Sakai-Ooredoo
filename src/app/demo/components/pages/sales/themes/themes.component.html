@@ -37,7 +37,13 @@
           <tr>
             <th style="width: 3rem"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
             <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-            <th pSortableColumn="category">Categoriy <p-sortIcon field="category"></p-sortIcon>
+            <th pSortableColumn="characteristic">Caracteristics <p-sortIcon field="characteristic"></p-sortIcon>
+            </th>
+            <th  pSortableColumn="creationDate">
+              <span>Creation Date</span>
+            </th>
+            <th pSortableColumn="lastModifiedDate">
+              <span>Last Modified Date</span>
             </th>
             <th pSortableColumn="edit"><span></span></th>
           </tr>
@@ -48,7 +54,13 @@
               <p-tableCheckbox [value]="theme"></p-tableCheckbox>
             </td>
             <td>{{ theme.name }}</td>
-            <td>{{ theme.category }}</td>
+            <td>{{ theme.characteristic }}</td>
+            <td>
+              {{ theme.creationDate }}
+            </td>
+            <td>
+              {{ theme.lastModifiedDate }}
+            </td>
             <td>
               <div class="flex">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
@@ -73,15 +85,20 @@
               <p-dialog [(visible)]="themeDialog" [style]="{width: '450px'}" header="Theme Details" [modal]="true"
                         class="p-fluid">
                   <ng-template pTemplate="content">
-                      <form>
-                          <div class="field">
-                              <label for="name">Name</label>
-                              <input type="text" pInputText id="name" name="name" [(ngModel)]="theme.name" required
-                                     autofocus
-                                     [ngClass]="{'ng-invalid ng-dirty' : submitted && !theme.name}" />
-                              <small class="ng-dirty ng-invalid" *ngIf="submitted && !theme.name">Name is required.</small>
-                          </div>
-                      </form>
+                    <form [formGroup]="themeForm">
+                      <div class="field">
+                        <label for="name">Name</label>
+                        <input type="text" pInputText id="name" formControlName="name" />
+                        <small class="ng-dirty ng-invalid">Name is required.</small>
+                      </div>
+            
+                      <div class="field">
+                        <label for="characteristic">Characteristic</label>
+                        <textarea id="characteristic" formControlName="characteristic" pInputTextarea required rows="3"
+                          cols="20"></textarea>
+                      </div>
+            
+                    </form>
                   </ng-template>
   
                   <ng-template pTemplate="footer">

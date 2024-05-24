@@ -21,10 +21,11 @@ export class CategoryService {
     return this.http.post<Category>(this.baseUrl, category);
   }
 
-  updateCategory(category: Category): Observable<Category> {
-    return this.http.put<Category>(this.baseUrl, category);
+  updateCategory(categoryId: any, updatedCategory: Category): Observable<Category> {
+    return this.http.put<Category>(`${this.baseUrl}/${categoryId}`, updatedCategory);
   }
 
+  
   getCategories(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
   }

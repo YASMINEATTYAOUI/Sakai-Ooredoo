@@ -45,7 +45,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.categoryForm = this.formBuilder.group({
       id: [''],
       name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
-      description: [''],
     });
   }
 
@@ -64,10 +63,10 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     })
     this.categories.push(this.category);
   }
-
+ 
   private updateCategory(category: Category): void {
-    if (this.categoryToUpdate) {
-      this.categoryService.updateCategory(category).subscribe({
+    if (category.id) {
+      this.categoryService.updateCategory(category.id, category).subscribe({
         next: (response) => {
           console.log('Category updated successfully');
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Category Updated', life: 2000 });

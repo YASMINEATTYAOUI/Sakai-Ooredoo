@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService, Message} from 'primeng/api';
+import { MessageService, Message } from 'primeng/api';
 import { Role } from 'src/app/demo/models/role';
 import { RoleService } from 'src/app/demo/service/services/role.service';
 
@@ -36,7 +36,7 @@ export class RolesComponent implements OnInit, OnDestroy {
   selectedRoles: Role[];
 
   submitted: boolean = false;
-  
+
   roleId: any;
   showRoleDetailsPopup: boolean;
 
@@ -50,7 +50,7 @@ export class RolesComponent implements OnInit, OnDestroy {
       id: [''],
       name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
       description: [''],
-      active:[''],
+      active: [''],
     });
 
   }
@@ -71,23 +71,21 @@ export class RolesComponent implements OnInit, OnDestroy {
   }
   private updateRole(role: Role): void {
     if (role.id) {
-        console.log(role.id);
-        
-        // Ensure active is set to a valid boolean value
-        if (role.active === null || role.active === undefined) {
-            role.active = false; // Default to false if not set
-        }
+      console.log(role.id);
+      if (role.active === null || role.active === undefined) {
+        role.active = false;
+      }
 
-        this.roleService.updateRole(role.id, role).subscribe({
-            next: (response: any) => {
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 2000 });
-                this.getRoles(); // Refresh roles list after update
-            },
-            error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-            complete: () => { }
-        });
+      this.roleService.updateRole(role.id, role).subscribe({
+        next: (response: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 2000 });
+          this.getRoles(); // Refresh roles list after update
+        },
+        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+        complete: () => { }
+      });
     }
-}
+  }
 
   save(): void {
     this.submitted = true;
@@ -105,7 +103,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.tableLoading = true;
     this.roleService.getRoles().subscribe({
       next: (response: any) => {
-        this.roles = response; 
+        this.roles = response;
         this.totalElements = response.totalElements;
         this.filteredData = this.roles;
 
@@ -138,7 +136,7 @@ export class RolesComponent implements OnInit, OnDestroy {
   openDialog(role: Role) {
     this.roleToUpdate = role;
     this.roleService.getRoleById(role.id);
-    
+
     this.roleDialog = true;
     this.roleForm.patchValue({
       id: role.id,
@@ -153,6 +151,6 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.submitted = false;
   }
 
-  
+
 
 }
