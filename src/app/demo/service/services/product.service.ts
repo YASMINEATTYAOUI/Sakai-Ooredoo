@@ -50,8 +50,25 @@ export class ProductService {
     return throwError('Something went wrong; please try again later.');
   }
 
-  updateProduct(product: Package): Observable<Package> {
-    return this.http.put<Package>(`${this.baseUrl}/${product.id}`, product);
+  updateProduct(productId: string, file: File, reference: string, description: string, price: number, soldQuantity: number, availableQuantity: number): Observable<Package> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('reference', reference);
+    formData.append('description', description);
+    formData.append('price', price.toString());
+    formData.append('soldQuantity', soldQuantity.toString());
+    formData.append('availableQuantity', availableQuantity.toString());
+  
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+  
+    return this.http.put<Package>(`${this.baseUrl}/${productId}`, formData, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getProducts(): Observable<Package[]> {

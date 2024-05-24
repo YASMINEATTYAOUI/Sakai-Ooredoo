@@ -76,7 +76,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
   save(): void {
     this.submitted = true;
     if (this.packageToUpdate) {
-      this.updatePackage(this._package);
+      this.updatePackage();
     } else {
       this.createPackage();
     }
@@ -98,19 +98,26 @@ export class PackagesComponent implements OnInit, OnDestroy {
     this.packages.push(this._package);
   }
 
-  private updatePackage(_package: Package): void {
-    if (this.packageToUpdate) {
-      this.packageService.updatePackage(_package).subscribe({
-        next: (response) => {
-          console.log('Package updated successfully');
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Updated', life: 2000 });
-          this.getPackages();
-        },
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => { }
-      });
+  private updatePackage(): void {
+    if (this.packageToUpdate.id) {
+      this.packageService.updatePackage(this.packageForm.get('id').value, this.file,
+        this.packageForm.get('reference').value,
+        this.packageForm.get('description').value,
+        this.packageForm.get('nbProduct').value,
+        this.packageForm.get('price').value,
+        this.packageForm.get('soldQuantity').value,
+        this.packageForm.get('availableQuantity').value).subscribe({
+          next: (response) => {
+            console.log('Package updated successfully');
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Updated', life: 2000 });
+            this.getPackages();
+          },
+          error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+          complete: () => { }
+        });
     }
   }
+
 
   getPackages() {
     this.tableLoading = true;
@@ -169,6 +176,16 @@ export class PackagesComponent implements OnInit, OnDestroy {
     this.packageToUpdate = _package;
     this.packageService.getPackageById(_package.id);
     this.packageDialog = true;
+    this.packageForm.patchValue({
+      id: _package.id,
+      reference: _package.reference,
+      description: _package.description,
+      file: _package.image,
+      price: _package.price,
+      soldQuantity: _package.soldQuantity,
+      availableQuantity: _package.availableQuantity,
+    });
+
   }
 
   confirmDeleteSelected() {

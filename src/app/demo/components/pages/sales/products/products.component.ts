@@ -3,8 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Brand } from 'src/app/demo/models/brand';
+import { Category } from 'src/app/demo/models/category';
 import { Product } from 'src/app/demo/models/product';
 import { BrandService } from 'src/app/demo/service/services/brand.service';
+import { CategoryService } from 'src/app/demo/service/services/category.service';
 import { ProductService } from 'src/app/demo/service/services/product.service';
 
 @Component({
@@ -15,21 +17,24 @@ import { ProductService } from 'src/app/demo/service/services/product.service';
 
 export class ProductsComponent implements OnInit, OnDestroy {
 
-  products: Product[]; 
-  filteredData: Product[]; 
+  products: Product[];
+  filteredData: Product[];
   name: any;
   file: File;
-  product: Product; 
+  product: Product;
+
   selectedBrandId: Brand;
   brands: any[] = [];
+  selectedCategoryId: Category;
+  categories: any[] = [];
 
-  productForm: FormGroup; 
+  productForm: FormGroup;
 
   productDialog: boolean = false;
   productToUpdate: Product;
-  deleteProductDialog: boolean = false; 
-  deleteProductsDialog: boolean = false; 
-  selectedProducts: Product[]; 
+  deleteProductDialog: boolean = false;
+  deleteProductsDialog: boolean = false;
+  selectedProducts: Product[];
 
   messages: Message[];
   totalElements: number = 0;
@@ -38,11 +43,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
   productId: any;
   selectedFile: File;
   imageUrl: string | ArrayBuffer;
+  
+  
 
   constructor(
     private formBuilder: FormBuilder,
-    private productService: ProductService, 
+    private productService: ProductService,
     private brandService: BrandService,
+    private categoryService: CategoryService,
     private messageService: MessageService,
     private router: Router) {
     this.productForm = this.formBuilder.group({
@@ -56,8 +64,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getProducts(); 
+    this.getProducts();
     this.loadBrands();
+    this.loadCategories();
   }
 
   ngOnDestroy() {
@@ -73,10 +82,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.product.brands = event.value;
   }
 
+  loadCategories() {
+    this.categoryService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    });
+  }
+  
+  categorySelectedEvent(event: any) {
+    this.product.categories = event.value;
+  }
+  
   save(): void {
     this.submitted = true;
     if (this.productToUpdate) {
-      this.updateProduct(this.product); 
+      this.updateProduct();
     } else {
       this.createProduct();
     }
@@ -94,20 +113,25 @@ export class ProductsComponent implements OnInit, OnDestroy {
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
         complete: () => { }
       })
-    this.products.push(this.product); 
+    this.products.push(this.product);
   }
 
-  private updateProduct(product: Product): void {
-    if (this.productToUpdate) {
-      this.productService.updateProduct(product).subscribe({
-        next: (response) => {
-          console.log('Product updated successfully'); 
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 2000 });
-          this.getProducts();
-        },
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => { }
-      });
+  private updateProduct(): void {
+    if (this.productToUpdate.id) {
+      this.productService.updateProduct(this.productForm.get('id').value, this.file,
+        this.productForm.get('reference').value,
+        this.productForm.get('description').value,
+        this.productForm.get('price').value,
+        this.productForm.get('soldQuantity').value,
+        this.productForm.get('availableQuantity').value).subscribe({
+          next: (response) => {
+            console.log('Product updated successfully');
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 2000 });
+            this.getProducts();
+          },
+          error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+          complete: () => { }
+        });
     }
   }
 
@@ -117,7 +141,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         this.products = response;
         this.totalElements = response.totalElements;
-        this.filteredData = this.products; 
+        this.filteredData = this.products;
       },
       error: (e: any) => {
         this.messages = [{ severity: 'error', summary: 'Failed to load Data', detail: 'Server issue' }];
@@ -130,27 +154,27 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   searchProducts(event) {
-    console.log("product selected is " + event); 
+    console.log("product selected is " + event);
     this.filteredData = this.products.filter(item => item.reference.toLowerCase().startsWith(event.toLowerCase())); // Changed "packages" to "products"
   }
 
-  deleteProduct(product: Product): void { 
+  deleteProduct(product: Product): void {
     if (product) {
       this.product = product;
       this.productId = product.id;
-      this.deleteProductDialog = true; 
+      this.deleteProductDialog = true;
     }
   }
 
-  deleteSelectedProducts(products: Product[]) { 
+  deleteSelectedProducts(products: Product[]) {
     if (products && products.length > 0) {
       this.selectedProducts = products;
-      this.deleteProductsDialog = true; 
+      this.deleteProductsDialog = true;
     }
   }
 
-  toProduct(product: Product) { 
-    this.router.navigate(['dashboard/pages/sales/packages', product.id]); 
+  toProduct(product: Product) {
+    this.router.navigate(['dashboard/pages/sales/packages', product.id]);
   }
 
   onFileSelected(event: any) {
@@ -164,25 +188,35 @@ export class ProductsComponent implements OnInit, OnDestroy {
     console.log("opened");
   }
 
-  openDialog(product?: Product) { 
-    this.productToUpdate = product; 
-    this.productDialog = true; 
+  openDialog(product?: Product) {
+    this.productToUpdate = product;
+    this.productDialog = true;
+    this.productService.getProductById(product.id);
+    this.productForm.patchValue({
+      id: product.id,
+      reference: product.reference,
+      description: product.description,
+      file: product.image,
+      price:product.price,
+      soldQuantity:product.soldQuantity,
+      availableQuantity:product.availableQuantity,
+    });
   }
 
   confirmDeleteSelected() {
-    if (this.selectedProducts && this.selectedProducts.length > 0) { 
+    if (this.selectedProducts && this.selectedProducts.length > 0) {
       const productIds = this.selectedProducts.map(product => product.id);
 
       this.productService.deleteProducts(productIds).subscribe({
         next: () => {
-          this.deleteProductsDialog = false; 
-          this.selectedProducts = []; 
-          console.log('Products deleted successfully'); 
+          this.deleteProductsDialog = false;
+          this.selectedProducts = [];
+          console.log('Products deleted successfully');
           this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The products have been deleted.' }); // Changed "Packages" to "Products"
           this.getProducts();
         },
         error: (e) => {
-          console.error('Error deleting products', e); 
+          console.error('Error deleting products', e);
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' });
         }
       });
@@ -194,8 +228,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   confirmDelete() {
     this.productService.deleteProduct(this.productId).subscribe({
       next: () => {
-        this.deleteProductDialog = false; 
-        this.product = {}; 
+        this.deleteProductDialog = false;
+        this.product = {};
         console.log('Product deleted successfully');
         this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The product has been deleted.' }); // Changed "Package" to "Product"
         this.getProducts();
@@ -205,7 +239,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   hideDialog() {
-    this.productDialog = false; 
+    this.productDialog = false;
     this.submitted = false;
   }
 

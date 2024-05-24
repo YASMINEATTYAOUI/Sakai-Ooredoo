@@ -39,14 +39,16 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
                         <th pSortableColumn="name">Reference <p-sortIcon field="Reference"></p-sortIcon></th>
                         <th>Image</th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
                         <th pSortableColumn="brand">Brand <p-sortIcon field="brand"></p-sortIcon></th>
-                        <th pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
-                        <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
+                        <th pSortableColumn="soldQuantity">Sold Quantity <p-sortIcon field="soldQuantity"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="availableQuantity">Available Quantity <p-sortIcon
+                                field="availableQuantity"></p-sortIcon></th>
+                        <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon>
                         </th>
                         <th pSortableColumn="edit"><span></span></th>
                     </tr>
@@ -56,20 +58,17 @@
                         <td>
                             <p-tableCheckbox [value]="product"></p-tableCheckbox>
                         </td>
-                        <td>{{ product.code || product.id }}</td>
                         <td>{{ product.reference }}</td>
                         <td class="text-align-center">
                             <img class="w-auto" [src]="product.image" style="width: 50px; height: 25px;">
                         </td>
                         <td>{{ product.price | currency:" " }}TND</td>
-                        <td>{{ product.category }}</td>
+                        <td>{{ product.category?.name }}</td>
+                        <td>{{ product.brand?.name }}</td>
+                        <td>{{ product.soldQuantity}}</td>
+                        <td>{{ product.availableQuantity}}</td>
+                        <td>{{ product.description}}</td>
 
-                        <td>{{ product.brand }}</td>
-                        <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating></td>
-                        <td><span
-                                [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{
-                                product.inventoryStatus }}</span>
-                        </td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
@@ -116,6 +115,14 @@
                     </div>
 
                     <div class="field">
+                        <label for="categories">Category</label>
+                        <p-dropdown [options]="categories" [(ngModel)]="selectedCategoryId" optionLabel="name"
+                                    placeholder="Select Category" (onChange)="categorySelectedEvent($event)">
+                        </p-dropdown>
+                    </div>
+                    
+
+                    <div class="field">
                         <label for="price">Price</label>
                         <p-inputNumber id="price" formControlName="price" mode="currency"
                             currency="TND"></p-inputNumber>
@@ -135,7 +142,9 @@
                     <div class="field">
                         <label for="file">Product Picture</label>
                         <input id="file-upload" class="w-full" type="file" class="custom-file-input"
-                            (change)="onFileSelected($event)" accept="image/*"><img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" class="uploaded-image" style="width: 100px; height: 100px; border-radius: 8px;">
+                            (change)="onFileSelected($event)" accept="image/*"><img *ngIf="imageUrl" [src]="imageUrl"
+                            alt="Uploaded Image" class="uploaded-image"
+                            style="width: 100px; height: 100px; border-radius: 8px;">
                     </div>
                 </form>
             </ng-template>

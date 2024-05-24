@@ -8,7 +8,7 @@ export class Product {
   image?: string;
   price?: any;
   soldQuantity?: any;
-  avalableQuantity?: any;
+  availableQuantity?: any;
   creationDate?: Date;
   lastModifiedDate?: Date;
 

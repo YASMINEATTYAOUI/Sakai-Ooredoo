@@ -51,28 +51,30 @@ export class PackageService {
     console.error('An error occurred:', error);
     return throwError('Something went wrong; please try again later.');
   }
-/*
-  createPackage(file: File,
-    reference: string,
-    description: string,
-    nbProduct: any,
-    price: any,
-    soldQuantity: string,
-    availableQuantity: string): Observable<Package> {
+ 
+
+  updatePackage(packageId: string, file: File, reference: string, description: string,nbProduct:any, price: number, soldQuantity: number, availableQuantity: number): Observable<Package> {
     const formData = new FormData();
     formData.append('file', file, file.name);
-    formData.append('name', reference);
+    formData.append('reference', reference);
     formData.append('description', description);
-    formData.append('nbProduct', nbProduct);
-    formData.append('price', price);
-    formData.append('soldQuantity', soldQuantity);
-    formData.append('availableQuantity', availableQuantity);
-    return this.http.post<Package>(`${this.baseUrl}`, formData);
+    formData.append('nbProduct', nbProduct.toString());
+    formData.append('price', price.toString());
+    formData.append('soldQuantity', soldQuantity.toString());
+    formData.append('availableQuantity', availableQuantity.toString());
+  
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+  
+    return this.http.put<Package>(`${this.baseUrl}/${packageId}`, formData, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
-*/
-  updatePackage(_package: Package): Observable<Package> {
-    return this.http.put<Package>(this.baseUrl, Package);
-  }
+  
 
   getPackages(): Observable<Package[]> {
     return this.http.get<Package[]>(`${this.baseUrl}/sorted`).pipe(

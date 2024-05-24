@@ -7,14 +7,14 @@
           <div class="my-2">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
               (click)="openNew()"></button>
-            
+
           </div>
         </ng-template>
 
         <ng-template pTemplate="right">
           <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-              (click)="deleteSelectedPackages(selectedPackages)"
-              [disabled]="!selectedPackages || !selectedPackages.length"></button>
+            (click)="deleteSelectedPackages(selectedPackages)"
+            [disabled]="!selectedPackages || !selectedPackages.length"></button>
         </ng-template>
       </p-toolbar>
 
@@ -38,13 +38,14 @@
             <th style="width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
-            <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
             <th pSortableColumn="name">Reference <p-sortIcon field="Reference"></p-sortIcon></th>
             <th>Image</th>
+            <th pSortableColumn="nbProduct">Number Of Products <p-sortIcon field="nbProduct"></p-sortIcon></th>
             <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-            <th pSortableColumn="brand">Brand <p-sortIcon field="brand"></p-sortIcon></th>
-            <th pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
-            <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
+            <th pSortableColumn="soldQuantity">Sold Quantity <p-sortIcon field="soldQuantity"></p-sortIcon></th>
+            <th pSortableColumn="availableQuantity">Available Quantity <p-sortIcon
+                field="availableQuantity"></p-sortIcon></th>
+            <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon>
             </th>
             <th pSortableColumn="edit"><span></span></th>
           </tr>
@@ -54,17 +55,16 @@
             <td>
               <p-tableCheckbox [value]="_package"></p-tableCheckbox>
             </td>
-            <td>{{_package.code || _package.id}} </td>
             <td>{{_package.reference}}</td>
             <td class="text-align-center">
               <img class=" w-auto" [src]="_package.image" style="width: 50px; height: 25px;">
             </td>
+            <td>{{ _package.nbProduct}}</td>
             <td>{{_package.price | currency:" " }}TND</td>
-            <td>{{_package.brand}}</td>
-            <td><p-rating [ngModel]="_package.rating" [readonly]="true" [cancel]="false"></p-rating> </td>
-            <td><span
-                [class]="'product-badge status-' + (_package.inventoryStatus ? _package.inventoryStatus.toLowerCase() : '')">{{_package.inventoryStatus}}</span>
-            </td>
+            <td>{{ _package.soldQuantity}}</td>
+            <td>{{ _package.availableQuantity}}</td>
+            <td>{{ _package.description}}</td>
+
             <td>
               <div class="flex">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
@@ -102,12 +102,13 @@
           </div>
 
           <div class="field">
-            <label for="brands">Brand</label>
-            <p-dropdown [options]="brands" [(ngModel)]="selectedBrandId" optionLabel="name" placeholder="Select Brand"
-              (onChange)="brandSelectedEvent($event)">
+            <label for="products">Product</label>
+            <p-dropdown [options]="products" [(ngModel)]="selectedProductId" optionLabel="reference"
+                        placeholder="Select Product" (onChange)="productSelectedEvent($event)">
             </p-dropdown>
-          </div>
+        </div>
         
+
           <div class="field">
             <label for="nbProduct">Number of articles</label>
             <p-inputNumber id="nbProduct" formControlName="nbProduct"></p-inputNumber>
