@@ -4,7 +4,7 @@ import { TreeNode } from 'primeng/api';
 import { NodeService } from 'src/app/demo/service/node.service';
 import { Router } from '@angular/router';
 import { MessageService, Message} from 'primeng/api';
-import { Privilege, PrivilegeDto } from 'src/app/demo/models/privilege'; 
+import { Privilege} from 'src/app/demo/models/privilege'; 
 import { PrivilegeService } from 'src/app/demo/service/services/privilege.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
 
   privilege: Privilege;
   privilegeDialog: boolean = false;
-  privilegeToUpdate: PrivilegeDto; 
+  privilegeToUpdate: Privilege; 
 
   deletePrivilegeDialog: boolean = false; 
 
@@ -82,8 +82,8 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     this.getPrivileges(); 
   }
 
-  private createPrivilege(privilegeDto: PrivilegeDto): void { 
-    this.privilegeService.createPrivilege(privilegeDto).subscribe({ 
+  private createPrivilege(privilege: Privilege): void { 
+    this.privilegeService.createPrivilege(privilege).subscribe({ 
       next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Privilege Created', life: 2000 }),
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }), 
       complete: () => { }
@@ -91,9 +91,9 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     this.privileges.push(this.privilege); 
   }
 
-  private updatePrivilege(privilegeDto: PrivilegeDto): void { 
+  private updatePrivilege(privilege: Privilege): void { 
     if (this.privilegeToUpdate) {
-      this.privilegeService.updatePrivilege(privilegeDto).subscribe({ 
+      this.privilegeService.updatePrivilege(privilege).subscribe({ 
         next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Privilege Updated', life: 2000 }), // Renommé Role en Privilege
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }), 
         complete: () => { } 
@@ -140,7 +140,7 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     }
   }
   //navigation to details
-  toPrivilege(privilege: PrivilegeDto) { 
+  toPrivilege(privilege: Privilege) { 
     this.router.navigate(['dashboard/products/', privilege.id]); 
   }
 
@@ -150,7 +150,7 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     this.privilegeDialog = true; 
   }
 
-  openDialog(privilege?: PrivilegeDto) { 
+  openDialog(privilege?: Privilege) { 
     this.privilegeToUpdate = privilege; 
     this.privilegeDialog = true;
   }

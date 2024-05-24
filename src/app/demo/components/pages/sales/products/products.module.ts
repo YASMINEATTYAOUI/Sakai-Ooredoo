@@ -17,7 +17,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { OverlayModule } from 'primeng/overlay';
-import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ChipsModule } from 'primeng/chips';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DividerModule } from 'primeng/divider';
@@ -61,7 +60,6 @@ import { TooltipModule } from 'primeng/tooltip';
     ],
     declarations: [
         ProductsComponent,
-        ProductDetailsComponent
     ]
 })
 export class ProductsModule { }

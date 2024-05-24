@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
-import { Brand } from 'src/app/demo/models/brand';
+import { Product } from 'src/app/demo/models/product';
 import { Package } from 'src/app/demo/models/package';
-import { BrandService } from 'src/app/demo/service/services/brand.service';
 import { PackageService } from 'src/app/demo/service/services/package.service';
+import { ProductService } from 'src/app/demo/service/services/product.service';
 
 @Component({
   selector: 'app-packages',
@@ -21,8 +21,8 @@ export class PackagesComponent implements OnInit, OnDestroy {
   name: any;
   file: File;
   _package: Package;
-  selectedBrandId: Brand;
-  brands: any[] = [];
+  selectedProductId: Product;
+  products: any[] = [];
 
   packageForm: FormGroup;
 
@@ -42,7 +42,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private packageService: PackageService,
-    private brandService: BrandService,
+    private productService: ProductService,
     private messageService: MessageService,
     private router: Router) {
     this.packageForm = this.formBuilder.group({
@@ -58,19 +58,19 @@ export class PackagesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getPackages();
-    this.loadBrands();
+    this.loadProducts();
   }
 
   ngOnDestroy() {
   }
 
-  loadBrands() {
-    this.brandService.getBrands().subscribe(brands => {
-      this.brands = brands;
+  loadProducts() {
+    this.productService.getProducts().subscribe(products => {
+      this.products = products;
     });
   }
-  brandSelectedEvent(event: any) {
-    this._package.brands = event.value;
+  productsSelectedEvent(event: any) {
+    this._package.products = event.value;
   }
 
   save(): void {

@@ -1,4 +1,3 @@
-import { Brand } from './brand';
 import { Product } from './product';
 
 export class Package {
@@ -10,11 +9,8 @@ export class Package {
   price?: any;
   soldQuantity?:any;
   availableQuantity?:any;
-  creatorId?:string ;
   creationDate?: Date;
-  lastModifierId?: Date;
   lastModifiedDate?: Date;
   
-  brands?:Brand[];
-  Products?:Product[];
+  products?:Product[];
 }

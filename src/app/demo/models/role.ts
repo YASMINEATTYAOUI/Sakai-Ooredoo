@@ -3,9 +3,7 @@ export class Role {
   name?: string;
   description?:string;
   active?:Boolean;
-  creatorId?:string ;
   creationDate?: Date;
-  lastModifierId?: Date;
   lastModifiedDate?: Date;
 }
 
