@@ -9,7 +9,7 @@ export class User {
   password?: string;
   creationDate?: Date;
   lastModifiedDate?: Date;
-  roles: Role;
+  role: Role;
  
 }
 
