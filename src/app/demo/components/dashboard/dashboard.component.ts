@@ -1,18 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Product } from '../../api/product';
-import { ProductService } from '../../service/product.service';
+import { MenuItem, MessageService } from 'primeng/api';
+import { Product } from '../../models/product';
+import { ProductService } from '../../service/services/product.service';
 import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
+    providers: [MessageService],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
     items!: MenuItem[];
 
-    products!: Product[];
+    products: Product[];
 
     chartData: any;
 
@@ -20,23 +21,53 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
+    
+    filteredData: Product[];
+    totalElements: number = 0;
+    tableLoading: boolean = false;
+
+
+    messages: { severity: string; summary: string; detail: string; }[];
+
+    constructor(private productService: ProductService,
+        public layoutService: LayoutService,
+        private messageService: MessageService,
+    ) {
         this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-            this.initChart();
-        });
+            .pipe(debounceTime(25))
+            .subscribe((config) => {
+                this.initChart();
+            });
     }
 
     ngOnInit() {
         this.initChart();
-        this.productService.getProductsSmall().then(data => this.products = data);
-
-        this.items = [
-            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-        ];
+        this.getProducts()
     }
+
+    getProducts() {
+        this.tableLoading = true;
+        this.productService.getProducts().subscribe({
+            next: (response: any) => {
+                this.products = response;
+                this.totalElements = response.totalElements;
+                this.filteredData = this.products;
+            },
+            error: (e: any) => {
+                this.messages = [{ severity: 'error', summary: 'Failed to load Data', detail: 'Server issue' }];
+                this.tableLoading = false;
+            },
+            complete: () => {
+                this.tableLoading = false;
+            }
+        });
+    }
+
+    searchProducts(event) {
+        this.filteredData = this.products.filter(item => 
+          item.reference.toLowerCase().startsWith(event.toLowerCase()));
+          
+      }
 
     initChart() {
         const documentStyle = getComputedStyle(document.documentElement);

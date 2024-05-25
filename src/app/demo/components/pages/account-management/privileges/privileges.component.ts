@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
-import { NodeService } from 'src/app/demo/service/node.service';
 import { Router } from '@angular/router';
 import { MessageService, Message} from 'primeng/api';
 import { Privilege} from 'src/app/demo/models/privilege'; 
@@ -13,10 +12,6 @@ import { PrivilegeService } from 'src/app/demo/service/services/privilege.servic
   providers: [MessageService],
 })
 export class PrivilegesComponent implements OnInit, OnDestroy {
-  files1: TreeNode[] = [];
-
-  selectedFiles1: TreeNode[] = [];
-  cols: any[] = [];
 
   privileges: Privilege[]; 
   filteredData: Privilege[];
@@ -50,7 +45,6 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     private privilegeService: PrivilegeService, 
     private messageService: MessageService,
     private router: Router,
-    private nodeService: NodeService
   ) {
     this.privilegeForm = this.formBuilder.group({
       id: [''],
@@ -62,8 +56,7 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getPrivileges();
-    this.nodeService.getFiles().then(files => this.files1 = files);
-  }
+    }
 
   ngOnDestroy() {
   }
@@ -78,8 +71,7 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
       this.createPrivilege(data); 
     }
     this.privilegeDialog = false; 
-    this.router.navigate(['dashboard/pages/account-management/privileges']);
-    this.getPrivileges(); 
+   this.getPrivileges(); 
   }
 
   private createPrivilege(privilege: Privilege): void { 

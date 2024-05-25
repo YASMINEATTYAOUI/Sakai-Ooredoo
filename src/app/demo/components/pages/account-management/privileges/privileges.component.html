@@ -18,7 +18,7 @@
           [disabled]="!selectedPrivileges || !selectedPrivileges.length"></button>
       </ng-template>
       </p-toolbar>
-			<p-tree [value]="files1" selectionMode="checkbox" [(selection)]="selectedFiles1"></p-tree>
+			<p-tree  selectionMode="checkbox"></p-tree>
 		</div>
 
     <p-dialog [(visible)]="privilegeDialog" [style]="{width: '450px'}" header="Privilege Details" [modal]="true" class="p-fluid">
