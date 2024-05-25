@@ -4,6 +4,9 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Package } from '../../models/package';
+import { Product } from '../../models/product';
+import { Brand } from '../../models/brand';
+import { Category } from '../../models/category';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +26,7 @@ export class ProductService {
     description: string,
     price: number,
     soldQuantity: number,
-    availableQuantity: number
+    availableQuantity: number,
   ): Observable<Package> {
     const formData = new FormData();
     formData.append('file', file, file.name);
@@ -32,7 +35,7 @@ export class ProductService {
     formData.append('price', price.toString());
     formData.append('soldQuantity', soldQuantity.toString());
     formData.append('availableQuantity', availableQuantity.toString());
-
+    
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json'
@@ -49,6 +52,26 @@ export class ProductService {
     console.error('An error occurred:', error);
     return throwError('Something went wrong; please try again later.');
   }
+  
+/*
+  createProduct(formData: FormData): Observable<Product> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+
+    return this.http.post<Product>(this.baseUrl, formData, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  private handleError(error: any) {
+    console.error('An error occurred', error);
+    return throwError('Something bad happened; please try again later.');
+  }
+*/
 
   updateProduct(productId: string, file: File, reference: string, description: string, price: number, soldQuantity: number, availableQuantity: number): Observable<Package> {
     const formData = new FormData();

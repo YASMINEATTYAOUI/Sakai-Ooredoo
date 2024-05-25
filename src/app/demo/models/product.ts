@@ -12,6 +12,6 @@ export class Product {
   creationDate?: Date;
   lastModifiedDate?: Date;
 
-  brands?:Brand[];
-  categories?:Category[];
+  brand?:Brand;
+  category?:Category;
 }

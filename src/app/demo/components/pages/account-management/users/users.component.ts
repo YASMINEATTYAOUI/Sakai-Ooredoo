@@ -15,8 +15,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   users: User[];
   filteredData: User[];
   name: any;
-  //user: User;
+  user: User ;
   //user2 :UserDto ;
+  /*
   user = {
     username: '',
     fullName: '',
@@ -27,7 +28,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     lastModifiedDate: null,
     role: null ,
   } 
-  
+  */
   userDialog: boolean = false;
   userToUpdate: User;
   deleteUserDialog: boolean = false;

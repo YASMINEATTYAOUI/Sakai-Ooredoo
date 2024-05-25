@@ -60,6 +60,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
       price: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
       soldQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
       availableQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
+      brand: [, Validators.required],
+      category: [, Validators.required]
     });
   }
 
@@ -79,7 +81,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   brandSelectedEvent(event: any) {
-    this.product.brands = event.value;
+    this.product.brand = event.value;
+    //event.value=this.productForm.get('brand').value;
+    //this.productForm.get('brand').value =event.value;
   }
 
   loadCategories() {
@@ -89,7 +93,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
   
   categorySelectedEvent(event: any) {
-    this.product.categories = event.value;
+    this.product.category = event.value;
+    //event.value=this.productForm.get('category').value;
   }
   
   save(): void {
@@ -108,7 +113,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       this.productForm.get('description').value,
       this.productForm.get('price').value,
       this.productForm.get('soldQuantity').value,
-      this.productForm.get('availableQuantity').value).subscribe({
+      this.productForm.get('availableQuantity').value,).subscribe({
         next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 2000 }),
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
         complete: () => { }
@@ -116,6 +121,34 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.products.push(this.product);
   }
 
+/*
+createProduct() {
+  if (this.productForm.valid && this.selectedFile) {
+    const formData = new FormData();
+    formData.append('file', this.file, this.file.name);
+    formData.append('reference', this.productForm.get('reference').value);
+    formData.append('description', this.productForm.get('description').value);
+    formData.append('price', this.productForm.get('price').value);
+    formData.append('soldQuantity', this.productForm.get('soldQuantity').value);
+    formData.append('availableQuantity', this.productForm.get('availableQuantity').value);
+    formData.append('brand', this.productForm.get('brand').value.id);
+    formData.append('category', this.productForm.get('category').value.id);
+
+    this.productService.createProduct(formData).subscribe({
+      next: (response) => {
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 2000 });
+        this.router.navigate(['/products']); // Adjust the route as needed
+      },
+      error: (e) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' });
+        console.error('Error creating product', e);
+      }
+    });
+  } else {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill out all required fields' });
+  }
+}
+*/
   private updateProduct(): void {
     if (this.productToUpdate.id) {
       this.productService.updateProduct(this.productForm.get('id').value, this.file,
@@ -154,8 +187,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   searchProducts(event) {
-    console.log("product selected is " + event);
-    this.filteredData = this.products.filter(item => item.reference.toLowerCase().startsWith(event.toLowerCase())); // Changed "packages" to "products"
+    this.filteredData = this.products.filter(item => 
+      item.reference.toLowerCase().startsWith(event.toLowerCase()));
+      
   }
 
   deleteProduct(product: Product): void {
