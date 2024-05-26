@@ -4,6 +4,9 @@ import { Product } from '../../models/product';
 import { ProductService } from '../../service/services/product.service';
 import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { ClientService } from '../../service/services/client.service';
+import { OrderService } from '../../service/services/order.service';
+import { UserService } from '../../service/services/user.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -11,9 +14,18 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
+    
+
+    userCount: number;
+    productCount: number;
+    clientCount: number;
+    orderCount: number;
+
+
     items!: MenuItem[];
 
     products: Product[];
+    
 
     chartData: any;
 
@@ -21,7 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    
+
     filteredData: Product[];
     totalElements: number = 0;
     tableLoading: boolean = false;
@@ -29,8 +41,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     messages: { severity: string; summary: string; detail: string; }[];
 
-    constructor(private productService: ProductService,
+
+    constructor(
         public layoutService: LayoutService,
+        private userService: UserService,
+        private productService: ProductService,
+        private clientService: ClientService,
+        private orderService: OrderService,
         private messageService: MessageService,
     ) {
         this.subscription = this.layoutService.configUpdate$
@@ -42,7 +59,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.initChart();
-        this.getProducts()
+        this.getProducts();
+        this.countUsers();
+        this.countProducts();
+        this.countClients();
+        this.countOrders();
+    }
+
+    countUsers() {
+        this.userService.countUsers().subscribe(count => {
+            this.userCount = count;
+        });
+    }
+    countProducts() {
+        this.productService.countProducts().subscribe(count => {
+            this.productCount = count;
+        });
+    }
+    countClients() {
+        this.clientService.countClients().subscribe(count => {
+            this.clientCount = count;
+        });
+    }
+    countOrders() {
+        this.orderService.countOrders().subscribe(count => {
+            this.orderCount = count;
+        });
     }
 
     getProducts() {
@@ -64,10 +106,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     searchProducts(event) {
-        this.filteredData = this.products.filter(item => 
-          item.reference.toLowerCase().startsWith(event.toLowerCase()));
-          
-      }
+        this.filteredData = this.products.filter(item =>
+            item.reference.toLowerCase().startsWith(event.toLowerCase()));
+
+    }
+
+
 
     initChart() {
         const documentStyle = getComputedStyle(document.documentElement);
