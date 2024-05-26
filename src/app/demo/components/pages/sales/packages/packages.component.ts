@@ -73,6 +73,8 @@ export class PackagesComponent implements OnInit, OnDestroy {
     this._package.products = event.value;
   }
 
+  
+
   save(): void {
     this.submitted = true;
     if (this.packageToUpdate) {

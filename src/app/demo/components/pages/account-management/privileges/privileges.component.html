@@ -1,9 +1,7 @@
 <!---->
 <div class="grid">
   <div class="col-12">
-
     <div class="card">
-
       <h5>Privilege Management</h5>
       <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
@@ -15,13 +13,13 @@
 
         <ng-template pTemplate="right">
           <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-            (click)="deleteSelectedPrivileges(selectedPrivileges)"
-            [disabled]="!selectedPrivileges || !selectedPrivileges.length"></button>
+            (click)="deleteSelectedPrivileges(selectedPrivileges)" [disabled]="
+                            !selectedPrivileges || !selectedPrivileges.length
+                        "></button>
         </ng-template>
       </p-toolbar>
       <p-tree selectionMode="checkbox"></p-tree>
     </div>
-
 
     <div class="card">
       <p-table [value]="privileges" [tableStyle]="{ 'min-width': '50rem' }">
@@ -44,16 +42,17 @@
       </p-table>
     </div>
 
-
-
-    <p-dialog [(visible)]="privilegeDialog" [style]="{width: '450px'}" header="Privilege Details" [modal]="true"
+    <p-dialog [(visible)]="privilegeDialog" [style]="{ width: '450px' }" header="Privilege Details" [modal]="true"
       class="p-fluid">
       <ng-template pTemplate="content">
         <form [formGroup]="roleForm">
           <div class="field">
             <label for="name">Name</label>
             <input type="text" pInputText id="name" formControlName="name" [(ngModel)]="privilege.name" required
-              autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !privilege.name}" />
+              autofocus [ngClass]="{
+                                'ng-invalid ng-dirty':
+                                    submitted && !privilege.name
+                            }" />
             <small class="ng-dirty ng-invalid" *ngIf="submitted && !privilege.name">Name is required.</small>
           </div>
           <div class="field">
@@ -71,10 +70,11 @@
       </ng-template>
     </p-dialog>
 
-    <p-dialog [(visible)]="deletePrivilegeDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+    <p-dialog [(visible)]="deletePrivilegeDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
       <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="privilege">Are you sure you want to delete this privilege <b>{{privileg.name}}</b>?</span>
+        <span *ngIf="privilege">Are you sure you want to delete this privilege
+          <b>{{ privileg.name }}</b>?</span>
       </div>
       <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
@@ -83,7 +83,7 @@
       </ng-template>
     </p-dialog>
 
-    <p-dialog [(visible)]="deletePrivilegesDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+    <p-dialog [(visible)]="deletePrivilegesDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
       <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
         <span>Are you sure you want to delete selected privileges?</span>
@@ -95,394 +95,199 @@
           (click)="confirmDeleteSelected()"></button>
       </ng-template>
     </p-dialog>
-
   </div>
 </div>
 
 
-
-
-
-
 <div class="card">
-  <div class="flex justify-content-between align-items-center mb-5"><span class="text-900 text-xl font-semibold">Task
-      List</span><button pbutton="" pripple="" icon="pi pi-plus" label="Create Task"
-      class="p-element p-ripple p-button-outlined font-semibold p-button p-component" fdprocessedid="1ptot"><span
-        class="p-button-icon p-button-icon-left pi pi-plus" aria-hidden="true"></span><span
-        class="p-button-label">Create Task</span><span class="p-ink" aria-hidden="true"
-        role="presentation"></span></button></div><app-privileges title="ToDo">
-    <div>
-      <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">ToDo</div>
-      <ul class="list-none p-0 m-0">
-        <li
-          class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-          <div class="flex align-items-center flex-1"><p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-              <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-                <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-                  <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput">
-                </div>
-                <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-                  data-pc-section="input"><!----></div>
-              </div><!---->
-            </p-checkbox><label for="task.id" class="font-medium ml-2" style="word-break: break-word;">Create a New
-              Landing UI</label></div>
-          <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-            <div class="flex align-items-center"><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-comment mr-2"></i>3</span><!----><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-paperclip mr-2"></i>2</span><!----><span
-                class="flex align-items-center font-semibold white-space-nowrap ng-star-inserted"><i
-                  class="pi pi-clock mr-2"></i>13 May</span><!----></div>
-            <div class="flex align-items-center sm:justify-content-end"><p-avatargroup styleclass="mr-3"
-                class="p-element">
-                <div class="mr-3 p-avatar-group p-component"><p-avatar size="large" shape="circle"
-                    class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/ionibowcher.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/amyelsner.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/asiyajavayant.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><!----><!----></div>
-              </p-avatargroup><button pbutton="" pripple="" type="button" icon="pi pi-ellipsis-v"
-                class="p-element p-ripple p-button-rounded p-button-text z-3 ml-auto sm:ml-0 p-button p-component p-button-icon-only"
-                fdprocessedid="rf5mv"><span class="p-button-icon pi pi-ellipsis-v" aria-hidden="true"></span><span
-                  class="p-ink" aria-hidden="true" role="presentation"></span></button><p-menu styleclass="w-8rem"
-                class="p-element ng-tns-c421417325-125 ng-star-inserted"><!----></p-menu></div>
+  <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Privileges</div>
+
+  <div class="text-700 font-semibold text-lg mt-5 mb-3 py-3">Account Management</div>
+  <li
+    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
+
+    <div class="flex align-items-center flex-1">
+      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
+        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
+          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
+            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
           </div>
-        </li>
-        <li
-          class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-          <div class="flex align-items-center flex-1"><p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-              <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-                <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-                  <input type="checkbox" value="undefined" id="2" aria-checked="false" data-pc-section="hiddenInput">
-                </div>
-                <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-                  data-pc-section="input"><!----></div>
-              </div><!---->
-            </p-checkbox><label for="task.id" class="font-medium ml-2" style="word-break: break-word;">Create
-              Dashboard</label></div>
-          <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-            <div class="flex align-items-center"><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-comment mr-2"></i>2</span><!----><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-paperclip mr-2"></i>4</span><!----><span
-                class="flex align-items-center font-semibold white-space-nowrap ng-star-inserted"><i
-                  class="pi pi-clock mr-2"></i>16 May</span><!----></div>
-            <div class="flex align-items-center sm:justify-content-end"><p-avatargroup styleclass="mr-3"
-                class="p-element">
-                <div class="mr-3 p-avatar-group p-component"><p-avatar size="large" shape="circle"
-                    class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/onyamalimba.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/ivanmagalhaes.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><!----><!----></div>
-              </p-avatargroup><button pbutton="" pripple="" type="button" icon="pi pi-ellipsis-v"
-                class="p-element p-ripple p-button-rounded p-button-text z-3 ml-auto sm:ml-0 p-button p-component p-button-icon-only"
-                fdprocessedid="8oj7kc"><span class="p-button-icon pi pi-ellipsis-v" aria-hidden="true"></span><span
-                  class="p-ink" aria-hidden="true" role="presentation"></span></button><p-menu styleclass="w-8rem"
-                class="p-element ng-tns-c421417325-126 ng-star-inserted"><!----></p-menu></div>
+          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
+            data-pc-section="input">
+            <!---->
           </div>
-        </li>
-        <li
-          class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-          <div class="flex align-items-center flex-1"><p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-              <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-                <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-                  <input type="checkbox" value="undefined" id="3" aria-checked="false" data-pc-section="hiddenInput">
-                </div>
-                <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-                  data-pc-section="input"><!----></div>
-              </div><!---->
-            </p-checkbox><label for="task.id" class="font-medium ml-2" style="word-break: break-word;">Brand logo
-              design</label></div>
-          <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-            <div class="flex align-items-center"><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-comment mr-2"></i>4</span><!----><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-paperclip mr-2"></i>1</span><!----><span
-                class="flex align-items-center font-semibold white-space-nowrap ng-star-inserted"><i
-                  class="pi pi-clock mr-2"></i>17 May</span><!----></div>
-            <div class="flex align-items-center sm:justify-content-end"><p-avatargroup styleclass="mr-3"
-                class="p-element">
-                <div class="mr-3 p-avatar-group p-component"><p-avatar size="large" shape="circle"
-                    class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/ionibowcher.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/amyelsner.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/asiyajavayant.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><!----><!----></div>
-              </p-avatargroup><button pbutton="" pripple="" type="button" icon="pi pi-ellipsis-v"
-                class="p-element p-ripple p-button-rounded p-button-text z-3 ml-auto sm:ml-0 p-button p-component p-button-icon-only"
-                fdprocessedid="td0fsh"><span class="p-button-icon pi pi-ellipsis-v" aria-hidden="true"></span><span
-                  class="p-ink" aria-hidden="true" role="presentation"></span></button><p-menu styleclass="w-8rem"
-                class="p-element ng-tns-c421417325-116 ng-star-inserted"><!----></p-menu></div>
-          </div>
-        </li>
-        <li
-          class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-          <div class="flex align-items-center flex-1"><p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-              <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-                <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-                  <input type="checkbox" value="undefined" id="4" aria-checked="false" data-pc-section="hiddenInput">
-                </div>
-                <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-                  data-pc-section="input"><!----></div>
-              </div><!---->
-            </p-checkbox><label for="task.id" class="font-medium ml-2" style="word-break: break-word;">Create
-              Dashboard</label></div>
-          <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-            <div class="flex align-items-center"><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-comment mr-2"></i>1</span><!----><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-paperclip mr-2"></i>3</span><!----><span
-                class="flex align-items-center font-semibold white-space-nowrap ng-star-inserted"><i
-                  class="pi pi-clock mr-2"></i>20 May</span><!----></div>
-            <div class="flex align-items-center sm:justify-content-end"><p-avatargroup styleclass="mr-3"
-                class="p-element">
-                <div class="mr-3 p-avatar-group p-component"><p-avatar size="large" shape="circle"
-                    class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/onyamalimba.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/ivanmagalhaes.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><!----><!----></div>
-              </p-avatargroup><button pbutton="" pripple="" type="button" icon="pi pi-ellipsis-v"
-                class="p-element p-ripple p-button-rounded p-button-text z-3 ml-auto sm:ml-0 p-button p-component p-button-icon-only"
-                fdprocessedid="tax8ng"><span class="p-button-icon pi pi-ellipsis-v" aria-hidden="true"></span><span
-                  class="p-ink" aria-hidden="true" role="presentation"></span></button><p-menu styleclass="w-8rem"
-                class="p-element ng-tns-c421417325-117 ng-star-inserted"><!----></p-menu></div>
-          </div>
-        </li>
-        <li
-          class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-          <div class="flex align-items-center flex-1"><p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-              <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-                <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-                  <input type="checkbox" value="undefined" id="5" aria-checked="false" data-pc-section="hiddenInput">
-                </div>
-                <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-                  data-pc-section="input"><!----></div>
-              </div><!---->
-            </p-checkbox><label for="task.id" class="font-medium ml-2" style="word-break: break-word;">Rebranding For
-              Peak</label></div>
-          <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-            <div class="flex align-items-center"><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-comment mr-2"></i>5</span><!----><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-paperclip mr-2"></i>2</span><!----><span
-                class="flex align-items-center font-semibold white-space-nowrap ng-star-inserted"><i
-                  class="pi pi-clock mr-2"></i>24 May</span><!----></div>
-            <div class="flex align-items-center sm:justify-content-end"><p-avatargroup styleclass="mr-3"
-                class="p-element">
-                <div class="mr-3 p-avatar-group p-component"><p-avatar size="large" shape="circle"
-                    class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/ionibowcher.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/amyelsner.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><!----><!----></div>
-              </p-avatargroup><button pbutton="" pripple="" type="button" icon="pi pi-ellipsis-v"
-                class="p-element p-ripple p-button-rounded p-button-text z-3 ml-auto sm:ml-0 p-button p-component p-button-icon-only"
-                fdprocessedid="uiybt"><span class="p-button-icon pi pi-ellipsis-v" aria-hidden="true"></span><span
-                  class="p-ink" aria-hidden="true" role="presentation"></span></button><p-menu styleclass="w-8rem"
-                class="p-element ng-tns-c421417325-118 ng-star-inserted"><!----></p-menu></div>
-          </div>
-        </li>
-        <li
-          class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-          <div class="flex align-items-center flex-1"><p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-              <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-                <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-                  <input type="checkbox" value="undefined" id="6" aria-checked="false" data-pc-section="hiddenInput">
-                </div>
-                <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-                  data-pc-section="input"><!----></div>
-              </div><!---->
-            </p-checkbox><label for="task.id" class="font-medium ml-2" style="word-break: break-word;">Create Mobile
-              UI</label></div>
-          <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-            <div class="flex align-items-center"><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-comment mr-2"></i>1</span><!----><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-paperclip mr-2"></i>2</span><!----><span
-                class="flex align-items-center font-semibold white-space-nowrap ng-star-inserted"><i
-                  class="pi pi-clock mr-2"></i>13 May</span><!----></div>
-            <div class="flex align-items-center sm:justify-content-end"><p-avatargroup styleclass="mr-3"
-                class="p-element">
-                <div class="mr-3 p-avatar-group p-component"><p-avatar size="large" shape="circle"
-                    class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/onyamalimba.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/ivanmagalhaes.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><!----><!----></div>
-              </p-avatargroup><button pbutton="" pripple="" type="button" icon="pi pi-ellipsis-v"
-                class="p-element p-ripple p-button-rounded p-button-text z-3 ml-auto sm:ml-0 p-button p-component p-button-icon-only"
-                fdprocessedid="vvblt"><span class="p-button-icon pi pi-ellipsis-v" aria-hidden="true"></span><span
-                  class="p-ink" aria-hidden="true" role="presentation"></span></button><p-menu styleclass="w-8rem"
-                class="p-element ng-tns-c421417325-119 ng-star-inserted"><!----></p-menu></div>
-          </div>
-        </li>
-        <li
-          class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-          <div class="flex align-items-center flex-1"><p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-              <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-                <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-                  <input type="checkbox" value="undefined" id="7" aria-checked="false" data-pc-section="hiddenInput">
-                </div>
-                <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-                  data-pc-section="input"><!----></div>
-              </div><!---->
-            </p-checkbox><label for="task.id" class="font-medium ml-2" style="word-break: break-word;">Create a New
-              Marketing Project</label></div>
-          <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-            <div class="flex align-items-center"><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-comment mr-2"></i>7</span><!----><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-paperclip mr-2"></i>4</span><!----><span
-                class="flex align-items-center font-semibold white-space-nowrap ng-star-inserted"><i
-                  class="pi pi-clock mr-2"></i>13 May</span><!----></div>
-            <div class="flex align-items-center sm:justify-content-end"><p-avatargroup styleclass="mr-3"
-                class="p-element">
-                <div class="mr-3 p-avatar-group p-component"><p-avatar size="large" shape="circle"
-                    class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/ionibowcher.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/asiyajavayant.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/xuxuefeng.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><!----><!----></div>
-              </p-avatargroup><button pbutton="" pripple="" type="button" icon="pi pi-ellipsis-v"
-                class="p-element p-ripple p-button-rounded p-button-text z-3 ml-auto sm:ml-0 p-button p-component p-button-icon-only"
-                fdprocessedid="c5gy5"><span class="p-button-icon pi pi-ellipsis-v" aria-hidden="true"></span><span
-                  class="p-ink" aria-hidden="true" role="presentation"></span></button><p-menu styleclass="w-8rem"
-                class="p-element ng-tns-c421417325-127 ng-star-inserted"><!----></p-menu></div>
-          </div>
-        </li>
-        <li
-          class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-          <div class="flex align-items-center flex-1"><p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-              <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-                <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-                  <input type="checkbox" value="undefined" id="8" aria-checked="false" data-pc-section="hiddenInput">
-                </div>
-                <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-                  data-pc-section="input"><!----></div>
-              </div><!---->
-            </p-checkbox><label for="task.id" class="font-medium ml-2" style="word-break: break-word;">Analyze New
-              Sprint</label></div>
-          <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-            <div class="flex align-items-center"><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-comment mr-2"></i>3</span><!----><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-paperclip mr-2"></i>2</span><!----><span
-                class="flex align-items-center font-semibold white-space-nowrap ng-star-inserted"><i
-                  class="pi pi-clock mr-2"></i>10 May</span><!----></div>
-            <div class="flex align-items-center sm:justify-content-end"><p-avatargroup styleclass="mr-3"
-                class="p-element">
-                <div class="mr-3 p-avatar-group p-component"><p-avatar size="large" shape="circle"
-                    class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/ionibowcher.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><!----><!----></div>
-              </p-avatargroup><button pbutton="" pripple="" type="button" icon="pi pi-ellipsis-v"
-                class="p-element p-ripple p-button-rounded p-button-text z-3 ml-auto sm:ml-0 p-button p-component p-button-icon-only"
-                fdprocessedid="xfz3gh"><span class="p-button-icon pi pi-ellipsis-v" aria-hidden="true"></span><span
-                  class="p-ink" aria-hidden="true" role="presentation"></span></button><p-menu styleclass="w-8rem"
-                class="p-element ng-tns-c421417325-128 ng-star-inserted"><!----></p-menu></div>
-          </div>
-        </li>
-        <li
-          class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-          <div class="flex align-items-center flex-1"><p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-              <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-                <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-                  <input type="checkbox" value="undefined" id="9" aria-checked="false" data-pc-section="hiddenInput">
-                </div>
-                <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-                  data-pc-section="input"><!----></div>
-              </div><!---->
-            </p-checkbox><label for="task.id" class="font-medium ml-2" style="word-break: break-word;">Create New Icon
-              Set</label></div>
-          <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between">
-            <div class="flex align-items-center"><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-comment mr-2"></i>1</span><!----><span
-                class="flex align-items-center font-semibold mr-3 ng-star-inserted"><i
-                  class="pi pi-paperclip mr-2"></i>3</span><!----><span
-                class="flex align-items-center font-semibold white-space-nowrap ng-star-inserted"><i
-                  class="pi pi-clock mr-2"></i>13 May</span><!----></div>
-            <div class="flex align-items-center sm:justify-content-end"><p-avatargroup styleclass="mr-3"
-                class="p-element">
-                <div class="mr-3 p-avatar-group p-component"><p-avatar size="large" shape="circle"
-                    class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/onyamalimba.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/ivanmagalhaes.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><p-avatar size="large" shape="circle" class="p-element ng-star-inserted">
-                    <div data-pc-name="avatar" class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-lg">
-                      <img src="assets/demo/images/avatar/asiyajavayant.png"
-                        class="ng-star-inserted"><!----><!----><!----><!----><!----></div>
-                  </p-avatar><!----><!----></div>
-              </p-avatargroup><button pbutton="" pripple="" type="button" icon="pi pi-ellipsis-v"
-                class="p-element p-ripple p-button-rounded p-button-text z-3 ml-auto sm:ml-0 p-button p-component p-button-icon-only"
-                fdprocessedid="nmsk9m"><span class="p-button-icon pi pi-ellipsis-v" aria-hidden="true"></span><span
-                  class="p-ink" aria-hidden="true" role="presentation"></span></button><p-menu styleclass="w-8rem"
-                class="p-element ng-tns-c421417325-129 ng-star-inserted"><!----></p-menu></div>
-          </div>
-        </li><!---->
-      </ul>
+        </div>
+        <!---->
+      </p-checkbox>
+      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Users management</label>
     </div>
-  </app-privileges><app-privileges title="Completed">
-    <div>
-      <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Completed</div>
-      <ul class="list-none p-0 m-0"><!----></ul>
+    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+
+    <div class="flex align-items-center flex-1">
+      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
+        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
+          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
+            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
+          </div>
+          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
+            data-pc-section="input">
+            <!---->
+          </div>
+        </div>
+        <!---->
+      </p-checkbox>
+      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Roles management</label>
     </div>
-  </app-privileges>
+    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+
+    <div class="flex align-items-center flex-1">
+      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
+        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
+          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
+            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
+          </div>
+          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
+            data-pc-section="input">
+            <!---->
+          </div>
+        </div>
+        <!---->
+      </p-checkbox>
+      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Privileges management</label>
+    </div>
+    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+  </li>
+  <div class="text-700 font-semibold text-lg mt-5 mb-3 py-3">Product information</div>
+  <li
+    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
+    <div class="flex align-items-center flex-1">
+      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
+        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
+          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
+            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
+          </div>
+          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
+            data-pc-section="input">
+            <!---->
+          </div>
+        </div>
+        <!---->
+      </p-checkbox>
+      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Brands management</label>
+    </div>
+    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+
+    <div class="flex align-items-center flex-1">
+      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
+        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
+          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
+            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
+          </div>
+          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
+            data-pc-section="input">
+            <!---->
+          </div>
+        </div>
+        <!---->
+      </p-checkbox>
+      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Categories management</label>
+    </div>
+    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+
+    <div class="flex align-items-center flex-1">
+      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
+        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
+          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
+            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
+          </div>
+          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
+            data-pc-section="input">
+            <!---->
+          </div>
+        </div>
+        <!---->
+      </p-checkbox>
+      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Theme management</label>
+    </div>
+    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+  </li>
+
+  <div class="text-700 font-semibold text-lg mt-5 mb-3 py-3">Sales</div>
+
+  <li
+    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
+    <div class="flex align-items-center flex-1">
+      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
+        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
+          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
+            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
+          </div>
+          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
+            data-pc-section="input">
+            <!---->
+          </div>
+        </div>
+        <!---->
+      </p-checkbox>
+      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Products management</label>
+    </div>
+    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+
+    <div class="flex align-items-center flex-1">
+      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
+        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
+          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
+            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
+          </div>
+          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
+            data-pc-section="input">
+            <!---->
+          </div>
+        </div>
+        <!---->
+      </p-checkbox>
+      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Packages management</label>
+    </div>
+    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+  </li>
+
+  <div class="text-700 font-semibold text-lg mt-5 mb-3 py-3">Order</div>
+  <li
+    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
+    <div class="flex align-items-center flex-1">
+      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
+        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
+          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
+            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
+          </div>
+          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
+            data-pc-section="input">
+          </div>
+        </div>
+      </p-checkbox>
+      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Orders management</label>
+    </div>
+    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+  </li>
+
+
+  <div class="text-700 font-semibold text-lg mt-5 mb-3 py-3">Clients</div>
+  <li
+    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
+    <div class="flex align-items-center flex-1">
+      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
+        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
+          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
+            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
+          </div>
+          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
+            data-pc-section="input">
+          </div>
+        </div>
+      </p-checkbox>
+      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Clients management</label>
+    </div>
+    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+  </li>
+
 </div>

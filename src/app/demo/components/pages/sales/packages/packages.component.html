@@ -104,10 +104,16 @@
           <div class="field">
             <label for="products">Product</label>
             <p-dropdown [options]="products" [(ngModel)]="selectedProductId" optionLabel="reference"
-                        placeholder="Select Product" (onChange)="productSelectedEvent($event)">
+              placeholder="Select Product" >
             </p-dropdown>
-        </div>
-        
+          </div>
+
+          <div class="field">
+            <label for="products">Products</label>
+          <p-multiSelect [options]="products" [(ngModel)]="selectedProducts" optionLabel="reference"
+            placeholder="Select Products" (onChange)="productSelectedEvent($event)"/>
+          </div>
+
 
           <div class="field">
             <label for="nbProduct">Number of articles</label>
