@@ -60,8 +60,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
       price: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
       soldQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
       availableQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
-      brand: [, Validators.required],
-      category: [, Validators.required]
+      brand: [null, Validators.required],
+      category: [null, Validators.required]
     });
   }
 
@@ -106,7 +106,34 @@ export class ProductsComponent implements OnInit, OnDestroy {
     }
     this.productDialog = false;
   }
+  
+  createProduct(): void {
+    if (this.productForm.valid) {
+      const product: Product = this.productForm.value;
+      const brand: Brand = this.brands.find(b => b.id === this.productForm.value.brand);
+      const category: Category = this.categories.find(c => c.id === this.productForm.value.category);
 
+      this.productService.createProduct(
+        this.file,
+        product.reference,
+        product.description,
+        product.price,
+        product.soldQuantity,
+        product.availableQuantity,
+        brand,
+        category
+      ).subscribe({
+        next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 2000 }),
+        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
+        complete: () => { }
+      });
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please fill out the form correctly!' });
+    }
+  }
+
+
+/*
   private createProduct(): void {
     this.productService.createProduct(this.file,
       this.productForm.get('reference').value,
@@ -120,7 +147,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       })
     this.products.push(this.product);
   }
-
+*/
 /*
 createProduct() {
   if (this.productForm.valid && this.selectedFile) {

@@ -29,7 +29,9 @@
             <span class="block mt-2 md:mt-0 p-input-icon-left">
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="searchPackages($event.target.value)" placeholder="Search..."
-                class="w-full sm:w-auto" />
+                class="w-auto sm:w-auto" />
+              <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;" icon="pi pi-refresh" (click)="getPackages()"></button>
+                    
             </span>
           </div>
         </ng-template>
@@ -104,14 +106,14 @@
           <div class="field">
             <label for="products">Product</label>
             <p-dropdown [options]="products" [(ngModel)]="selectedProductId" optionLabel="reference"
-              placeholder="Select Product" >
+              placeholder="Select Product">
             </p-dropdown>
           </div>
 
           <div class="field">
             <label for="products">Products</label>
-          <p-multiSelect [options]="products" [(ngModel)]="selectedProducts" optionLabel="reference"
-            placeholder="Select Products" (onChange)="productSelectedEvent($event)"/>
+            <p-multiSelect [options]="products" [(ngModel)]="selectedProducts" optionLabel="reference"
+              placeholder="Select Products" (onChange)="productSelectedEvent($event)" />
           </div>
 
 

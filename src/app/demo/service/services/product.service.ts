@@ -19,7 +19,7 @@ export class ProductService {
   getServiceUrl() {
     return this.baseUrl;
   }
-
+/*
   createProduct(
     file: File,
     reference: string,
@@ -53,8 +53,27 @@ export class ProductService {
     return throwError('Something went wrong; please try again later.');
   }
   
-/*
-  createProduct(formData: FormData): Observable<Product> {
+*/
+   createProduct(
+    file: File,
+    reference: string,
+    description: string,
+    price: number,
+    soldQuantity: number,
+    availableQuantity: number,
+    brand: Brand,
+    category: Category
+  ): Observable<Product> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('reference', reference);
+    formData.append('description', description);
+    formData.append('price', price.toString());
+    formData.append('soldQuantity', soldQuantity.toString());
+    formData.append('availableQuantity', availableQuantity.toString());
+    formData.append('brand', JSON.stringify(brand));
+    formData.append('category', JSON.stringify(category));
+    
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json'
@@ -68,10 +87,10 @@ export class ProductService {
   }
 
   private handleError(error: any) {
-    console.error('An error occurred', error);
-    return throwError('Something bad happened; please try again later.');
+    console.error('An error occurred:', error);
+    return throwError('Something went wrong; please try again later.');
   }
-*/
+
 
   updateProduct(productId: string, file: File, reference: string, description: string, price: number, soldQuantity: number, availableQuantity: number): Observable<Package> {
     const formData = new FormData();
