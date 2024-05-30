@@ -27,17 +27,18 @@
 
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Products Management</h5>
-                    
+
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
-                           
+
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="searchProducts($event.target.value)"
                                 placeholder="Search..." class="w-auto sm:w-auto" />
-                                <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;" icon="pi pi-refresh" (click)="getProducts()"></button>
-                    
-                            </span>
-                    
-                       
+                            <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+                                icon="pi pi-refresh" (click)="getProducts()"></button>
+
+                        </span>
+
+
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -146,15 +147,15 @@
                             <label for="soldQuantity">Sold Quantity</label>
                             <p-inputNumber id="soldQuantity" formControlName="soldQuantity"></p-inputNumber>
                             <small class="ng-dirty ng-invalid text-red-600"
-                            *ngIf="productForm.get('soldQuantity').invalid && productForm.get('soldQuantity').touched">
-                            Sold Quantity is required.</small>
+                                *ngIf="productForm.get('soldQuantity').invalid && productForm.get('soldQuantity').touched">
+                                Sold Quantity is required.</small>
                         </div>
                         <div class="field col">
                             <label for="availableQuantity">Available Quantity</label>
                             <p-inputNumber id="availableQuantity" formControlName="availableQuantity"></p-inputNumber>
                             <small class="ng-dirty ng-invalid text-red-600"
-                            *ngIf="productForm.get('availableQuantity').invalid && productForm.get('availableQuantity').touched">
-                            Available Quantity is required.</small>
+                                *ngIf="productForm.get('availableQuantity').invalid && productForm.get('availableQuantity').touched">
+                                Available Quantity is required.</small>
                         </div>
                     </div>
 

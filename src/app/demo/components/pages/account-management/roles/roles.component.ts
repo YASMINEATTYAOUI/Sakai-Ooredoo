@@ -50,7 +50,7 @@ export class RolesComponent implements OnInit, OnDestroy {
       id: [''],
       name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
       description: [''],
-      active: [''],
+      active: [false],
     });
 
   }
@@ -60,6 +60,10 @@ export class RolesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+  }
+
+  getSeverity(active: boolean): string {
+    return active ? 'success' : 'danger';
   }
 
   private createRole(role: Role): void {
@@ -149,6 +153,7 @@ export class RolesComponent implements OnInit, OnDestroy {
   hideDialog() {
     this.roleDialog = false;
     this.submitted = false;
+    this.roleForm.reset();
   }
 
 

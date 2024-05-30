@@ -6,6 +6,7 @@ export class User {
   fullName?: string ;
   email?: string;
   phoneNumber?: number;
+  status?:Boolean
   password?: string;
   creationDate?: Date;
   lastModifiedDate?: Date;

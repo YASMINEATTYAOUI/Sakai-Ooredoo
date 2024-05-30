@@ -852,8 +852,8 @@
     border-color: #ff3d32;
   }
   .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
-    border-color: #c7d2fe;
-    background: #c7d2fe;
+    border-color: #ff3d32;
+    background: #ff3d32;
     color: #030712;
   }
 
@@ -871,7 +871,7 @@
     background-color: #424b57;
   }
   .p-input-filled .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
-    background: #c7d2fe;
+    background: #ff3d32;
   }
 
   .p-checkbox-label {
@@ -1633,8 +1633,8 @@
     background: #ff3d32;
   }
   .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
-    border-color: #c7d2fe;
-    background: #c7d2fe;
+    border-color: #ff3d32;
+    background: #ff3d32;
     color: #030712;
   }
 
@@ -1652,7 +1652,7 @@
     background: #ff3d32;
   }
   .p-input-filled .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
-    background: #c7d2fe;
+    background: #ff3d32;
   }
 
   .p-radiobutton-label {
@@ -1964,9 +1964,9 @@
     border-color: #a5b4fc;
   }
   .p-button:not(:disabled):active {
-    background: #c7d2fe;
+    background: #ff3d32;
     color: #030712;
-    border-color: #c7d2fe;
+    border-color: #ff3d32;
   }
   .p-button.p-button-outlined {
     background-color: transparent;
@@ -4586,9 +4586,9 @@
     border-color: #a5b4fc;
   }
   .p-fileupload-choose:not(.p-disabled):active {
-    background: #c7d2fe;
+    background: #ff3d32;
     color: #030712;
-    border-color: #c7d2fe;
+    border-color: #ff3d32;
   }
 
   .p-breadcrumb {

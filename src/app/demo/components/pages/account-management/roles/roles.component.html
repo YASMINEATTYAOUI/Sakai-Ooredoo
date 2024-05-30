@@ -27,7 +27,7 @@
             </span>
           </div>
         </ng-template>
-        <ng-template pTemplate="header">
+        <ng-template pTemplate="header" let-columns>
           <tr>
             <th style="width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
@@ -47,7 +47,7 @@
           </tr>
         </ng-template>
 
-        <ng-template pTemplate="body" let-role>
+        <ng-template pTemplate="body" let-role let-columns="columns">
           <tr class="ng-star-inserted">
             <td>
               <p-tableCheckbox [value]="role"></p-tableCheckbox>
@@ -62,7 +62,7 @@
               {{ role.description }}
             </td>
             <td>
-              {{ role.Status }}
+              <p-tag [value]="role.active ? 'Active' : 'Inactive'" [severity]="getSeverity(role.active)"></p-tag>
             </td>
             <td>
               <div class="flex">
@@ -96,6 +96,11 @@
             <textarea id="description" formControlName="description" pInputTextarea
               required rows="3" cols="20"></textarea>
           </div>
+          <div class="field">
+            <label for="active">Status</label>
+          <p-inputSwitch formControlName="active"></p-inputSwitch>
+        </div>
+
         </form>
       </ng-template>
 
