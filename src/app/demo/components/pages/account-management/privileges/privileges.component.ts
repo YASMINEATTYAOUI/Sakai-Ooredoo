@@ -84,7 +84,6 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     this.submitted = true;
     const data = this.privilegeForm.value;
     if (this.privilegeToUpdate) {
-      this.updatePrivilege(data); 
     } else {
       this.createPrivilege(data); 
     }
@@ -100,14 +99,22 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     })
   }
 
-  private updatePrivilege(privilege: Privilege): void { 
-    if (this.privilegeToUpdate) {
-      this.privilegeService.updatePrivilege(privilege).subscribe({ 
-        next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Privilege Updated', life: 2000 }), // Renommé Role en Privilege
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }), 
-        complete: () => { } 
-      });
-    }
+  privilegeSelectedEvent(event: any) {
+    this.privilegeId = event.value;
+    //this.privilege.id = event.value;
+    //event.value=this.productForm.get('brand').value;
+    //this.productForm.get('brand').value =event.value;
+  }
+
+  togglePrivilege(privilege: any): void {
+    this.privilegeService.togglePrivilegeStatus(privilege.id).subscribe({
+      next: (updatedPrivilege: any) => {
+        privilege.active = updatedPrivilege.active,
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Privilege Updated', life: 2000 }) // Renommé Role en Privilege
+    },
+      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Toggling Privilege Failed' }), 
+      complete: () => { } 
+  });
   }
 
   getPrivileges() { 

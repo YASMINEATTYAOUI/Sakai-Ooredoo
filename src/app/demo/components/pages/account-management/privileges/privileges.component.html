@@ -31,7 +31,6 @@
           <tr>
             <th pSortableColumn="name">Name</th>
             <th pSortableColumn="active">status</th>
-            <th pSortableColumn="roleCount">roleCount</th>
             <th pSortableColumn="edit"><span></span></th>
           </tr>
         </ng-template>
@@ -48,10 +47,9 @@
               <p-tag [value]="privilege.active ? 'Active' : 'Inactive'"
                 [severity]="getSeverity(privilege.active)"></p-tag>
             </td>
-            <td>{{ privilege.roleCount }}</td>
             <td>
               <div class="flex">
-                <p-inputSwitch [(ngModel)]="privilege.active"></p-inputSwitch>
+                <p-inputSwitch [(ngModel)]="privilege.active" (onChange)="togglePrivilege(privilege)"></p-inputSwitch>
               </div>
             </td>
           </tr>

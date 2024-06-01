@@ -25,6 +25,10 @@ private baseUrl = environment.apiUrl + '/privileges';
   updatePrivilege(privilege: Privilege): Observable<Privilege> {
     return this.http.put<Privilege>(this.baseUrl, privilege);
   }
+
+  togglePrivilegeStatus(privilegeId: number): Observable<Privilege> {
+    return this.http.put<Privilege>(`${this.baseUrl}/${privilegeId}/toggle`, {});
+  }
   /*
   updatePrivilege(privilegeId: any,privilege: Privilege): Observable<Privilege> {
     return this.http.put<Privilege>(`${this.baseUrl}/${privilegeId}`, privilege);
