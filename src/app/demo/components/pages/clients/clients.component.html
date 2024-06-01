@@ -55,9 +55,10 @@
               <p-tag [value]="client.status ? 'Active' : 'Blocked'" [severity]="getSeverity(client.status)"></p-tag>
             </td>
           -->
-          <td>
-            <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': client.status, 'text-red-500 pi-times-circle': !client.status }"></i>
-        </td>
+            <td>
+              <i class="pi"
+                [ngClass]="{ 'text-green-500 pi-check-circle': client.status, 'text-red-500 pi-times-circle': !client.status }"></i>
+            </td>
             <td>
               <div class="flex">
                 <p-inputSwitch [(ngModel)]="client.status" (onChange)="toggleClient(client)"></p-inputSwitch>

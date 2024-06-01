@@ -17,6 +17,8 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { OrderDetailsComponent } from './order-details/order-details.component';
+import { TagModule } from 'primeng/tag';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
     DropdownModule,
     RadioButtonModule,
     InputNumberModule,
-    DialogModule
+    DialogModule,
+    TagModule,
+    InputSwitchModule,
   ]
 })
 export class OrdersModule { }
