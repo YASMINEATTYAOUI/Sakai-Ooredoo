@@ -13,53 +13,68 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
 
-/*
-.p-tag {
-  background-color: #FFD0CE !important; // Light red background for consistency
-  color: #B32B23 !important; // Dark red text color for consistency
-  border: none !important; // Remove border for consistency
-  border-radius: 12px !important; // Rounded corners for consistency
-  padding: 5px 10px !important; // Padding for consistency
-  font-weight: bold !important; // Bold text for consistency
-  display: inline-block; // Ensures it stays as an inline-block element
-}
-*/
+
 .p-tag-success {
-  background-color: #CAF1D8 !important; // Light green background for success
-  color: #188A42 !important; // Dark green text color for success
-  border: none !important; // Remove border
-  border-radius: 12px !important; // Rounded corners
-  padding: 5px 10px !important; // Padding
-  font-weight: bold !important; // Bold text
-  display: inline-block; // Inline-block element
+  background-color: #CAF1D8 !important;
+  color: #188A42 !important;
+  border: none !important; 
+  border-radius: 12px !important; 
+  padding: 5px 10px !important;
+  font-weight: bold !important; 
+  display: inline-block;
+  font-size: 0.9em !important;
 }
 
 .p-tag-danger {
-  background-color: #FFD0CE !important; // Light red background for danger
-  color: #B32B23 !important; // Dark red text color for danger
-  border: none !important; // Remove border
-  border-radius: 12px !important; // Rounded corners
-  padding: 5px 10px !important; // Padding
-  font-weight: bold !important; // Bold text
-  display: inline-block; // Inline-block element
+  background-color: #FFD0CE !important; 
+  color: #B32B23 !important; 
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 5px 10px !important;
+  font-weight: bold !important;
+  display: inline-block;
+  font-size: 0.9em !important; 
 }
 
 .p-tag-warning {
-  background-color: #FEDDC7 !important; // Light red background for danger
-  color: #AE510F !important; // Dark red text color for danger
-  border: none !important; // Remove border
-  border-radius: 12px !important; // Rounded corners
-  padding: 5px 10px !important; // Padding
-  font-weight: bold !important; // Bold text
-  display: inline-block; // Inline-block element
+  background-color: #FEDDC7 !important; 
+  color: #AE510F !important;
+  border: none !important; 
+  border-radius: 12px !important;
+  padding: 5px 10px !important;
+  font-weight: bold !important; 
+  display: inline-block; 
+  font-size: 0.9em !important; 
 }
 
 .p-tag-info {
-  background-color: #D0E1FD !important; // Light red background for danger
-  color: #295BAC !important; // Dark red text color for danger
-  border: none !important; // Remove border
-  border-radius: 12px !important; // Rounded corners
-  padding: 5px 10px !important; // Padding
-  font-weight: bold !important; // Bold text
-  display: inline-block; // Inline-block element
+  background-color: #D0E1FD !important; 
+  color: #295BAC !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 5px 10px !important;
+  font-weight: bold !important;
+  display: inline-block;
+  font-size: 0.9em !important;
 }
+
+
+.field {
+  margin-bottom: 1em;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+}
+
+.status-container label {
+  margin-right: 10px; /* Adjust the spacing between the label and switch as needed */
+}
+
+button {
+  margin-right: 10px; /* Optional: Adds spacing between buttons */
+}
+
+
+

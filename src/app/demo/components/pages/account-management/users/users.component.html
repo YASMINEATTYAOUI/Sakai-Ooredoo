@@ -58,33 +58,27 @@
                         <td>
                             <p-tableCheckbox [value]="user"></p-tableCheckbox>
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span [readonly]="true" [cancel]="false" class="p-column-title">Username</span>
+                        <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.username}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <img [src]="user.image" style="width: 50px; height: 50px;">
+                        <td [readonly]="true" style="width:14%; min-width:10rem;">
+                            <img  [src]="user.image" style="width: 50px; height: 50px;">
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Full Name</span>
+                        <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.fullName}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Email</span>
+                        <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.email}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Phone Number</span>
+                        <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.phoneNumber}}
                         </td>
-                        <td style="width:14%; min-width: 10rem;">
-                            <span class="p-column-title">Role</span>
+                        <td [readonly]="true" style="width:14%; min-width: 10rem;">
                             {{user.role?.name}}
                         </td>
-                        <td style="width:14%; min-width: 10rem;">
-                            <span class="p-column-title">Account Status</span>
-                            <span
-                                [class]="'user-badge status-' + (user.status ? user.status.toLowerCase() : '')">{{user.status}}</span>
+                        <td  style="width:14%; min-width: 10rem;">
+                            
+                            <p-tag [value]="user.status ? 'Active' : 'Inactive'" [severity]="getSeverity(user.status)"></p-tag>
                         </td>
                         <td>
                             <div class="flex">
@@ -154,7 +148,7 @@
 
                     <div class="field">
                         <label class="mb-3">Account Status</label>
-                        <p-inputSwitch [(ngModel)]="ripple"></p-inputSwitch>
+                        <p-inputSwitch [(ngModel)]="user.status"></p-inputSwitch>
                     </div>
 
                 </form>

@@ -21,17 +21,15 @@
             <span class="block mt-2 md:mt-0 p-input-icon-left">
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="searchRoles($event.target.value)" placeholder="Search..."
-                class="w-auto sm:w-auto" /> 
-                <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;" icon="pi pi-refresh" (click)="getRoles()"></button>
-                    
+                class="w-auto sm:w-auto" />
+              <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+                icon="pi pi-refresh" (click)="getRoles()"></button>
+
             </span>
           </div>
         </ng-template>
         <ng-template pTemplate="header" let-columns>
           <tr>
-            <th style="width: 3rem">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th>
             <th pSortableColumn="name">
               <span>Name</span>
               <p-sortIcon field="name"></p-sortIcon>
@@ -40,30 +38,32 @@
               <span>description</span>
               <p-sortIcon field="description"></p-sortIcon>
             </th>
-            <th pSortableColumn="users">
+
+            <th pSortableColumn="userCount">
+              <span>Number of Users</span>
+            </th>
+            <th pSortableColumn="status">
               <span>Status</span>
             </th>
             <th pSortableColumn="edit"><span></span></th>
           </tr>
         </ng-template>
 
-        <ng-template pTemplate="body" let-role let-columns="columns">
+        <ng-template pTemplate="body" let-role let-i="rowIndex" let-columns="columns">
           <tr class="ng-star-inserted">
-            <td>
-              <p-tableCheckbox [value]="role"></p-tableCheckbox>
-            </td>
+
             <td>
               <div class="flex align-items-center">
-                <span class="border-circle mr-2 bg-red-500" style="width: 7px; height: 7px"></span>
+                <span class="border-circle mr-2" [ngStyle]="{ 'background-color': getCircleColor(i) }" style="width: 7px; height: 7px"></span>
                 {{ role.name }}
               </div>
             </td>
-            <td>
-              {{ role.description }}
-            </td>
+            <td>{{ role.description }}</td>
+            <td>{{ role.userCount }}</td>
             <td>
               <p-tag [value]="role.active ? 'Active' : 'Inactive'" [severity]="getSeverity(role.active)"></p-tag>
             </td>
+
             <td>
               <div class="flex">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
@@ -86,21 +86,27 @@
         <form [formGroup]="roleForm">
           <div class="field">
             <label for="name">Name</label>
-            <input type="text" pInputText id="name" formControlName="name"
-              />
-            <small class="ng-dirty ng-invalid">Name is required.</small>
+            <input type="text" pInputText id="name" formControlName="name" />
+            <small class="ng-dirty ng-invalid text-red-600"
+              *ngIf="roleForm.get('name').invalid && roleForm.get('name').touched">
+              Name is required.</small>
           </div>
 
           <div class="field">
             <label for="description">Description</label>
-            <textarea id="description" formControlName="description" pInputTextarea
-              required rows="3" cols="20"></textarea>
+            <textarea id="description" formControlName="description" pInputTextarea required rows="4"
+              cols="30"></textarea>
           </div>
           <div class="field">
-            <label for="active">Status</label>
-          <p-inputSwitch formControlName="active"></p-inputSwitch>
-        </div>
+            <div class="status-container">
+              <label for="active">Status</label>
 
+              <p-inputSwitch formControlName="active" class="ng-dirty ng-invalid"></p-inputSwitch>
+              <small class="ng-dirty ng-invalid text-red-600"
+                *ngIf="roleForm.get('active').invalid && roleForm.get('active').touched">
+                Status is required.</small>
+            </div>
+          </div>
         </form>
       </ng-template>
 

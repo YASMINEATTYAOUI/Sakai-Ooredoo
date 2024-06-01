@@ -10,284 +10,82 @@
               (click)="openNew()"></button>
           </div>
         </ng-template>
-
+        <ng-template pTemplate="center">
+          <div class="flex justify-content-center mb-3">
+            <p-selectButton [options]="sizes" [(ngModel)]="selectedSize" [multiple]="false" optionLabel="name"
+              optionValue="class" />
+          </div>
+        </ng-template>
         <ng-template pTemplate="right">
-          <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-            (click)="deleteSelectedPrivileges(selectedPrivileges)" [disabled]="
-                            !selectedPrivileges || !selectedPrivileges.length
-                        "></button>
+          <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+            icon="pi pi-refresh" (click)="getPrivileges()"></button>
         </ng-template>
       </p-toolbar>
-      <p-tree selectionMode="checkbox"></p-tree>
-    </div>
 
-    <div class="card">
-      <p-table [value]="privileges" [tableStyle]="{ 'min-width': '50rem' }">
+      <p-table [value]="privileges" [tableStyle]="{ 'min-width': '50rem' }" [styleClass]="selectedSize.class"
+        [paginator]="true" [rows]="4" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[5, 10, 20]" [(selection)]="selectedPrivileges" selectionMode="multiple" [rowHover]="true"
+        dataKey="id">
         <ng-template pTemplate="header">
           <tr>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Quantity</th>
+            <th pSortableColumn="name">Name</th>
+            <th pSortableColumn="active">status</th>
+            <th pSortableColumn="roleCount">roleCount</th>
+            <th pSortableColumn="edit"><span></span></th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-privilege let-i="rowIndex" >
           <tr>
-            <td>{{ product.code }}</td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.category }}</td>
-            <td>{{ product.quantity }}</td>
+            <td>
+              <div class="flex align-items-center">
+                <span class="border-circle mr-2" [ngStyle]="{ 'background-color': getCircleColor(i) }" style="width: 7px; height: 7px"></span>
+                {{ privilege.name }}
+              </div>
+            </td>
+
+            <td>
+              <p-tag [value]="privilege.active ? 'Active' : 'Inactive'"
+                [severity]="getSeverity(privilege.active)"></p-tag>
+            </td>
+            <td>{{ privilege.roleCount }}</td>
+            <td>
+              <div class="flex">
+                <p-inputSwitch [(ngModel)]="privilege.active"></p-inputSwitch>
+              </div>
+            </td>
           </tr>
         </ng-template>
       </p-table>
     </div>
-
-    <p-dialog [(visible)]="privilegeDialog" [style]="{ width: '450px' }" header="Privilege Details" [modal]="true"
-      class="p-fluid">
-      <ng-template pTemplate="content">
-        <form [formGroup]="roleForm">
-          <div class="field">
-            <label for="name">Name</label>
-            <input type="text" pInputText id="name" formControlName="name" [(ngModel)]="privilege.name" required
-              autofocus [ngClass]="{
-                                'ng-invalid ng-dirty':
-                                    submitted && !privilege.name
-                            }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !privilege.name">Name is required.</small>
-          </div>
-          <div class="field">
-            <label for="description">Description</label>
-            <textarea id="description" formControlName="description" pInputTextarea [(ngModel)]="privilege.description"
-              required rows="3" cols="20"></textarea>
-          </div>
-        </form>
-      </ng-template>
-
-      <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"
-          [disabled]="privilegeForm.invalid || privilegeForm.pristine"></button>
-      </ng-template>
-    </p-dialog>
-
-    <p-dialog [(visible)]="deletePrivilegeDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
-      <div class="flex align-items-center justify-content-center">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="privilege">Are you sure you want to delete this privilege
-          <b>{{ privileg.name }}</b>?</span>
-      </div>
-      <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-          (click)="deleteRoleDialog = false"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
-      </ng-template>
-    </p-dialog>
-
-    <p-dialog [(visible)]="deletePrivilegesDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
-      <div class="flex align-items-center justify-content-center">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span>Are you sure you want to delete selected privileges?</span>
-      </div>
-      <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-          (click)="deleteRolesDialog = false"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
-          (click)="confirmDeleteSelected()"></button>
-      </ng-template>
-    </p-dialog>
   </div>
-</div>
 
+  <p-dialog [(visible)]="privilegeDialog" [style]="{ width: '450px' }" header="Privilege Details" [modal]="true"
+    class="p-fluid">
+    <ng-template pTemplate="content">
+      <form [formGroup]="privilegeForm">
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" pInputText id="name" formControlName="name" />
+          <small class="ng-dirty ng-invalid" *ngIf="submitted && !privilege.name">Name is required.</small>
 
-<div class="card">
-  <div class="text-900 font-semibold text-lg mt-5 mb-3 border-bottom-1 surface-border py-3">Privileges</div>
-
-  <div class="text-700 font-semibold text-lg mt-5 mb-3 py-3">Account Management</div>
-  <li
-    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-
-    <div class="flex align-items-center flex-1">
-      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
-          </div>
-          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-            data-pc-section="input">
-            <!---->
-          </div>
         </div>
-        <!---->
-      </p-checkbox>
-      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Users management</label>
-    </div>
-    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
 
-    <div class="flex align-items-center flex-1">
-      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
+        <div class="field">
+          <div>
+            <label for="active">Status</label>
           </div>
-          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-            data-pc-section="input">
-            <!---->
-          </div>
+          <p-inputSwitch formControlName="active"></p-inputSwitch>
         </div>
-        <!---->
-      </p-checkbox>
-      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Roles management</label>
-    </div>
-    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
 
-    <div class="flex align-items-center flex-1">
-      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
-          </div>
-          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-            data-pc-section="input">
-            <!---->
-          </div>
-        </div>
-        <!---->
-      </p-checkbox>
-      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Privileges management</label>
-    </div>
-    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
-  </li>
-  <div class="text-700 font-semibold text-lg mt-5 mb-3 py-3">Product information</div>
-  <li
-    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-    <div class="flex align-items-center flex-1">
-      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
-          </div>
-          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-            data-pc-section="input">
-            <!---->
-          </div>
-        </div>
-        <!---->
-      </p-checkbox>
-      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Brands management</label>
-    </div>
-    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
+      </form>
+    </ng-template>
 
-    <div class="flex align-items-center flex-1">
-      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
-          </div>
-          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-            data-pc-section="input">
-            <!---->
-          </div>
-        </div>
-        <!---->
-      </p-checkbox>
-      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Categories management</label>
-    </div>
-    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
-
-    <div class="flex align-items-center flex-1">
-      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
-          </div>
-          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-            data-pc-section="input">
-            <!---->
-          </div>
-        </div>
-        <!---->
-      </p-checkbox>
-      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Theme management</label>
-    </div>
-    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
-  </li>
-
-  <div class="text-700 font-semibold text-lg mt-5 mb-3 py-3">Sales</div>
-
-  <li
-    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-    <div class="flex align-items-center flex-1">
-      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
-          </div>
-          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-            data-pc-section="input">
-            <!---->
-          </div>
-        </div>
-        <!---->
-      </p-checkbox>
-      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Products management</label>
-    </div>
-    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
-
-    <div class="flex align-items-center flex-1">
-      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
-          </div>
-          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-            data-pc-section="input">
-            <!---->
-          </div>
-        </div>
-        <!---->
-      </p-checkbox>
-      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Packages management</label>
-    </div>
-    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
-  </li>
-
-  <div class="text-700 font-semibold text-lg mt-5 mb-3 py-3">Order</div>
-  <li
-    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-    <div class="flex align-items-center flex-1">
-      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
-          </div>
-          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-            data-pc-section="input">
-          </div>
-        </div>
-      </p-checkbox>
-      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Orders management</label>
-    </div>
-    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
-  </li>
-
-
-  <div class="text-700 font-semibold text-lg mt-5 mb-3 py-3">Clients</div>
-  <li
-    class="flex flex-column gap-3 md:flex-row md:align-items-center p-2 border-bottom-1 surface-border ng-star-inserted">
-    <div class="flex align-items-center flex-1">
-      <p-checkbox class="p-element ng-untouched ng-pristine ng-valid">
-        <div data-pc-name="checkbox" data-pc-section="root" class="p-checkbox p-component">
-          <div class="p-hidden-accessible" data-pc-section="hiddenInputWrapper" data-p-hidden-accessible="true">
-            <input type="checkbox" value="undefined" id="1" aria-checked="false" data-pc-section="hiddenInput" />
-          </div>
-          <div class="p-checkbox-box" data-p-highlight="false" data-p-disabled="false" data-p-focused="false"
-            data-pc-section="input">
-          </div>
-        </div>
-      </p-checkbox>
-      <label for="task.id" class="font-medium ml-2" style="word-break: break-word">Clients management</label>
-    </div>
-    <div class="flex flex-1 gap-3 flex-column sm:flex-row sm:justify-content-between"></div>
-  </li>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+      <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"
+        [disabled]="privilegeForm.invalid || privilegeForm.pristine"></button>
+    </ng-template>
+  </p-dialog>
 
 </div>

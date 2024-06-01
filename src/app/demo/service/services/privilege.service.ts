@@ -14,31 +14,30 @@ private baseUrl = environment.apiUrl + '/privileges';
 
   constructor(private http: HttpClient) {}
 
-  createPrivilege(privilege: Privilege): Observable<void> {
+  getServiceUrl() {
+    return this.baseUrl;
+  }
+
+  createPrivilege( privilege: Privilege): Observable<void> {
     return this.http.post<void>(this.baseUrl, privilege);
   }
 
   updatePrivilege(privilege: Privilege): Observable<Privilege> {
     return this.http.put<Privilege>(this.baseUrl, privilege);
   }
-
+  /*
+  updatePrivilege(privilegeId: any,privilege: Privilege): Observable<Privilege> {
+    return this.http.put<Privilege>(`${this.baseUrl}/${privilegeId}`, privilege);
+  }
+*/
   getPrivileges(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
-  }
-
-  getAllPrivilegesSortedByCreatorId(creatorId : string, name : string, pageEvent: PageEvent): Observable<any> {
-    let params = new HttpParams()
-      .set('page', pageEvent.first.toString())
-      .set('size', pageEvent.rows.toString());
-    if(name){
-      params = params.set('name', name);
-    }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
   }
 
   getPrivilegeById(id: string): Observable<Privilege> {
     return this.http.get<Privilege>(`${this.baseUrl}/${id}`);
   }
+
 
   deletePrivilege(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);

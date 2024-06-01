@@ -18,28 +18,16 @@ export class RoleService {
   getServiceUrl() {
     return this.baseUrl;
   }
-  createRole(roleDto: Role): Observable<Role> {
-    return this.http.post<Role>(this.baseUrl, roleDto);
+  createRole(role: Role): Observable<Role> {
+    return this.http.post<Role>(this.baseUrl, role);
   }
 
-  updateRole(roleId: string, updatedRole: Role): Observable<Role> {
+  updateRole(roleId: any, updatedRole: Role): Observable<Role> {
     return this.http.put<Role>(`${this.baseUrl}/${roleId}`, updatedRole);
   }
 
   getRoles(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
-  }
-
-
-
-  getAllRolesSortedByCreatorId(creatorId: string, name: string, pageEvent: PageEvent): Observable<any> {
-    let params = new HttpParams()
-      .set('page', pageEvent.first.toString())
-      .set('size', pageEvent.rows.toString());
-    if (name) {
-      params = params.set('name', name);
-    }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
   }
 
   getRoleById(id: string): Observable<Role> {

@@ -30,6 +30,7 @@ import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [PrivilegesComponent],
@@ -64,7 +65,8 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
     DividerModule,
     ChipsModule,
     AvatarModule,
-    AvatarGroupModule
+    AvatarGroupModule,
+    SelectButtonModule
   ]
 })
 export class PrivilegesModule { }

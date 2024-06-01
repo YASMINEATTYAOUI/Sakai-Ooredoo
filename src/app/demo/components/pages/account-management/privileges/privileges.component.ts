@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TreeNode } from 'primeng/api';
 import { Router } from '@angular/router';
 import { MessageService, Message} from 'primeng/api';
 import { Privilege} from 'src/app/demo/models/privilege'; 
@@ -40,6 +39,12 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
   
   privilegeId: any; 
 
+  sizes!: any[];
+
+  selectedSize: any = '';
+
+  colors: string[] = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
+
   constructor(
     private formBuilder: FormBuilder,
     private privilegeService: PrivilegeService, 
@@ -49,18 +54,31 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     this.privilegeForm = this.formBuilder.group({
       id: [''],
       name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
-      description: [''],
+      active: [''],
     });
 
   }
 
   ngOnInit(): void {
     this.getPrivileges();
+
+    this.sizes = [
+      { name: 'Small', class: 'p-datatable-sm' },
+      { name: 'Normal', class: '' },
+      { name: 'Large',  class: 'p-datatable-lg' }
+  ];
     }
 
   ngOnDestroy() {
   }
   
+  getSeverity(active: boolean): string {
+    return active ? 'success' : 'danger';
+  }
+  
+  getCircleColor(index: number): string {
+    return this.colors[index % this.colors.length];
+  }
 
   save(): void {
     this.submitted = true;
@@ -71,7 +89,7 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
       this.createPrivilege(data); 
     }
     this.privilegeDialog = false; 
-   this.getPrivileges(); 
+    this.privileges.push(this.privilege); 
   }
 
   private createPrivilege(privilege: Privilege): void { 
@@ -80,7 +98,6 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }), 
       complete: () => { }
     })
-    this.privileges.push(this.privilege); 
   }
 
   private updatePrivilege(privilege: Privilege): void { 
@@ -131,11 +148,10 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
       this.deletePrivilegesDialog = true; 
     }
   }
-  //navigation to details
-  toPrivilege(privilege: Privilege) { 
-    this.router.navigate(['dashboard/products/', privilege.id]); 
-  }
+ 
 
+
+  
   openNew() {
     this.privilege = {}; 
     this.submitted = false;
@@ -145,47 +161,19 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
   openDialog(privilege?: Privilege) { 
     this.privilegeToUpdate = privilege; 
     this.privilegeDialog = true;
-  }
 
-  confirmDeleteSelected() {
-    if (this.selectedPrivileges && this.selectedPrivileges.length > 0) {
-      const privilegeIds = this.selectedPrivileges.map(privilege => privilege.id); 
-
-      this.privilegeService.deletePrivileges(privilegeIds).subscribe({ 
-        next: () => {
-          this.deletePrivilegesDialog = false;
-          this.selectedPrivileges = []; 
-          console.log('Privileges deleted successfully');
-          this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The privileges have been deleted.' }); 
-          this.getPrivileges(); 
-        },
-        error: (e) => {
-          console.error('Error deleting privileges', e); 
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }); 
-        }
-      });
-    } else {
-      console.warn('No privileges selected for deletion'); 
-    }
-  }
-
-  confirmDelete() {
-    this.privilegeService.deletePrivilege(this.privilegeId).subscribe({
-      next: () => {
-        this.deletePrivilegeDialog = false; 
-        this.privilege = {}; 
-        console.log('Privilege deleted successfully'); 
-        this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The privilege has been deleted.' }); 
-        this.getPrivileges(); 
-      },
-      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }), 
-
-    })
+    this.privilegeService.getPrivilegeById(privilege.id);
+    this.privilegeForm.patchValue({
+      id: privilege.id,
+      name: privilege.name,
+      status: privilege.active
+    });
   }
 
   hideDialog() {
     this.privilegeDialog = false;
     this.submitted = false;
+    this.privilegeForm.reset();
   }
 
 }

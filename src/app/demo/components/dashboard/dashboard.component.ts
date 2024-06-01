@@ -14,8 +14,6 @@ import { UserService } from '../../service/services/user.service';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-    
-
     userCount: number;
     productCount: number;
     clientCount: number;
@@ -40,6 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
     messages: { severity: string; summary: string; detail: string; }[];
+user: any;
 
 
     constructor(

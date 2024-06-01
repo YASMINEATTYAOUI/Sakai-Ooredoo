@@ -61,6 +61,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
 
   }
+  getSeverity(status: boolean): string {
+    return status ? 'success' : 'danger';
+  }
 
   loadRoles() {
     this.roleService.getRoles().subscribe(roles => {

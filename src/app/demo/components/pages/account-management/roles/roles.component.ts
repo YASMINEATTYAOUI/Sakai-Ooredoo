@@ -40,6 +40,8 @@ export class RolesComponent implements OnInit, OnDestroy {
   roleId: any;
   showRoleDetailsPopup: boolean;
 
+  colors: string[] = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
+
   constructor(
     private formBuilder: FormBuilder,
     private roleService: RoleService,
@@ -49,8 +51,8 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.roleForm = this.formBuilder.group({
       id: [''],
       name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
-      description: [''],
-      active: [false],
+      description: ['',[Validators.maxLength(200), Validators.required]],
+      active: ['',[Validators.required]],
     });
 
   }
@@ -66,6 +68,9 @@ export class RolesComponent implements OnInit, OnDestroy {
     return active ? 'success' : 'danger';
   }
 
+  getCircleColor(index: number): string {
+    return this.colors[index % this.colors.length];
+  }
   private createRole(role: Role): void {
     this.roleService.createRole(role).subscribe({
       next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Created', life: 2000 }),
@@ -146,7 +151,7 @@ export class RolesComponent implements OnInit, OnDestroy {
       id: role.id,
       name: role.name,
       description: role.description,
-      status: role.active
+      active: role.active
     });
   }
 
@@ -155,7 +160,4 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.roleForm.reset();
   }
-
-
-
 }
