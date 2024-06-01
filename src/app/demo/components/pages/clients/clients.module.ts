@@ -16,6 +16,8 @@ import { RippleModule } from 'primeng/ripple';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TagModule } from 'primeng/tag';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [ClientsComponent],
@@ -36,7 +38,9 @@ import { ToolbarModule } from 'primeng/toolbar';
     DropdownModule,
     RadioButtonModule,
     InputNumberModule,
-    DialogModule
+    DialogModule,
+    TagModule,
+    InputSwitchModule,
   ]
 })
 export class ClientsModule { }

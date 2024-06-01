@@ -1,36 +1,33 @@
 <div class="grid">
   <div class="col-12">
     <div class="card px-6 py-6">
+      <h5>Clients Management</h5>
       <p-toast></p-toast>
       <p-table [value]="filteredData" responsiveLayout="scroll" [rows]="10" [paginator]="true"
         [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedClients"
-        selectionMode="multiple" [rowHover]="true" dataKey="id">
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
         <ng-template pTemplate="caption">
           <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 class="m-0">Clients Management</h5>
             <span class="block mt-2 md:mt-0 p-input-icon-left">
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="searchClients($event.target.value)" placeholder="Search..."
                 class="w-auto sm:w-auto" />
-               <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;" icon="pi pi-refresh" (click)="getClients()"></button>
-                   
+              <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+                icon="pi pi-refresh" (click)="getClients()"></button>
+
             </span>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th style="width: 3rem">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th>
-
             <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
             <th pSortableColumn="fullName">Full Name <p-sortIcon field="fullName"></p-sortIcon></th>
             <th pSortableColumn="email">Email<p-sortIcon field="email"></p-sortIcon></th>
             <th pSortableColumn="phoneNumber">Phone Number <p-sortIcon field="phoneNumber"></p-sortIcon>
             </th>
-            <th pSortableColumn="role">Role <p-sortIcon field="rating"></p-sortIcon></th>
-            <th pSortableColumn="accountStatus">Acount Status<p-sortIcon field="accountStatus"></p-sortIcon>
+            <th pSortableColumn="adress">Adress <p-sortIcon field="adress"></p-sortIcon></th>
+            <th pSortableColumn="status">Acount Status<p-sortIcon field="status"></p-sortIcon>
             </th>
             <th pSortableColumn="edit"><span></span></th>
           </tr>
@@ -38,34 +35,32 @@
 
         <ng-template pTemplate="body" let-client>
           <tr>
-            <td>
-              <p-tableCheckbox [value]="client"></p-tableCheckbox>
-            </td>
             <td style="width:14%; min-width:10rem;">
-              <span class="p-column-title">Username</span>
               {{client.username}}
             </td>
             <td style="width:14%; min-width:10rem;">
-              <span class="p-column-title">Full Name</span>
               {{client.fullName}}
             </td>
             <td style="width:14%; min-width:10rem;">
-              <span class="p-column-title">Email</span>
               {{client.email}}
             </td>
             <td style="width:14%; min-width:10rem;">
-              <span class="p-column-title">Phone Number</span>
               {{client.phoneNumber}}
             </td>
-            <td style="width:14%; min-width: 10rem;">
-              <span class="p-column-title">Account Status</span>
-              <span
-                [class]="'user-badge status-' + (client.accountStatus ? client.accountStatus.toLowerCase() : '')">{{client.accountStatus}}</span>
+            <td style="width:14%; min-width:10rem;">
+              {{client.adress}}
             </td>
+            <!--
+            <td>
+              <p-tag [value]="client.status ? 'Active' : 'Blocked'" [severity]="getSeverity(client.status)"></p-tag>
+            </td>
+          -->
+          <td>
+            <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': client.status, 'text-red-500 pi-times-circle': !client.status }"></i>
+        </td>
             <td>
               <div class="flex">
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-                  (click)="openDialog(client)"></button>
+                <p-inputSwitch [(ngModel)]="client.status" (onChange)="toggleClient(client)"></p-inputSwitch>
               </div>
             </td>
           </tr>
@@ -78,71 +73,6 @@
         </ng-template>
       </p-table>
     </div>
-    <p-dialog [(visible)]="clientDialog" [style]="{width: '450px'}" header="Client Details" [modal]="true"
-      class="p-fluid">
-      <ng-template pTemplate="content">
-        <form>
-          <img [src]="'assets/demo/images/user/' + client.image" [alt]="client.image" width="150"
-            class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="client.image">
-          <div class="field">
-            <label for="username">Username</label>
-            <input type="text" pInputText id="username" [(ngModel)]="client.username" required autofocus
-              [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.username}" name="Username" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.username">Username is
-              required.</small>
-          </div>
-          <div class="field">
-            <label for="fullName">Full Name</label>
-            <input type="text" pInputText id="fullName" [(ngModel)]="client.fullName" required autofocus
-              [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.fullName}" name="fullName" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.fullName">Full Name is
-              required.</small>
-          </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input type="text" pInputText id="email" [(ngModel)]="client.email" required autofocus
-              [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.email}" name="email" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.email">Email is required.</small>
-          </div>
-          <div class="field">
-            <label for="phoneNumber">Phone Number</label>
-            <input type="text" pInputText id="phoneNumber" [(ngModel)]="client.phoneNumber" required autofocus
-              [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.phoneNumber}" name="phoneNumber" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.phoneNumber">Phone Number is
-              required.</small>
-          </div>
-          <div class="field ">
-            <label for="password">Password</label>
-            <input type="text" pInputText id="password" [(ngModel)]="client.password" required autofocus
-              [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.password}" name="password" [toggleMask]="true" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.password">Password
-              required.</small>
-          </div>
-
-          <div class="field">
-            <label class="mb-3">Account Status</label>
-            <div class="formgrid grid">
-              <div class="field-radiobutton col-6">
-                <p-radioButton id="category1" name="category1" value="Accessories"
-                  [(ngModel)]="client.category"></p-radioButton>
-                <label for="category1">Active</label>
-              </div>
-              <div class="field-radiobutton col-6">
-                <p-radioButton id="category2" name="category2" value="Clothing"
-                  [(ngModel)]="client.category"></p-radioButton>
-                <label for="category2">Blocked</label>
-              </div>
-
-            </div>
-          </div>
-        </form>
-      </ng-template>
-
-      <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"></button>
-      </ng-template>
-    </p-dialog>
 
   </div>
 </div>

@@ -22,18 +22,10 @@ private baseUrl = environment.apiUrl + '/privileges';
     return this.http.post<void>(this.baseUrl, privilege);
   }
 
-  updatePrivilege(privilege: Privilege): Observable<Privilege> {
-    return this.http.put<Privilege>(this.baseUrl, privilege);
-  }
-
   togglePrivilegeStatus(privilegeId: number): Observable<Privilege> {
     return this.http.put<Privilege>(`${this.baseUrl}/${privilegeId}/toggle`, {});
   }
-  /*
-  updatePrivilege(privilegeId: any,privilege: Privilege): Observable<Privilege> {
-    return this.http.put<Privilege>(`${this.baseUrl}/${privilegeId}`, privilege);
-  }
-*/
+
   getPrivileges(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
   }
@@ -42,14 +34,6 @@ private baseUrl = environment.apiUrl + '/privileges';
     return this.http.get<Privilege>(`${this.baseUrl}/${id}`);
   }
 
-
-  deletePrivilege(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
-  }
-
-  deletePrivileges(ids: string[]): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
-  }
   searchPrivilegesByName(name: string, pageEvent: PageEvent): Observable<any> {
     const rows = pageEvent.rows??10;
     const pageNumber = pageEvent.first??0 / rows;
