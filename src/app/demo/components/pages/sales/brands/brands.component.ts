@@ -60,12 +60,11 @@ export class BrandsComponent implements OnInit, OnDestroy {
       complete: () => { }
     });
     this.brands.push(this.brandForm.value);
-    //this.brands.push(this.brand);
   }
   private updateBrand(): void {
     if (this.brandToUpdate) {
       this.submitted = true;
-      this.brandService.updateBrand(this.brandForm.get('name').value, this.brandForm.get('description').value, this.file).subscribe({
+      this.brandService.updateBrand(this.brandForm.get('id').value, this.brandForm.get('name').value, this.brandForm.get('description').value, this.file).subscribe({
         next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Updated', life: 2000 }),
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
         complete: () => { }
@@ -87,7 +86,7 @@ export class BrandsComponent implements OnInit, OnDestroy {
     this.brandDialog = false;
   }
 
-  
+
   getBrands() {
     this.tableLoading = true;
     this.brandService.getBrands().subscribe({
@@ -140,6 +139,13 @@ export class BrandsComponent implements OnInit, OnDestroy {
   openDialog(brand?: Brand) {
     this.brandToUpdate = brand;
     this.brandDialog = true;
+    this.brandService.getBrandById(brand.id);
+    this.brandForm.patchValue({
+      id: brand.id,
+      name: brand.name,
+      description: brand.description,
+      file: brand.image
+    });
   }
 
   confirmDeleteSelected() {

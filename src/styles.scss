@@ -12,3 +12,69 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
+
+
+.p-tag-success {
+  background-color: #CAF1D8 !important;
+  color: #188A42 !important;
+  border: none !important; 
+  border-radius: 12px !important; 
+  padding: 5px 10px !important;
+  font-weight: bold !important; 
+  display: inline-block;
+  font-size: 0.9em !important;
+}
+
+.p-tag-danger {
+  background-color: #FFD0CE !important; 
+  color: #B32B23 !important; 
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 5px 10px !important;
+  font-weight: bold !important;
+  display: inline-block;
+  font-size: 0.9em !important; 
+}
+
+.p-tag-warning {
+  background-color: #FEDDC7 !important; 
+  color: #AE510F !important;
+  border: none !important; 
+  border-radius: 12px !important;
+  padding: 5px 10px !important;
+  font-weight: bold !important; 
+  display: inline-block; 
+  font-size: 0.9em !important; 
+}
+
+.p-tag-info {
+  background-color: #D0E1FD !important; 
+  color: #295BAC !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 5px 10px !important;
+  font-weight: bold !important;
+  display: inline-block;
+  font-size: 0.9em !important;
+}
+
+
+.field {
+  margin-bottom: 1em;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+}
+
+.status-container label {
+  margin-right: 10px; /* Adjust the spacing between the label and switch as needed */
+}
+
+button {
+  margin-right: 10px; /* Optional: Adds spacing between buttons */
+}
+
+
+

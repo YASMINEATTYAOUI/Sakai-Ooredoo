@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toast></p-toast>
-            
+
             <p-table [value]="filteredData" responsiveLayout="scroll" [rows]="10" [paginator]="true"
                 [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -13,7 +13,10 @@
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="searchOrders($event.target.value)"
-                                placeholder="Search..." class="w-full sm:w-auto" />
+                                placeholder="Search..." class="w-auto sm:w-auto" />
+                            <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+                                icon="pi pi-refresh" (click)="getOrders()"></button>
+
                         </span>
                     </div>
                 </ng-template>
@@ -26,13 +29,14 @@
                         <th pSortableColumn="numberOrder">Number of Order<p-sortIcon field="numberOrder"></p-sortIcon>
                         </th>
                         <th pSortableColumn="date">Date<p-sortIcon field="date"></p-sortIcon></th>
-                        <th pSortableColumn="articlesNumber">Articles Number<p-sortIcon
+                        <th pSortableColumn="articlesNumber">Number of Articles<p-sortIcon
                                 field="articlesNumber"></p-sortIcon></th>
                         <th pSortableColumn="totalPrice">Total Price<p-sortIcon field="totalPrice"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="orderStatus">Order Status<p-sortIcon field="orderStatus"></p-sortIcon></th>
                         <th pSortableColumn="deliveryType">Delivery Type<p-sortIcon field="deliveryType"></p-sortIcon>
                         </th>
+                        <th pSortableColumn="orderStatus">Order Status<p-sortIcon field="orderStatus"></p-sortIcon></th>
+
                         <th pSortableColumn="edit"><span></span></th>
                     </tr>
                 </ng-template>
@@ -43,33 +47,30 @@
                             <p-tableCheckbox [value]="order"></p-tableCheckbox>
                         </td>
                         <td>
-                            <span>Number of Order</span>
                             {{order.numberOrder}}
                         </td>
                         <td>
-                            <span>Date</span>
-                            {{order.date}}
+                            {{order.creationDate}}
                         </td>
                         <td>
-                            <span>Articles Number</span>
                             {{order.articlesNumber}}
                         </td>
                         <td>
-                            <span>Total Price</span>
                             {{order.totalPrice}}
                         </td>
+
                         <td>
-                            <span>Order Status</span>
-                            {{order.orderStatus}}
-                        </td>
-                        <td style=>
-                            <span class=>Delivery Type</span>
                             <span>{{order.deliveryType}}</span>
                         </td>
+
                         <td>
+                            <p-tag [value]="getOrderStatus(order.orderStatus)"
+                                   [severity]="getSeverity(order.orderStatus)"></p-tag>
+                          </td>
+                          <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2" (click)="openDialog(order)"></button>
+                                <p-inputSwitch [(ngModel)]="order.orderStatus"
+                                    (onChange)="toggleOrder(order)"></p-inputSwitch>
                             </div>
                         </td>
                     </tr>
@@ -83,74 +84,6 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="orderDialog" [style]="{width: '450px'}" header="Order Details" [modal]="true"
-            class="p-fluid">
-            <ng-template pTemplate="content">
-                <form [formGroup]="orderForm">
-                    <div class="field">
-                        <label for="username">Username</label>
-                        <input type="text" pInputText id="username" [(ngModel)]="order.username" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !order.username}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !order.name">Name is required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="fullName">Full Name</label>
-                        <input type="text" pInputText id="fullName" [(ngModel)]="order.fullName" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !order.fullName}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !order.fullName">Name is
-                            required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="email">Email</label>
-                        <input type="text" pInputText id="email" [(ngModel)]="order.email" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !order.email}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !order.email">Name is required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="phoneNumber">Phone Number</label>
-                        <input type="text" pInputText id="phoneNumber" [(ngModel)]="order.phoneNumber" required
-                            autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !order.phoneNumber}" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !order.phoneNumber">Name is
-                            required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="role">Role</label>
-                        <p-dropdown [(ngModel)]="order.inventoryStatus" inputId="role" optionValue="label"
-                            [options]="statuses" placeholder="Select">
-                            <ng-template pTemplate="selectedItem">
-                                <span *ngIf="order && order.roles"
-                                    [class]="'order-badge status-' + order.roles.toString().toLowerCase()">{{order.role}}</span>
-                            </ng-template>
-                            <ng-template let-option pTemplate="item">
-                                <span [class]="'order-badge status-' + option.value">{{option.label}}</span>
-                            </ng-template>
-                        </p-dropdown>
-                    </div>
-
-                    <div class="field">
-                        <label class="mb-3">Account Status</label>
-                        <div class="formgrid grid">
-                            <div class="field-radiobutton col-6">
-                                <p-radioButton id="category1" name="category" value="Accessories"
-                                    [(ngModel)]="order.category"></p-radioButton>
-                                <label for="category1">Active</label>
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <p-radioButton id="category2" name="category" value="Clothing"
-                                    [(ngModel)]="order.category"></p-radioButton>
-                                <label for="category2">Blocked</label>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </ng-template>
-
-            <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
-                    (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"></button>
-            </ng-template>
-        </p-dialog>
 
     </div>
 </div>

@@ -22,7 +22,9 @@ export class RoleService {
     return this.http.post<Role>(this.baseUrl, role);
   }
 
-  updateRole(roleId:any, updatedRole: Role): Observable<Role> {
+
+  updateRole(roleId: any, updatedRole: Role): Observable<Role> {
+
     return this.http.put<Role>(`${this.baseUrl}/${roleId}`, updatedRole);
   }
 

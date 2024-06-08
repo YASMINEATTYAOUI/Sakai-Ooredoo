@@ -14,39 +14,27 @@ private baseUrl = environment.apiUrl + '/privileges';
 
   constructor(private http: HttpClient) {}
 
-  createPrivilege(privilege: Privilege): Observable<void> {
+
+  getServiceUrl() {
+    return this.baseUrl;
+  }
+
+  createPrivilege( privilege: Privilege): Observable<void> {
     return this.http.post<void>(this.baseUrl, privilege);
   }
 
-  updatePrivilege(privilege: Privilege): Observable<Privilege> {
-    return this.http.put<Privilege>(this.baseUrl, privilege);
+  togglePrivilegeStatus(privilegeId: number): Observable<Privilege> {
+    return this.http.put<Privilege>(`${this.baseUrl}/${privilegeId}/toggle`, {});
   }
 
-  getPrivileges(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/sorted`);
-  }
-
-  getAllPrivilegesSortedByCreatorId(creatorId : string, name : string, pageEvent: PageEvent): Observable<any> {
-    let params = new HttpParams()
-      .set('page', pageEvent.first.toString())
-      .set('size', pageEvent.rows.toString());
-    if(name){
-      params = params.set('name', name);
-    }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
+  getPrivileges(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/sorted`);
   }
 
   getPrivilegeById(id: string): Observable<Privilege> {
     return this.http.get<Privilege>(`${this.baseUrl}/${id}`);
   }
 
-  deletePrivilege(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
-  }
-
-  deletePrivileges(ids: string[]): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
-  }
   searchPrivilegesByName(name: string, pageEvent: PageEvent): Observable<any> {
     const rows = pageEvent.rows??10;
     const pageNumber = pageEvent.first??0 / rows;

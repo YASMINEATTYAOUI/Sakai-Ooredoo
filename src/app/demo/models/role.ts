@@ -1,3 +1,5 @@
+import { Privilege } from "./privilege";
+
 export class Role {
   id?: any;
   name?: string;
@@ -5,5 +7,7 @@ export class Role {
   active?:Boolean;
   creationDate?: Date;
   lastModifiedDate?: Date;
+
+  privileges?:Privilege[]
 }
 

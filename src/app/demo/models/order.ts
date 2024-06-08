@@ -3,8 +3,7 @@ export class Order {
   numberOrder?: number;
   articlesNumber?:number;
   totalPrice?:any ;
-  orderStatus?: string;
   deliveryType?: string;
+  orderStatus?: Boolean;
   creationDate?: Date;
-  creatorId?: any;
 }

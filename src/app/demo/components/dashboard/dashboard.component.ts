@@ -1,18 +1,33 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+
 import { MenuItem } from 'primeng/api';
-import { Product } from '../../api/product';
+import { MenuItem, MessageService } from 'primeng/api';
+import { Product } from '../../models/product';
+
+
 import { ProductService } from '../../service/services/product.service';
 import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { ClientService } from '../../service/services/client.service';
+import { OrderService } from '../../service/services/order.service';
+import { UserService } from '../../service/services/user.service';
+import { AuthenticationService } from '../../service/services/authentication.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
+    providers: [MessageService],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+    [x: string]: any;
+
+    userCount: number;
+    productCount: number;
+    clientCount: number;
+    orderCount: number;
 
     items!: MenuItem[];
 
-    products!: Product[];
+    products: Product[];
 
     chartData: any;
 
@@ -20,22 +35,105 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
+
+    filteredData: Product[];
+    totalElements: number = 0;
+    tableLoading: boolean = false;
+
+    messages: { severity: string; summary: string; detail: string; }[];
+    
+    user: any;
+    errorMessage: string | undefined;
+    
+    currentUser: any;
+    userProfile: any;
+
+    constructor(
+        private authService: AuthenticationService,
+        public layoutService: LayoutService,
+        private userService: UserService,
+        private productService: ProductService,
+        private clientService: ClientService,
+        private orderService: OrderService,
+        private messageService: MessageService,
+    ) {
         this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-            this.initChart();
-        });
+            .pipe(debounceTime(25))
+            .subscribe((config) => {
+                this.initChart();
+            });
     }
 
     ngOnInit() {
+
+        this.getCurrentUser();
+
         this.initChart();
-        
-        this.items = [
-            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-        ];
+      
+        this.getProducts();
+        this.countUsers();
+        this.countProducts();
+        this.countClients();
+        this.countOrders();
     }
+
+    getCurrentUser(): void {
+        this.userService.getCurrentUser().subscribe(
+          data => {
+            this.user = data;
+          },
+          error => {
+            this.errorMessage = error;
+          }
+        );
+      }
+
+
+    countUsers() {
+        this.userService.countUsers().subscribe(count => {
+            this.userCount = count;
+        });
+    }
+    countProducts() {
+        this.productService.countProducts().subscribe(count => {
+            this.productCount = count;
+        });
+    }
+    countClients() {
+        this.clientService.countClients().subscribe(count => {
+            this.clientCount = count;
+        });
+    }
+    countOrders() {
+        this.orderService.countOrders().subscribe(count => {
+            this.orderCount = count;
+        });
+    }
+
+    getProducts() {
+        this.tableLoading = true;
+        this.productService.getProducts().subscribe({
+            next: (response: any) => {
+                this.products = response;
+                this.totalElements = response.totalElements;
+                this.filteredData = this.products;
+            },
+            error: (e: any) => {
+                this.messages = [{ severity: 'error', summary: 'Failed to load Data', detail: 'Server issue' }];
+                this.tableLoading = false;
+            },
+            complete: () => {
+                this.tableLoading = false;
+            }
+        });
+    }
+
+    searchProducts(event) {
+        this.filteredData = this.products.filter(item =>
+            item.reference.toLowerCase().startsWith(event.toLowerCase()));
+    }
+
+
 
     initChart() {
         const documentStyle = getComputedStyle(document.documentElement);

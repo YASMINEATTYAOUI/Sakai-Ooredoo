@@ -18,22 +18,12 @@ export class ClientService {
     return this.baseUrl;
   }
 
-  updateClient(clientDto: Client): Observable<Client> {
-    return this.http.put<Client>(this.baseUrl, clientDto);
+  toggleClientStatus(clientId: number): Observable<Client> {
+    return this.http.put<Client>(`${this.baseUrl}/${clientId}/toggle`, {});
   }
 
   getClients(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
-  }
-
-  getAllClientsSortedByCreatorId(creatorId: string, name: string, pageEvent: PageEvent): Observable<any> {
-    let params = new HttpParams()
-      .set('page', pageEvent.first.toString())
-      .set('size', pageEvent.rows.toString());
-    if (name) {
-      params = params.set('name', name);
-    }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
   }
 
   getClientById(id: string): Observable<Client> {

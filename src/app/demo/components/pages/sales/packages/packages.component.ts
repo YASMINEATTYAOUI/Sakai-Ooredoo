@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
-import { Brand } from 'src/app/demo/models/brand';
+import { Product } from 'src/app/demo/models/product';
 import { Package } from 'src/app/demo/models/package';
-import { BrandService } from 'src/app/demo/service/services/brand.service';
 import { PackageService } from 'src/app/demo/service/services/package.service';
+import { ProductService } from 'src/app/demo/service/services/product.service';
 
 @Component({
   selector: 'app-packages',
@@ -21,8 +21,8 @@ export class PackagesComponent implements OnInit, OnDestroy {
   name: any;
   file: File;
   _package: Package;
-  selectedBrandId: Brand;
-  brands: any[] = [];
+  selectedProductId: Product;
+  products: any[] = [];
 
   packageForm: FormGroup;
 
@@ -42,7 +42,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private packageService: PackageService,
-    private brandService: BrandService,
+    private productService: ProductService,
     private messageService: MessageService,
     private router: Router) {
     this.packageForm = this.formBuilder.group({
@@ -53,36 +53,66 @@ export class PackagesComponent implements OnInit, OnDestroy {
       price: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
       soldQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
       availableQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
+      products: [null, Validators.required],
+      file: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
     this.getPackages();
-    this.loadBrands();
+    this.loadProducts();
   }
 
   ngOnDestroy() {
   }
 
-  loadBrands() {
-    this.brandService.getBrands().subscribe(brands => {
-      this.brands = brands;
+  loadProducts() {
+    this.productService.getProducts().subscribe(products => {
+      this.products = products;
     });
   }
-  brandSelectedEvent(event: any) {
-    this._package.brands = event.value;
+  productsSelectedEvent(event: any) {
+    this._package.products = event.value;
   }
 
   save(): void {
     this.submitted = true;
     if (this.packageToUpdate) {
-      this.updatePackage(this._package);
+      this.updatePackage();
     } else {
-      this.createPackage();
+      //this.createPackage();
+      this.onSubmit();
     }
     this.packageDialog = false;
   }
 
+
+  onSubmit() {
+    if (this.packageForm.invalid) {
+      return;
+    }
+    const formData: FormData = new FormData();
+    formData.append('file', this.file);
+    formData.append('reference', this.packageForm.get('reference').value);
+    formData.append('description', this.packageForm.get('description').value);
+    formData.append('nbProduct', this.packageForm.get('nbProduct').value);
+    formData.append('price', this.packageForm.get('price').value);
+    formData.append('soldQuantity', this.packageForm.get('soldQuantity').value);
+    formData.append('availableQuantity', this.packageForm.get('availableQuantity').value);
+
+    const productIds: number[] = this.packageForm.get('products').value.map(product => product.id);
+    productIds.forEach(productId => formData.append('products', productId.toString()));
+
+    this.packageService.createPackage(formData).subscribe(
+      response => {
+        console.log('Package created successfully:', response);
+      },
+      error => {
+        console.error('Error creating package:', error);
+      }
+    );
+  }
+/*
   private createPackage(): void {
     this.packageService.createPackage(this.file,
       this.packageForm.get('reference').value,
@@ -97,20 +127,27 @@ export class PackagesComponent implements OnInit, OnDestroy {
       })
     this.packages.push(this._package);
   }
-
-  private updatePackage(_package: Package): void {
-    if (this.packageToUpdate) {
-      this.packageService.updatePackage(_package).subscribe({
-        next: (response) => {
-          console.log('Package updated successfully');
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Updated', life: 2000 });
-          this.getPackages();
-        },
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => { }
-      });
+*/
+  private updatePackage(): void {
+    if (this.packageToUpdate.id) {
+      this.packageService.updatePackage(this.packageForm.get('id').value, this.file,
+        this.packageForm.get('reference').value,
+        this.packageForm.get('description').value,
+        this.packageForm.get('nbProduct').value,
+        this.packageForm.get('price').value,
+        this.packageForm.get('soldQuantity').value,
+        this.packageForm.get('availableQuantity').value).subscribe({
+          next: (response) => {
+            console.log('Package updated successfully');
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Updated', life: 2000 });
+            this.getPackages();
+          },
+          error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+          complete: () => { }
+        });
     }
   }
+
 
   getPackages() {
     this.tableLoading = true;
@@ -169,6 +206,16 @@ export class PackagesComponent implements OnInit, OnDestroy {
     this.packageToUpdate = _package;
     this.packageService.getPackageById(_package.id);
     this.packageDialog = true;
+    this.packageForm.patchValue({
+      id: _package.id,
+      reference: _package.reference,
+      description: _package.description,
+      file: _package.image,
+      price: _package.price,
+      soldQuantity: _package.soldQuantity,
+      availableQuantity: _package.availableQuantity,
+    });
+
   }
 
   confirmDeleteSelected() {

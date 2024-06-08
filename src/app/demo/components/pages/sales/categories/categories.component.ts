@@ -61,10 +61,12 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     })
    
   }
-
+ 
   private updateCategory(category: Category): void {
-    if (this.categoryToUpdate) {
-      this.categoryService.updateCategory(category.id,category).subscribe({
+
+    if (category.id) {
+      this.categoryService.updateCategory(category.id, category).subscribe({
+
         next: (response) => {
           console.log('Category updated successfully');
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Category Updated', life: 2000 });

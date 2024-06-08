@@ -4,6 +4,9 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Package } from '../../models/package';
+import { Product } from '../../models/product';
+import { Brand } from '../../models/brand';
+import { Category } from '../../models/category';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +20,16 @@ export class ProductService {
     return this.baseUrl;
   }
 
-  createProduct(
-    file: File,
-    reference: string,
-    description: string,
-    price: number,
-    soldQuantity: number,
-    availableQuantity: number
-  ): Observable<Package> {
+  private handleError(error: any) {
+    console.error('An error occurred:', error);
+    return throwError('Something went wrong; please try again later.');
+  }
+
+createProduct(formData: FormData): Observable<any> {
+  return this.http.post(this.baseUrl, formData);
+}
+
+  updateProduct(productId: number, file: File, reference: string, description: string, price: number, soldQuantity: number, availableQuantity: number): Observable<Package> {
     const formData = new FormData();
     formData.append('file', file, file.name);
     formData.append('reference', reference);
@@ -32,30 +37,21 @@ export class ProductService {
     formData.append('price', price.toString());
     formData.append('soldQuantity', soldQuantity.toString());
     formData.append('availableQuantity', availableQuantity.toString());
-
+  
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json'
       })
     };
-
-    return this.http.post<Package>(this.baseUrl, formData, httpOptions)
+  
+    return this.http.put<Package>(`${this.baseUrl}/${productId}`, formData, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  private handleError(error: any) {
-    console.error('An error occurred:', error);
-    return throwError('Something went wrong; please try again later.');
-  }
-
-  updateProduct(product: Package): Observable<Package> {
-    return this.http.put<Package>(`${this.baseUrl}/${product.id}`, product);
-  }
-
-  getProducts(): Observable<Package[]> {
-    return this.http.get<Package[]>(`${this.baseUrl}/sorted`).pipe(
+  getProducts(): Observable<any[]> {
+    return this.http.get<any>(`${this.baseUrl}/sorted`).pipe(
       map((products: any[]) => {
         products.forEach(product => {
           if (product.image) {
@@ -67,15 +63,15 @@ export class ProductService {
     );
   }
 
-  getProductById(id: string): Observable<Package> {
+  getProductById(id: number): Observable<Package> {
     return this.http.get<Package>(`${this.baseUrl}/${id}`);
   }
 
-  deleteProduct(id: string): Observable<void> {
+  deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  deleteProducts(ids: string[]): Observable<any> {
+  deleteProducts(ids: number[]): Observable<any> {
     return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
   }
 

@@ -26,6 +26,8 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 
+import { MultiSelectModule } from 'primeng/multiselect';
+
 @NgModule({
   declarations: [
     PackagesComponent,
@@ -59,6 +61,7 @@ import { TooltipModule } from 'primeng/tooltip';
     TooltipModule,
     DividerModule,
     ChipsModule,
+    MultiSelectModule
   ]
 })
 export class PackagesModule { }

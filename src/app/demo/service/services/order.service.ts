@@ -18,41 +18,18 @@ export class OrderService {
   getServiceUrl() {
     return this.baseUrl;
   }
-  createOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(this.baseUrl, order);
-  }
 
-  updateOrder(order: Order): Observable<Order> {
-    return this.http.put<Order>(this.baseUrl, order);
+  toggleOrderStatus(orderId: number): Observable<Order> {
+    return this.http.put<Order>(`${this.baseUrl}/${orderId}/toggle`, {});
   }
-
   getOrders(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
-  }
-
-
-
-  getAllOrdersSortedByCreatorId(creatorId: string, name: string, pageEvent: PageEvent): Observable<any> {
-    let params = new HttpParams()
-      .set('page', pageEvent.first.toString())
-      .set('size', pageEvent.rows.toString());
-    if (name) {
-      params = params.set('name', name);
-    }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
   }
 
   getOrderById(id: string): Observable<Order> {
     return this.http.get<Order>(`${this.baseUrl}/${id}`);
   }
 
-  deleteOrder(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
-  }
-
-  deleteOrders(ids: string[]): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
-  }
   searchOrdersByName(name: string, pageEvent: PageEvent): Observable<any> {
     const rows = pageEvent.rows;
     const pageNumber = pageEvent.first / pageEvent.rows;

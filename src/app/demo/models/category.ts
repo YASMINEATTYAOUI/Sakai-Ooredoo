@@ -1,5 +1,5 @@
 export class Category {
-  id?: any;
+  id?: number;
   name?: string;
   creationDate?: Date;
   lastModifiedDate?: Date;

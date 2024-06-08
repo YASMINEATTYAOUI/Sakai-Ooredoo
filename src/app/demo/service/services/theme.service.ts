@@ -20,23 +20,13 @@ export class ThemeService {
   createTheme(theme: Theme): Observable<Theme> { 
     return this.http.post<Theme>(this.baseUrl, theme);
   }
-
-  updateTheme(theme: Theme): Observable<Theme> {
-    return this.http.put<Theme>(this.baseUrl, theme);
+  
+  updateTheme(themeId:any, updatedTheme:Theme): Observable<Theme> {
+    return this.http.put<Theme>(`${this.baseUrl}/${themeId}`, updatedTheme);
   }
 
   getThemes(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
-  }
-
-  getAllThemesSortedByCreatorId(creatorId: string, name: string, pageEvent: PageEvent): Observable<any> {
-    let params = new HttpParams()
-      .set('page', pageEvent.first.toString())
-      .set('size', pageEvent.rows.toString());
-    if (name) {
-      params = params.set('name', name);
-    }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
   }
 
   getThemeById(id: string): Observable<Theme> {

@@ -29,7 +29,9 @@
             <span class="block mt-2 md:mt-0 p-input-icon-left">
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="searchThemes($event.target.value)" placeholder="Search..."
-                class="w-full sm:w-auto" />
+                class="w-auto sm:w-auto" />
+                <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;" icon="pi pi-refresh" (click)="getThemes()"></button>
+                
             </span>
           </div>
         </ng-template>
@@ -37,7 +39,7 @@
           <tr>
             <th style="width: 3rem"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
             <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-            <th pSortableColumn="category">Caracteristics <p-sortIcon field="category"></p-sortIcon>
+            <th pSortableColumn="characteristic">Caracteristics <p-sortIcon field="characteristic"></p-sortIcon>
             </th>
             <th  pSortableColumn="creationDate">
               <span>Creation Date</span>
@@ -54,7 +56,8 @@
               <p-tableCheckbox [value]="theme"></p-tableCheckbox>
             </td>
             <td>{{ theme.name }}</td>
-            <td>{{ theme.caracteristics }}</td>
+
+            <td>{{ theme.characteristic }}</td>
             <td>
               {{ theme.creationDate }}
             </td>
@@ -93,8 +96,9 @@
                       </div>
             
                       <div class="field">
-                        <label for="caracteristics">Caracteristics</label>
-                        <textarea id="caracteristics" formControlName="caracteristics" pInputTextarea required rows="3"
+
+                        <label for="characteristic">Characteristic</label>
+                        <textarea id="characteristic" formControlName="characteristic" pInputTextarea required rows="3"
                           cols="20"></textarea>
                       </div>
             

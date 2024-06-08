@@ -25,6 +25,7 @@ import { MessagesModule } from 'primeng/messages';
 import { PaginatorModule } from 'primeng/paginator';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { TooltipModule } from 'primeng/tooltip';
     TooltipModule,
     DividerModule,
     ChipsModule,
+    MultiSelectModule,
   ],
   declarations: [RolesComponent]
 })

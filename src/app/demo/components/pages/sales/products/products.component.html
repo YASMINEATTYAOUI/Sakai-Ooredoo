@@ -27,11 +27,18 @@
 
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Products Management</h5>
+
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
+
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="searchProducts($event.target.value)"
-                                placeholder="Search..." class="w-full sm:w-auto" />
+                                placeholder="Search..." class="w-auto sm:w-auto" />
+                            <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+                                icon="pi pi-refresh" (click)="getProducts()"></button>
+
                         </span>
+
+
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -39,13 +46,17 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
                         <th pSortableColumn="name">Reference <p-sortIcon field="Reference"></p-sortIcon></th>
                         <th>Image</th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
                         <th pSortableColumn="brand">Brand <p-sortIcon field="brand"></p-sortIcon></th>
-                        <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
+
+                        <th pSortableColumn="soldQuantity">Sold Quantity <p-sortIcon field="soldQuantity"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="availableQuantity">Available Quantity <p-sortIcon
+                                field="availableQuantity"></p-sortIcon></th>
+                        <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon>
                         </th>
                         <th pSortableColumn="edit"><span></span></th>
                     </tr>
@@ -55,19 +66,18 @@
                         <td>
                             <p-tableCheckbox [value]="product"></p-tableCheckbox>
                         </td>
-                        <td>{{ product.code || product.id }}</td>
                         <td>{{ product.reference }}</td>
                         <td class="text-align-center">
                             <img class="w-auto" [src]="product.image" style="width: 50px; height: 25px;">
                         </td>
                         <td>{{ product.price | currency:" " }}TND</td>
-                        <td>{{ product.category}}</td>
 
-                        <td>{{ product.brand}}</td>
-                        <td><span
-                                [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{
-                                product.inventoryStatus }}</span>
-                        </td>
+
+                        <td>{{ product.category?.name }}</td>
+                        <td>{{ product.brand?.name }}</td>
+                        <td>{{ product.soldQuantity}}</td>
+                        <td>{{ product.availableQuantity}}</td>
+                        <td>{{ product.description}}</td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
@@ -95,10 +105,9 @@
                     <div class="field">
                         <label for="reference">Reference</label>
                         <input type="text" pInputText id="reference" formControlName="reference" />
-                        <small class="ng-dirty ng-invalid"
-                            *ngIf="submitted && productForm.controls['reference'].invalid">Reference
-                            is
-                            required.</small>
+                        <small class="ng-dirty ng-invalid text-red-600"
+                            *ngIf="productForm.get('reference').invalid && productForm.get('reference').touched">
+                            Refrence is required.</small>
                     </div>
                     <div class="field">
                         <label for="description">Description</label>
@@ -108,40 +117,56 @@
 
                     <div class="field ">
                         <label for="brands">Brand</label>
-                        <p-dropdown [options]="brands" [(ngModel)]="selectedBrandId" optionLabel="name"
+                        <p-dropdown [options]="brands" formControlName="brand" optionLabel="name"
                             placeholder="Select Brand" (onChange)="brandSelectedEvent($event)">
                         </p-dropdown>
+                        <small class="ng-dirty ng-invalid text-red-600"
+                            *ngIf="productForm.get('brand').invalid && productForm.get('brand').touched">
+                            Brand is required.</small>
                     </div>
 
                     <div class="field">
-                        <label for="categories">Category</label>
-                        <p-dropdown [options]="categories" [(ngModel)]="selectedCategoryId" optionLabel="name"
-                            placeholder="Select Category" (onChange)="categorySelectedEvent($event)">
-                        </p-dropdown>
+
+                        <label for="category">Category</label>
+                        <p-dropdown [options]="categories" formControlName="category" optionLabel="name"
+                            placeholder="Select Category" (onChange)="categorySelectedEvent($event)"></p-dropdown>
+                        <small class="ng-dirty ng-invalid text-red-600"
+                            *ngIf="productForm.get('category').invalid && productForm.get('category').touched">
+                            Category is required.</small>
                     </div>
 
                     <div class="field">
                         <label for="price">Price</label>
                         <p-inputNumber id="price" formControlName="price" mode="currency"
                             currency="TND"></p-inputNumber>
+                        <small class="ng-dirty ng-invalid text-red-600"
+                            *ngIf="productForm.get('price').invalid && productForm.get('price').touched">
+                            Price is required.</small>
                     </div>
 
                     <div class="formgrid grid">
                         <div class="field col">
                             <label for="soldQuantity">Sold Quantity</label>
                             <p-inputNumber id="soldQuantity" formControlName="soldQuantity"></p-inputNumber>
+                            <small class="ng-dirty ng-invalid text-red-600"
+                                *ngIf="productForm.get('soldQuantity').invalid && productForm.get('soldQuantity').touched">
+                                Sold Quantity is required.</small>
                         </div>
                         <div class="field col">
                             <label for="availableQuantity">Available Quantity</label>
                             <p-inputNumber id="availableQuantity" formControlName="availableQuantity"></p-inputNumber>
+                            <small class="ng-dirty ng-invalid text-red-600"
+                                *ngIf="productForm.get('availableQuantity').invalid && productForm.get('availableQuantity').touched">
+                                Available Quantity is required.</small>
                         </div>
                     </div>
 
                     <div class="field">
                         <label for="file">Product Picture</label>
                         <input id="file-upload" class="w-full" type="file" class="custom-file-input"
-                            (change)="onFileSelected($event)" accept="image/*"><img *ngIf="imageUrl" [src]="imageUrl"
-                            alt="Uploaded Image" class="uploaded-image"
+
+                            (change)="onFileSelected($event)" accept="image/*" formControlName="file"><img
+                            *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" class="uploaded-image"
                             style="width: 100px; height: 100px; border-radius: 8px;">
                     </div>
                 </form>

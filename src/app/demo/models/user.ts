@@ -6,11 +6,12 @@ export class User {
   fullName?: string ;
   email?: string;
   phoneNumber?: number;
+  status?:Boolean
   password?: string;
   status:Boolean;
   creationDate?: Date;
   lastModifiedDate?: Date;
-  roles: Role;
+  role: Role;
  
 }
 

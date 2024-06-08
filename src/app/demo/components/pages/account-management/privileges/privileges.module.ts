@@ -28,6 +28,9 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [PrivilegesComponent],
@@ -61,6 +64,9 @@ import { TooltipModule } from 'primeng/tooltip';
     TooltipModule,
     DividerModule,
     ChipsModule,
+    AvatarModule,
+    AvatarGroupModule,
+    SelectButtonModule
   ]
 })
 export class PrivilegesModule { }

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { User } from 'src/app/demo/models/user';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { UserService } from 'src/app/demo/service/services/user.service';
 import { RoleService } from 'src/app/demo/service/services/role.service';
 import { Role } from 'src/app/demo/models/role';
@@ -15,7 +16,20 @@ export class UsersComponent implements OnInit, OnDestroy {
   users: User[];
   filteredData: User[];
   name: any;
-  user: User;
+  user: User ;
+  //user2 :UserDto ;
+  /*
+  user = {
+    username: '',
+    fullName: '',
+    email: '',
+    phoneNumber: 0,
+    password: '',
+    creationDate: null,
+    lastModifiedDate: null,
+    role: null ,
+  } 
+  */
   userDialog: boolean = false;
   userToUpdate: User;
   deleteUserDialog: boolean = false;
@@ -36,6 +50,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   userId: any;
 
   constructor(
+    
     private userService: UserService,
     private roleService: RoleService,
     private messageService: MessageService,
@@ -47,6 +62,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
 
+  }
+  getSeverity(status: boolean): string {
+    return status ? 'success' : 'danger';
   }
 
   loadRoles() {
@@ -60,25 +78,29 @@ export class UsersComponent implements OnInit, OnDestroy {
     if (this.userToUpdate) {
       this.updateUser(this.user);
     } else {
+      
       this.createUser(this.user);
     }
     this.userDialog = false;
   }
 
   private createUser(user: User): void {
+    
     this.userService.createUser(user).subscribe({
       next: (response) => {
+        console.log(user);
         this.users.push(response);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 2000 })
       },
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
     })
+    
   }
 
-  private updateUser(userDto: User): void {
+  private updateUser(user: User): void {
     if (this.userToUpdate) {
-      this.userService.updateUser(userDto).subscribe({
+      this.userService.updateUser(user).subscribe({
         next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 2000 }),
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
         complete: () => { }
@@ -112,7 +134,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   deleteUser(user: User): void {
     if (user) {
-      this.user = user;
+      //this.user = user;
       this.userId = user.id;
       this.deleteUserDialog = true;
     }
@@ -125,16 +147,17 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
   }
 
-  toUser(user: User) {
-    this.router.navigate(['dashboard/pages/account-management/users', user.id]);
-  }
+  
 
-  roleSelectedEvent(event: any) {
-    this.user.roles = event.value;
+
+
+  roleSelectedEvent(event: any){
+    this.user.role =event.value;
+
   }
 
   openNew() {
-    this.user = new User();
+   //this.user = new User();
     this.submitted = false;
     this.userDialog = true;
 
@@ -172,6 +195,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.userService.deleteUser(this.userId).subscribe({
       next: () => {
         this.deleteUserDialog = false;
+        /*
         this.user = {
           id: 0,
           username: '',
@@ -184,6 +208,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           lastModifiedDate: null,
           roles: [],
         } as User;
+        */
         console.log('User deleted successfully');
         this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The user has been deleted.' });
         this.getUsers();

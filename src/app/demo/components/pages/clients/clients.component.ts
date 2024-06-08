@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Client } from 'src/app/demo/models/client';
@@ -14,8 +15,8 @@ export class ClientsComponent implements OnInit, OnDestroy {
   clients: Client[];
   filteredData: Client[];
   name: any;
+
   client: Client;
-  clientDialog: boolean = false;
   clientToUpdate: Client;
 
   selectedClients: Client[];
@@ -37,26 +38,21 @@ export class ClientsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getClients();
   }
-  ngOnDestroy(): void {
+  ngOnDestroy(): void {}
 
+  getSeverity(status: boolean): string {
+    return status ? 'success' : 'danger';
   }
 
-  save(): void {
-    this.submitted = true;
-    if (this.clientToUpdate) {
-      this.updateClient(this.client);
-    }
-    this.clientDialog = false;
-  }
-
-  private updateClient(clientDto: Client): void {
-    if (this.clientToUpdate) {
-      this.clientService.updateClient(clientDto).subscribe({
-        next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Updated', life: 2000 }),
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => { }
-      });
-    }
+  toggleClient(client: any): void {
+    this.clientService.toggleClientStatus(client.id).subscribe({
+      next: (updatedClient: any) => {
+        client.status = updatedClient.status,
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Privilege Updated', life: 2000 })
+      },
+      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Toggling Privilege Failed' }),
+      complete: () => { }
+    });
   }
 
   getClients() {
@@ -66,7 +62,6 @@ export class ClientsComponent implements OnInit, OnDestroy {
         this.clients = response;
         this.totalElements = response.totalElements;
         this.filteredData = this.clients;
-
       },
       error: (e: any) => {
         this.messages = [{ severity: 'error', summary: 'Failed to load Data', detail: 'Server issue' }];
@@ -78,29 +73,17 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
   }
 
-  searchClients(event) {
-    console.log("client selected is " + event);
-    this.filteredData = this.clients.filter(item => item.username.toLowerCase().startsWith(event.toLowerCase()));
+  searchClients(query: string): void {
+    this.filteredData = this.clients.filter(client =>
+      client.username.toLowerCase().includes(query.toLowerCase()) ||
+      client.fullName.toLowerCase().includes(query.toLowerCase()) ||
+      client.email.toLowerCase().includes(query.toLowerCase()) ||
+      client.phoneNumber.toString().toLocaleLowerCase().includes(query.toLowerCase()) ||
+      client.adress.toLowerCase().includes(query.toLowerCase())
+     );
   }
 
   toClient(client: Client) {
     this.router.navigate(['dashboard/pages/clients', client.id]);
   }
-
-  openNew() {
-   this.client = new Client();
-    this.submitted = false;
-    this.clientDialog = true;
-  }
-
-  openDialog(client?: Client) {
-    this.clientToUpdate = client;
-    this.clientDialog = true;
-  }
-
-  hideDialog() {
-    this.clientDialog = false;
-    this.submitted = false;
-  }
-
 }

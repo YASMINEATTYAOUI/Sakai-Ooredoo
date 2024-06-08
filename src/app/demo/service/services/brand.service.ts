@@ -25,13 +25,13 @@ export class BrandService {
     return this.http.post<Brand>(`${this.baseUrl}`, formData);
   }
 
-  updateBrand(name: string, description: string, file: File): Observable<Brand> {
+  updateBrand(brandId: any, name: string, description: string, file: File): Observable<Brand> {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
     formData.append('file', file, file.name);
-    return this.http.put<Brand>(`${this.baseUrl}`, formData);
-  }
+    return this.http.put<Brand>(`${this.baseUrl}/${brandId}`, formData);
+}
 
   getBrands(): Observable<Brand[]> {
     return this.http.get<Brand[]>(`${this.baseUrl}/sorted`).pipe(
@@ -47,25 +47,15 @@ export class BrandService {
     );
   }
 
-  getAllBrandsSortedByCreatorId(creatorId: string, name: string, pageEvent: PageEvent): Observable<any> {
-    let params = new HttpParams()
-      .set('page', pageEvent.first.toString())
-      .set('size', pageEvent.rows.toString());
-    if (name) {
-      params = params.set('name', name);
-    }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
-  }
-
-  getBrandById(id: string): Observable<Brand> {
+  getBrandById(id: number): Observable<Brand> {
     return this.http.get<Brand>(`${this.baseUrl}/${id}`);
   }
 
-  deleteBrand(id: string): Observable<void> {
+  deleteBrand(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  deleteBrands(ids: string[]): Observable<any> {
+  deleteBrands(ids: number[]): Observable<any> {
     return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
   }
 

@@ -1,74 +1,94 @@
+<!---->
 <div class="grid">
-	<div class="col-12">
-    
-		<div class="card">
-
-			<h5>Tree</h5>
+  <div class="col-12">
+    <div class="card">
+      <h5>Privilege Management</h5>
+      <p-toast></p-toast>
       <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
           <div class="my-2">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
               (click)="openNew()"></button>
-           </div>
+
+          </div>
+
         </ng-template>
-    
+        <ng-template pTemplate="center">
+          <div class="flex justify-content-center mb-3">
+            <p-selectButton [options]="sizes" [(ngModel)]="selectedSize" [multiple]="false" optionLabel="name"
+              optionValue="class" />
+          </div>
+        </ng-template>
         <ng-template pTemplate="right">
-          <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-          (click)="deleteSelectedPrivileges(selectedPrivileges)"
-          [disabled]="!selectedPrivileges || !selectedPrivileges.length"></button>
+
+          <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+            icon="pi pi-refresh" (click)="getPrivileges()"></button>
+
         </ng-template>
       </p-toolbar>
-			<p-tree [value]="files1" selectionMode="checkbox" [(selection)]="selectedFiles1"></p-tree>
-		</div>
 
-    <p-dialog [(visible)]="privilegeDialog" [style]="{width: '450px'}" header="Privilege Details" [modal]="true" class="p-fluid">
-      <ng-template pTemplate="content">
-        <form [formGroup]="roleForm">
-          <div class="field">
-            <label for="name">Name</label>
-            <input type="text" pInputText id="name" formControlName="name" [(ngModel)]="privilege.name" required autofocus
-              [ngClass]="{'ng-invalid ng-dirty' : submitted && !privilege.name}" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !privilege.name">Name is required.</small>
-          </div>
-          <div class="field">
-            <label for="description">Description</label>
-            <textarea id="description" formControlName="description" pInputTextarea [(ngModel)]="privilege.description"
-              required rows="3" cols="20"></textarea>
-          </div>
-        </form>
-      </ng-template>
+      <p-table [value]="privileges" [tableStyle]="{ 'min-width': '50rem' }" [styleClass]="selectedSize.class"
+        [paginator]="true" [rows]="4" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[5, 10, 20]" [(selection)]="selectedPrivileges" selectionMode="multiple" [rowHover]="true"
+        dataKey="id">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name">Name</th>
+            <th pSortableColumn="active">status</th>
+            <th pSortableColumn="edit"><span></span></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-privilege let-i="rowIndex" >
+          <tr>
+            <td>
+              <div class="flex align-items-center">
+                <span class="border-circle mr-2" [ngStyle]="{ 'background-color': getCircleColor(i) }" style="width: 7px; height: 7px"></span>
+                {{ privilege.name }}
+              </div>
+            </td>
 
-      <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"
-          [disabled]="privilegeForm.invalid || privilegeForm.pristine"></button>
-      </ng-template>
-    </p-dialog>
-
-    <p-dialog [(visible)]="deletePrivilegeDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-      <div class="flex align-items-center justify-content-center">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="privilege">Are you sure you want to delete this privilege <b>{{privileg.name}}</b>?</span>
-      </div>
-      <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-          (click)="deleteRoleDialog = false"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
-      </ng-template>
-    </p-dialog>
-
-    <p-dialog [(visible)]="deletePrivilegesDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-      <div class="flex align-items-center justify-content-center">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span>Are you sure you want to delete selected privileges?</span>
-      </div>
-      <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-          (click)="deleteRolesDialog = false"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
-          (click)="confirmDeleteSelected()"></button>
-      </ng-template>
-    </p-dialog>
-
+            <td>
+              <p-tag [value]="privilege.active ? 'Active' : 'Inactive'"
+                [severity]="getSeverity(privilege.active)"></p-tag>
+            </td>
+            <td>
+              <div class="flex">
+                <p-inputSwitch [(ngModel)]="privilege.active" (onChange)="togglePrivilege(privilege)"></p-inputSwitch>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </div>
+
+  <p-dialog [(visible)]="privilegeDialog" [style]="{ width: '450px' }" header="Privilege Details" [modal]="true"
+    class="p-fluid">
+    <ng-template pTemplate="content">
+      <form [formGroup]="privilegeForm">
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" pInputText id="name" formControlName="name" />
+          <small class="ng-dirty ng-invalid" *ngIf="submitted && !privilege.name">Name is required.</small>
+
+        </div>
+
+        <div class="field">
+          <div>
+            <label for="active">Status</label>
+          </div>
+          <p-inputSwitch formControlName="active"></p-inputSwitch>
+        </div>
+
+      </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+      <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"
+        [disabled]="privilegeForm.invalid || privilegeForm.pristine"></button>
+    </ng-template>
+  </p-dialog>
+
 </div>

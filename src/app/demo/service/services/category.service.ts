@@ -21,23 +21,25 @@ export class CategoryService {
     return this.http.post<Category>(this.baseUrl, category);
   }
 
-  updateCategory(categoryId:any, category: Category): Observable<Category> {
-    return this.http.put<Category>(`${this.baseUrl}/${categoryId}`, category);
+
+  updateCategory(categoryId: any, updatedCategory: Category): Observable<Category> {
+    return this.http.put<Category>(`${this.baseUrl}/${categoryId}`, updatedCategory);
   }
 
   getCategories(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
   }
 
-  getCategoryById(id: string): Observable<Category> {
+  getCategoryById(id: number): Observable<Category> {
+
     return this.http.get<Category>(`${this.baseUrl}/${id}`);
   }
 
-  deleteCategory(id: string): Observable<void> {
+  deleteCategory(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  deleteCategories(ids: string[]): Observable<any> {
+  deleteCategories(ids: number[]): Observable<any> {
     return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
   }
 

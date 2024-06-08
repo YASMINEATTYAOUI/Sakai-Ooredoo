@@ -1,6 +1,7 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
+            <h5 >Users Management</h5>
             <p-toast></p-toast>
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
@@ -11,9 +12,9 @@
                 </ng-template>
 
                 <ng-template pTemplate="right">
-                    <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-                        (click)="deleteSelectedUsers(selectedUsers)"
-                        [disabled]="!selectedUsers || !selectedUsers.length"></button>
+                    <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+                    icon="pi pi-refresh" (click)="getUsers()"></button>
+
                 </ng-template>
             </p-toolbar>
 
@@ -22,12 +23,13 @@
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [(selection)]="selectedUsers" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Users Management</h5>
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center left" >
+                        
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="searchUsers($event.target.value)"
-                                placeholder="Search..." class="w-full sm:w-auto" />
+                                placeholder="Search..." class="w-auto sm:w-auto" />
+                            
                         </span>
                     </div>
                 </ng-template>
@@ -55,33 +57,29 @@
                         <td>
                             <p-tableCheckbox [value]="user"></p-tableCheckbox>
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Username</span>
+                        <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.username}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <img [src]="user.image" style="width: 50px; height: 50px;">
+                        <td [readonly]="true" style="width:14%; min-width:10rem;">
+                            <img  [src]="user.image" style="width: 50px; height: 50px;">
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Full Name</span>
+                        <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.fullName}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Email</span>
+                        <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.email}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Phone Number</span>
+                        <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.phoneNumber}}
                         </td>
-                        <td style="width:14%; min-width: 10rem;">
-                            <span class="p-column-title">Role</span>
-                            {{user.roles}}
+
+                        <td [readonly]="true" style="width:14%; min-width: 10rem;">
+                            {{user.role?.name}}
                         </td>
-                        <td style="width:14%; min-width: 10rem;">
-                            <span class="p-column-title">Account Status</span>
-                            <span
-                                [class]="'user-badge status-' + (user.status ? user.status.toLowerCase() : '')">{{user.status}}</span>
+                        <td  style="width:14%; min-width: 10rem;">
+                            
+                            <p-tag [value]="user.status ? 'Active' : 'Inactive'" [severity]="getSeverity(user.status)"></p-tag>
+
                         </td>
                         <td>
                             <div class="flex">
@@ -104,8 +102,10 @@
             class="p-fluid">
             <ng-template pTemplate="content">
                 <form>
-                    <img [src]="user.image" [alt]="user.image" width="150"
-                        class="mt-0 mx-auto mb-5 block shadow-2" >
+
+                    <img [src]="user.image" [alt]="user.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2"
+                        *ngIf="user.image">
+
                     <div class="field">
                         <label for="username">Username</label>
                         <input type="text" pInputText id="username" [(ngModel)]="user.username" required autofocus
@@ -146,28 +146,15 @@
                     <div class="field">
                         <label for="roles">Assign Role</label>
                         <p-dropdown [options]="roles" [(ngModel)]="selectedRoleId" optionLabel="name"
-                            placeholder="Select Role" (onChange)="roleSelectedEvent($event)">
-                        </p-dropdown>
+                            placeholder="Select Role" (onChange)="roleSelectedEvent($event)" />
                     </div>
-
 
                     <div class="field">
                         <label class="mb-3">Account Status</label>
-                        <div class="formgrid grid">
-                            <div class="field-radiobutton col-6">
-                                <p-radioButton id="active" name="active" value="active"
-                                    [(ngModel)]="user.status"></p-radioButton>
-                                <label for="active">Active</label>
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <p-radioButton id="block" name="block" value="block"
-                                    [(ngModel)]="user.status"></p-radioButton>
-                                <label for="block">Block</label>
-                            </div>
 
-
-                        </div>
+                        <p-inputSwitch [(ngModel)]="user.status"></p-inputSwitch>
                     </div>
+
                 </form>
             </ng-template>
 

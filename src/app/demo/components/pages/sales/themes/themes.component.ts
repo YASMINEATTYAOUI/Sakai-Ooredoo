@@ -45,7 +45,8 @@ export class ThemesComponent implements OnInit, OnDestroy {
     this.themeForm = this.formBuilder.group({
       id: [''],
       name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
-      caracteristics: [''],
+
+      characteristic: [''],
     });
   }
 
@@ -65,10 +66,10 @@ export class ThemesComponent implements OnInit, OnDestroy {
     this.themes.push(this.theme);
   
   }
-
+ 
   private updateTheme(theme: Theme): void {
-    if (this.themeToUpdate) {
-      this.themeService.updateTheme(theme).subscribe({
+    if (theme.id) {
+      this.themeService.updateTheme(theme.id, theme).subscribe({
         next: (response) => {
           console.log('Theme updated successfully');
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Theme Updated', life: 2000 });
@@ -143,6 +144,13 @@ export class ThemesComponent implements OnInit, OnDestroy {
   openDialog(theme?: Theme) { 
     this.themeToUpdate = theme;
     this.themeDialog = true;
+
+    this.themeService.getThemeById(theme.id);
+    this.themeForm.patchValue({
+      id: theme.id,
+      name: theme.name,
+      characteristic: theme.name,
+    });
   }
 
   confirmDeleteSelected() {
