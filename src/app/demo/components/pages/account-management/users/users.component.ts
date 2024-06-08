@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { User } from 'src/app/demo/models/user';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { UserService } from 'src/app/demo/service/services/user.service';
 import { RoleService } from 'src/app/demo/service/services/role.service';
 import { Role } from 'src/app/demo/models/role';
@@ -49,6 +50,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   userId: any;
 
   constructor(
+    
     private userService: UserService,
     private roleService: RoleService,
     private messageService: MessageService,

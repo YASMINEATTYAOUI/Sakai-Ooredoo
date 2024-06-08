@@ -1,5 +1,5 @@
 export class Brand {
-  id?: any;
+  id?: number;
   name?: string;
   description?: string;
   image?: string;

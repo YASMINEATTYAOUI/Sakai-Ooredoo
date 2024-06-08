@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { User} from '../../models/user';
 import { environment } from 'src/environments/environment';
 import { PageEvent } from '../../utils/page-event';
@@ -9,6 +9,7 @@ import { PageEvent } from '../../utils/page-event';
   providedIn: 'root'
 })
 export class UserService {
+  apiUrl: any;
   
   getUser(): User {
     return null;
@@ -17,7 +18,28 @@ export class UserService {
     private baseUrl = environment.apiUrl + '/auth';
   
     constructor(private http: HttpClient) {}
+
+
+    getCurrentUser(): Observable<User> {
+      return this.http.get<User>(`${this.baseUrl}/current-user`).pipe(
+        catchError(this.handleError)
+      );
+    }
   
+    private handleError(error: HttpErrorResponse): Observable<never> {
+      let errorMessage = '';
+      if (error.error instanceof ErrorEvent) {
+        // Client-side error
+        errorMessage = `Client-side error: ${error.error.message}`;
+      } else {
+        // Server-side error
+        errorMessage = `Server-side error: ${error.status} ${error.message}`;
+      }
+      console.error(errorMessage);
+      return throwError(errorMessage);
+    }
+
+
     createUser(user: User): Observable<any> {
       return this.http.post(`${this.baseUrl}/save`, user);
     }

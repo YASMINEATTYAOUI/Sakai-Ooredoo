@@ -25,30 +25,19 @@ export class CategoryService {
     return this.http.put<Category>(`${this.baseUrl}/${categoryId}`, updatedCategory);
   }
 
-  
   getCategories(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sorted`);
   }
 
-  getAllCategoriesSortedByCreatorId(creatorId: string, name: string, pageEvent: PageEvent): Observable<any> {
-    let params = new HttpParams()
-      .set('page', pageEvent.first.toString())
-      .set('size', pageEvent.rows.toString());
-    if (name) {
-      params = params.set('name', name);
-    }
-    return this.http.get<any>(`${this.baseUrl}/creatorId/${creatorId}`, { params });
-  }
-
-  getCategoryById(id: string): Observable<Category> {
+  getCategoryById(id: number): Observable<Category> {
     return this.http.get<Category>(`${this.baseUrl}/${id}`);
   }
 
-  deleteCategory(id: string): Observable<void> {
+  deleteCategory(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  deleteCategories(ids: string[]): Observable<any> {
+  deleteCategories(ids: number[]): Observable<any> {
     return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
   }
 

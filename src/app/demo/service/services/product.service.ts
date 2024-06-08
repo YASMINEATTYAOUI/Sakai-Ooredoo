@@ -19,80 +19,17 @@ export class ProductService {
   getServiceUrl() {
     return this.baseUrl;
   }
-/*
-  createProduct(
-    file: File,
-    reference: string,
-    description: string,
-    price: number,
-    soldQuantity: number,
-    availableQuantity: number,
-  ): Observable<Package> {
-    const formData = new FormData();
-    formData.append('file', file, file.name);
-    formData.append('reference', reference);
-    formData.append('description', description);
-    formData.append('price', price.toString());
-    formData.append('soldQuantity', soldQuantity.toString());
-    formData.append('availableQuantity', availableQuantity.toString());
-    
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json'
-      })
-    };
-
-    return this.http.post<Package>(this.baseUrl, formData, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  private handleError(error: any) {
-    console.error('An error occurred:', error);
-    return throwError('Something went wrong; please try again later.');
-  }
-  
-*/
-   createProduct(
-    file: File,
-    reference: string,
-    description: string,
-    price: number,
-    soldQuantity: number,
-    availableQuantity: number,
-    brand: Brand,
-    category: Category
-  ): Observable<Product> {
-    const formData = new FormData();
-    formData.append('file', file, file.name);
-    formData.append('reference', reference);
-    formData.append('description', description);
-    formData.append('price', price.toString());
-    formData.append('soldQuantity', soldQuantity.toString());
-    formData.append('availableQuantity', availableQuantity.toString());
-    formData.append('brand', JSON.stringify(brand));
-    formData.append('category', JSON.stringify(category));
-    
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json'
-      })
-    };
-
-    return this.http.post<Product>(this.baseUrl, formData, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
 
   private handleError(error: any) {
     console.error('An error occurred:', error);
     return throwError('Something went wrong; please try again later.');
   }
 
+createProduct(formData: FormData): Observable<any> {
+  return this.http.post(this.baseUrl, formData);
+}
 
-  updateProduct(productId: string, file: File, reference: string, description: string, price: number, soldQuantity: number, availableQuantity: number): Observable<Package> {
+  updateProduct(productId: number, file: File, reference: string, description: string, price: number, soldQuantity: number, availableQuantity: number): Observable<Package> {
     const formData = new FormData();
     formData.append('file', file, file.name);
     formData.append('reference', reference);
@@ -113,8 +50,8 @@ export class ProductService {
       );
   }
 
-  getProducts(): Observable<Package[]> {
-    return this.http.get<Package[]>(`${this.baseUrl}/sorted`).pipe(
+  getProducts(): Observable<any[]> {
+    return this.http.get<any>(`${this.baseUrl}/sorted`).pipe(
       map((products: any[]) => {
         products.forEach(product => {
           if (product.image) {
@@ -126,15 +63,15 @@ export class ProductService {
     );
   }
 
-  getProductById(id: string): Observable<Package> {
+  getProductById(id: number): Observable<Package> {
     return this.http.get<Package>(`${this.baseUrl}/${id}`);
   }
 
-  deleteProduct(id: string): Observable<void> {
+  deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  deleteProducts(ids: string[]): Observable<any> {
+  deleteProducts(ids: number[]): Observable<any> {
     return this.http.delete(`${this.baseUrl}/batch`, { params: { ids: ids.join(',') } });
   }
 

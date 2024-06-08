@@ -26,8 +26,8 @@ private baseUrl = environment.apiUrl + '/privileges';
     return this.http.put<Privilege>(`${this.baseUrl}/${privilegeId}/toggle`, {});
   }
 
-  getPrivileges(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/sorted`);
+  getPrivileges(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/sorted`);
   }
 
   getPrivilegeById(id: string): Observable<Privilege> {

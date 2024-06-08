@@ -7,23 +7,23 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { ClientService } from '../../service/services/client.service';
 import { OrderService } from '../../service/services/order.service';
 import { UserService } from '../../service/services/user.service';
+import { AuthenticationService } from '../../service/services/authentication.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
     providers: [MessageService],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+    [x: string]: any;
 
     userCount: number;
     productCount: number;
     clientCount: number;
     orderCount: number;
 
-
     items!: MenuItem[];
 
     products: Product[];
-    
 
     chartData: any;
 
@@ -36,12 +36,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     totalElements: number = 0;
     tableLoading: boolean = false;
 
-
     messages: { severity: string; summary: string; detail: string; }[];
-user: any;
-
+    
+    user: any;
+    errorMessage: string | undefined;
+    
+    currentUser: any;
+    userProfile: any;
 
     constructor(
+        private authService: AuthenticationService,
         public layoutService: LayoutService,
         private userService: UserService,
         private productService: ProductService,
@@ -57,6 +61,9 @@ user: any;
     }
 
     ngOnInit() {
+
+        this.getCurrentUser();
+
         this.initChart();
         this.getProducts();
         this.countUsers();
@@ -64,6 +71,18 @@ user: any;
         this.countClients();
         this.countOrders();
     }
+
+    getCurrentUser(): void {
+        this.userService.getCurrentUser().subscribe(
+          data => {
+            this.user = data;
+          },
+          error => {
+            this.errorMessage = error;
+          }
+        );
+      }
+
 
     countUsers() {
         this.userService.countUsers().subscribe(count => {

@@ -30,8 +30,9 @@
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="searchPackages($event.target.value)" placeholder="Search..."
                 class="w-auto sm:w-auto" />
-              <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;" icon="pi pi-refresh" (click)="getPackages()"></button>
-                    
+              <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+                icon="pi pi-refresh" (click)="getPackages()"></button>
+
             </span>
           </div>
         </ng-template>
@@ -43,6 +44,9 @@
             <th pSortableColumn="name">Reference <p-sortIcon field="Reference"></p-sortIcon></th>
             <th>Image</th>
             <th pSortableColumn="nbProduct">Number Of Products <p-sortIcon field="nbProduct"></p-sortIcon></th>
+            <th pSortableColumn="privileges">
+              <span>Products</span>
+            </th>
             <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
             <th pSortableColumn="soldQuantity">Sold Quantity <p-sortIcon field="soldQuantity"></p-sortIcon></th>
             <th pSortableColumn="availableQuantity">Available Quantity <p-sortIcon
@@ -62,6 +66,11 @@
               <img class=" w-auto" [src]="_package.image" style="width: 50px; height: 25px;">
             </td>
             <td>{{ _package.nbProduct}}</td>
+            <td>
+              <ng-container *ngFor="let product of _package.products; let last = last">
+                {{ product.reference }}<span *ngIf="!last">, </span>
+              </ng-container>
+            </td>
             <td>{{_package.price | currency:" " }}TND</td>
             <td>{{ _package.soldQuantity}}</td>
             <td>{{ _package.availableQuantity}}</td>
@@ -105,10 +114,9 @@
 
           <div class="field">
             <label for="products">Products</label>
-            <p-multiSelect [options]="products" [(ngModel)]="selectedProducts" optionLabel="reference"
-              placeholder="Select Products" (onChange)="productSelectedEvent($event)" />
+            <p-multiSelect [options]="products" formControlName="products" optionLabel="reference"
+              placeholder="Select Products" (onChange)="productsSelectedEvent($event)" />
           </div>
-
 
           <div class="field">
             <label for="nbProduct">Number of articles</label>
@@ -133,9 +141,11 @@
 
           <div class="field">
             <label for="file">Package Picture</label>
-            <input id="file-upload" class=" w-full" type="file" class="custom-file-input"
-              (change)="onFileSelected($event)" accept="image/*">
-          </div>
+            <input id="file-upload" class="w-full" type="file" class="custom-file-input"
+                (change)="onFileSelected($event)" accept="image/*" formControlName="file"><img
+                *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" class="uploaded-image"
+                style="width: 100px; height: 100px; border-radius: 8px;">
+        </div>
         </form>
       </ng-template>
 

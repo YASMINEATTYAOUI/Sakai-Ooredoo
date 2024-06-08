@@ -16,7 +16,12 @@ export class PackageService {
   getServiceUrl() {
     return this.baseUrl;
   }
+  
+  createPackage(formData: FormData): Observable<Package> {
+    return this.http.post<Package>(this.baseUrl, formData);
+  }
 
+/*
   createPackage(
     file: File,
     reference: string,
@@ -46,7 +51,7 @@ export class PackageService {
         catchError(this.handleError)
       );
   }
-
+*/
   private handleError(error: any) {
     console.error('An error occurred:', error);
     return throwError('Something went wrong; please try again later.');

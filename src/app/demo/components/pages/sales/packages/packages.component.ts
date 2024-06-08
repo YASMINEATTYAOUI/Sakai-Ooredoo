@@ -53,6 +53,8 @@ export class PackagesComponent implements OnInit, OnDestroy {
       price: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
       soldQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
       availableQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
+      products: [null, Validators.required],
+      file: ['', Validators.required]
     });
   }
 
@@ -73,18 +75,44 @@ export class PackagesComponent implements OnInit, OnDestroy {
     this._package.products = event.value;
   }
 
-  
-
   save(): void {
     this.submitted = true;
     if (this.packageToUpdate) {
       this.updatePackage();
     } else {
-      this.createPackage();
+      //this.createPackage();
+      this.onSubmit();
     }
     this.packageDialog = false;
   }
 
+
+  onSubmit() {
+    if (this.packageForm.invalid) {
+      return;
+    }
+    const formData: FormData = new FormData();
+    formData.append('file', this.file);
+    formData.append('reference', this.packageForm.get('reference').value);
+    formData.append('description', this.packageForm.get('description').value);
+    formData.append('nbProduct', this.packageForm.get('nbProduct').value);
+    formData.append('price', this.packageForm.get('price').value);
+    formData.append('soldQuantity', this.packageForm.get('soldQuantity').value);
+    formData.append('availableQuantity', this.packageForm.get('availableQuantity').value);
+
+    const productIds: number[] = this.packageForm.get('products').value.map(product => product.id);
+    productIds.forEach(productId => formData.append('products', productId.toString()));
+
+    this.packageService.createPackage(formData).subscribe(
+      response => {
+        console.log('Package created successfully:', response);
+      },
+      error => {
+        console.error('Error creating package:', error);
+      }
+    );
+  }
+/*
   private createPackage(): void {
     this.packageService.createPackage(this.file,
       this.packageForm.get('reference').value,
@@ -99,7 +127,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
       })
     this.packages.push(this._package);
   }
-
+*/
   private updatePackage(): void {
     if (this.packageToUpdate.id) {
       this.packageService.updatePackage(this.packageForm.get('id').value, this.file,

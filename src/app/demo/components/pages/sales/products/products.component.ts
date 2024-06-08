@@ -20,7 +20,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   products: Product[];
   filteredData: Product[];
   name: any;
-  file: File;
+ 
   product: Product;
 
   selectedBrandId: Brand;
@@ -61,7 +61,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
       soldQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
       availableQuantity: ['', [Validators.pattern(/^\d+(\.\d{1,2})?$/), Validators.required]],
       brand: [null, Validators.required],
-      category: [null, Validators.required]
+      category: [null, Validators.required],
+      file: ['', Validators.required]
     });
   }
 
@@ -74,6 +75,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+ 
+  onFileSelected(event: any): void {
+    this.selectedFile = <File>event.target.files[0];
+  }
+
   loadBrands() {
     this.brandService.getBrands().subscribe(brands => {
       this.brands = brands;
@@ -82,8 +88,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   brandSelectedEvent(event: any) {
     this.product.brand = event.value;
-    //event.value=this.productForm.get('brand').value;
-    //this.productForm.get('brand').value =event.value;
   }
 
   loadCategories() {
@@ -94,10 +98,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
   
   categorySelectedEvent(event: any) {
     this.product.category = event.value;
-    //event.value=this.productForm.get('category').value;
   }
   
   save(): void {
+    
     this.submitted = true;
     if (this.productToUpdate) {
       this.updateProduct();
@@ -106,79 +110,35 @@ export class ProductsComponent implements OnInit, OnDestroy {
     }
     this.productDialog = false;
   }
-  
   createProduct(): void {
-    if (this.productForm.valid) {
-      const product: Product = this.productForm.value;
-      const brand: Brand = this.brands.find(b => b.id === this.productForm.value.brand);
-      const category: Category = this.categories.find(c => c.id === this.productForm.value.category);
-
-      this.productService.createProduct(
-        this.file,
-        product.reference,
-        product.description,
-        product.price,
-        product.soldQuantity,
-        product.availableQuantity,
-        brand,
-        category
-      ).subscribe({
-        next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 2000 }),
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
-        complete: () => { }
-      });
-    } else {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please fill out the form correctly!' });
-    }
-  }
-
-
-/*
-  private createProduct(): void {
-    this.productService.createProduct(this.file,
-      this.productForm.get('reference').value,
-      this.productForm.get('description').value,
-      this.productForm.get('price').value,
-      this.productForm.get('soldQuantity').value,
-      this.productForm.get('availableQuantity').value,).subscribe({
-        next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 2000 }),
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
-        complete: () => { }
-      })
-    this.products.push(this.product);
-  }
-*/
-/*
-createProduct() {
-  if (this.productForm.valid && this.selectedFile) {
+    
+    if (this.productForm.invalid ) {
     const formData = new FormData();
-    formData.append('file', this.file, this.file.name);
-    formData.append('reference', this.productForm.get('reference').value);
-    formData.append('description', this.productForm.get('description').value);
-    formData.append('price', this.productForm.get('price').value);
-    formData.append('soldQuantity', this.productForm.get('soldQuantity').value);
-    formData.append('availableQuantity', this.productForm.get('availableQuantity').value);
-    formData.append('brand', this.productForm.get('brand').value.id);
-    formData.append('category', this.productForm.get('category').value.id);
+    formData.append('file', this.selectedFile);
+    formData.append('reference', this.productForm.get('reference')?.value);
+    formData.append('description', this.productForm.get('description')?.value);
+    formData.append('price', this.productForm.get('price')?.value);
+    formData.append('soldQuantity', this.productForm.get('soldQuantity')?.value);
+    formData.append('availableQuantity', this.productForm.get('availableQuantity')?.value);
+    formData.append('brand', this.productForm.get('brand')?.value.id);
+    formData.append('category', this.productForm.get('category')?.value.id);
 
     this.productService.createProduct(formData).subscribe({
-      next: (response) => {
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 2000 });
-        this.router.navigate(['/products']); // Adjust the route as needed
-      },
-      error: (e) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' });
-        console.error('Error creating product', e);
-      }
+      next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 2000 }),
+      error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
+      complete: () => { }
     });
   } else {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill out all required fields' });
+    this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please fill out the form correctly!' });
   }
-}
-*/
+   error => {
+      console.error('Error creating product:', error);
+    };
+  }
+
   private updateProduct(): void {
     if (this.productToUpdate.id) {
-      this.productService.updateProduct(this.productForm.get('id').value, this.file,
+      this.productService.updateProduct(this.productForm.get('id').value, this.selectedFile,
         this.productForm.get('reference').value,
         this.productForm.get('description').value,
         this.productForm.get('price').value,
@@ -238,9 +198,7 @@ createProduct() {
     this.router.navigate(['dashboard/pages/sales/packages', product.id]);
   }
 
-  onFileSelected(event: any) {
-    this.file = <File>event.target.files[0];
-  }
+  
 
   openNew() {
     this.product = new Product;
