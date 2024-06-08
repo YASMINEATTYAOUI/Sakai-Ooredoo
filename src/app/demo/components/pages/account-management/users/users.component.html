@@ -72,12 +72,14 @@
                         <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.phoneNumber}}
                         </td>
+
                         <td [readonly]="true" style="width:14%; min-width: 10rem;">
                             {{user.role?.name}}
                         </td>
                         <td  style="width:14%; min-width: 10rem;">
                             
                             <p-tag [value]="user.status ? 'Active' : 'Inactive'" [severity]="getSeverity(user.status)"></p-tag>
+
                         </td>
                         <td>
                             <div class="flex">
@@ -100,8 +102,10 @@
             class="p-fluid">
             <ng-template pTemplate="content">
                 <form>
+
                     <img [src]="user.image" [alt]="user.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2"
                         *ngIf="user.image">
+
                     <div class="field">
                         <label for="username">Username</label>
                         <input type="text" pInputText id="username" [(ngModel)]="user.username" required autofocus
@@ -147,6 +151,7 @@
 
                     <div class="field">
                         <label class="mb-3">Account Status</label>
+
                         <p-inputSwitch [(ngModel)]="user.status"></p-inputSwitch>
                     </div>
 

@@ -21,6 +21,7 @@ export class CategoryService {
     return this.http.post<Category>(this.baseUrl, category);
   }
 
+
   updateCategory(categoryId: any, updatedCategory: Category): Observable<Category> {
     return this.http.put<Category>(`${this.baseUrl}/${categoryId}`, updatedCategory);
   }
@@ -30,6 +31,7 @@ export class CategoryService {
   }
 
   getCategoryById(id: number): Observable<Category> {
+
     return this.http.get<Category>(`${this.baseUrl}/${id}`);
   }
 

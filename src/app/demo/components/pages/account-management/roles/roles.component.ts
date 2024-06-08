@@ -46,7 +46,7 @@ export class RolesComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
 
   roleId: any;
-  showRoleDetailsPopup: boolean;
+
 
   colors: string[] = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
 
@@ -166,10 +166,6 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.filteredData = this.roles.filter(item => item.name.toLowerCase().startsWith(event.toLowerCase()));
   }
 
-  toRole(role: Role) {
-    this.router.navigate(['dashboard/products/', role.id]);
-  }
-
   openNew() {
     this.role = {};
     this.submitted = false;
@@ -194,4 +190,5 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.roleForm.reset();
   }
+
 }

@@ -48,10 +48,19 @@
               <span>Products</span>
             </th>
             <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+
+
             <th pSortableColumn="soldQuantity">Sold Quantity <p-sortIcon field="soldQuantity"></p-sortIcon></th>
             <th pSortableColumn="availableQuantity">Available Quantity <p-sortIcon
                 field="availableQuantity"></p-sortIcon></th>
             <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon>
+
+            </th>
+            <th  pSortableColumn="creationDate">
+              <span>Creation Date</span>
+            </th>
+            <th pSortableColumn="lastModifiedDate">
+              <span>Last Modified Date</span>
             </th>
             <th pSortableColumn="edit"><span></span></th>
           </tr>
@@ -65,17 +74,25 @@
             <td class="text-align-center">
               <img class=" w-auto" [src]="_package.image" style="width: 50px; height: 25px;">
             </td>
+
             <td>{{ _package.nbProduct}}</td>
             <td>
               <ng-container *ngFor="let product of _package.products; let last = last">
                 {{ product.reference }}<span *ngIf="!last">, </span>
               </ng-container>
+
             </td>
             <td>{{_package.price | currency:" " }}TND</td>
             <td>{{ _package.soldQuantity}}</td>
             <td>{{ _package.availableQuantity}}</td>
             <td>{{ _package.description}}</td>
 
+            <td>
+              {{ _package.creationDate }}
+            </td>
+            <td>
+              {{ _package.lastModifiedDate }}
+            </td>
             <td>
               <div class="flex">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"

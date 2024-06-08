@@ -5,3 +5,4 @@ export class Privilege {
   creationDate?: Date;
   lastModifiedDate?: Date;
 }
+

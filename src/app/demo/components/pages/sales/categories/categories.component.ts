@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MessageService, Message } from 'primeng/api';
 import { Category } from 'src/app/demo/models/category';
 import { CategoryService } from 'src/app/demo/service/services/category.service';
@@ -40,7 +39,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private categoryService: CategoryService,
     private messageService: MessageService,
-    private router: Router
   ) {
     this.categoryForm = this.formBuilder.group({
       id: [''],
@@ -61,12 +59,14 @@ export class CategoriesComponent implements OnInit, OnDestroy {
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
     })
-    this.categories.push(this.category);
+   
   }
  
   private updateCategory(category: Category): void {
+
     if (category.id) {
       this.categoryService.updateCategory(category.id, category).subscribe({
+
         next: (response) => {
           console.log('Category updated successfully');
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Category Updated', life: 2000 });
@@ -75,7 +75,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
         complete: () => { }
       });
-      this.categories.push(this.category);
+      
     }
   }
 
@@ -87,6 +87,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     } else {
       this.createCategory(data);
     }
+    this.categories.push(this.category);
     this.categoryDialog = false;
   }
 
@@ -128,17 +129,13 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     }
   }
 
-  toCategory(category: Category) {
-    this.router.navigate(['dashboard/pages/sales/categories', category.id]);
-  }
-
   openNew() {
     this.category = {};
     this.submitted = false;
     this.categoryDialog = true;
   }
 
-  openDialog(category?: Category) {
+  openDialog(category: Category) {
     this.categoryToUpdate = category;
     this.categoryDialog = true;
 

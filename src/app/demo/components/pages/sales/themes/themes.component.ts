@@ -45,6 +45,7 @@ export class ThemesComponent implements OnInit, OnDestroy {
     this.themeForm = this.formBuilder.group({
       id: [''],
       name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
+
       characteristic: [''],
     });
   }

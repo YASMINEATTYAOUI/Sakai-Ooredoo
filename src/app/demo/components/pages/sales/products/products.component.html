@@ -51,6 +51,7 @@
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
                         <th pSortableColumn="brand">Brand <p-sortIcon field="brand"></p-sortIcon></th>
+
                         <th pSortableColumn="soldQuantity">Sold Quantity <p-sortIcon field="soldQuantity"></p-sortIcon>
                         </th>
                         <th pSortableColumn="availableQuantity">Available Quantity <p-sortIcon
@@ -70,12 +71,13 @@
                             <img class="w-auto" [src]="product.image" style="width: 50px; height: 25px;">
                         </td>
                         <td>{{ product.price | currency:" " }}TND</td>
+
+
                         <td>{{ product.category?.name }}</td>
                         <td>{{ product.brand?.name }}</td>
                         <td>{{ product.soldQuantity}}</td>
                         <td>{{ product.availableQuantity}}</td>
                         <td>{{ product.description}}</td>
-
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
@@ -113,7 +115,7 @@
                             cols="20"></textarea>
                     </div>
 
-                    <div class="field">
+                    <div class="field ">
                         <label for="brands">Brand</label>
                         <p-dropdown [options]="brands" formControlName="brand" optionLabel="name"
                             placeholder="Select Brand" (onChange)="brandSelectedEvent($event)">
@@ -124,6 +126,7 @@
                     </div>
 
                     <div class="field">
+
                         <label for="category">Category</label>
                         <p-dropdown [options]="categories" formControlName="category" optionLabel="name"
                             placeholder="Select Category" (onChange)="categorySelectedEvent($event)"></p-dropdown>
@@ -131,7 +134,6 @@
                             *ngIf="productForm.get('category').invalid && productForm.get('category').touched">
                             Category is required.</small>
                     </div>
-
 
                     <div class="field">
                         <label for="price">Price</label>
@@ -162,6 +164,7 @@
                     <div class="field">
                         <label for="file">Product Picture</label>
                         <input id="file-upload" class="w-full" type="file" class="custom-file-input"
+
                             (change)="onFileSelected($event)" accept="image/*" formControlName="file"><img
                             *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" class="uploaded-image"
                             style="width: 100px; height: 100px; border-radius: 8px;">

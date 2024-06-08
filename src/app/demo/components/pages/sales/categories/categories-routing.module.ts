@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule.forChild([
     {path:'', component: CategoriesComponent},
     ])],
+
   exports: [RouterModule]
 })
 export class CategoriesRoutingModule { }

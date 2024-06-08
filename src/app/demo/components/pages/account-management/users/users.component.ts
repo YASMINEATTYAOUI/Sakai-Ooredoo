@@ -54,11 +54,11 @@ export class UsersComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private roleService: RoleService,
     private messageService: MessageService,
-    private router: Router) {}
+    private router: Router) { }
 
   ngOnInit() {
     this.getUsers();
-    this.loadRoles(); 
+    this.loadRoles();
   }
   ngOnDestroy(): void {
 
@@ -91,7 +91,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         console.log(user);
         this.users.push(response);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 2000 })
-    },
+      },
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
     })
@@ -149,6 +149,8 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   
 
+
+
   roleSelectedEvent(event: any){
     this.user.role =event.value;
 
@@ -164,9 +166,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   openDialog(user?: User) {
     this.userToUpdate = user;
-    this.userService.getUserById(user.id);
     this.userDialog = true;
-
   }
 
   confirmDeleteSelected() {
@@ -203,6 +203,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           email: '',
           phoneNumber: 0,
           password: '',
+          status: null,
           creationDate: null,
           lastModifiedDate: null,
           roles: [],

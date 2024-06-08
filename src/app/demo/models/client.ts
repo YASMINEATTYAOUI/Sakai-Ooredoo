@@ -4,6 +4,7 @@ export class Client {
   fullName?: string ;
   email?: string;
   phoneNumber?: number;
+
   adress?: string;
   satatus?: Boolean;
   creationDate?: Date;

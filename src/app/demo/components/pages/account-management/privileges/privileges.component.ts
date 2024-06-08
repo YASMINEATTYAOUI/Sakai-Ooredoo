@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Privilege } from 'src/app/demo/models/privilege';
@@ -60,12 +61,14 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getPrivileges();
 
+
     this.sizes = [
       { name: 'Small', class: 'p-datatable-sm' },
       { name: 'Normal', class: '' },
       { name: 'Large', class: 'p-datatable-lg' }
     ];
   }
+
 
   ngOnDestroy() {}
 
@@ -85,13 +88,16 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     this.privileges.push(this.privilege);
   }
 
+
   private createPrivilege(privilege: Privilege): void {
     this.privilegeService.createPrivilege(privilege).subscribe({
+
       next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Privilege Created', life: 2000 }),
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
     })
   }
+
 
   togglePrivilege(privilege: any): void {
     this.privilegeService.togglePrivilegeStatus(privilege.id).subscribe({
@@ -102,6 +108,7 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Toggling Privilege Failed' }),
       complete: () => { }
     });
+
   }
 
   getPrivileges() {
@@ -126,11 +133,13 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
   searchPrivileges(event) {
     console.log("privilege selected is " + event);
     this.filteredData = this.privileges.filter(item => item.name.toLowerCase().startsWith(event.toLowerCase()));
+
   }
 
   openNew() {
     this.privilege = {};
     this.submitted = false;
+
     this.privilegeDialog = true;
   }
 

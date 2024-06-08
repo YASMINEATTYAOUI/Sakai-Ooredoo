@@ -8,6 +8,7 @@ export class User {
   phoneNumber?: number;
   status?:Boolean
   password?: string;
+  status:Boolean;
   creationDate?: Date;
   lastModifiedDate?: Date;
   role: Role;

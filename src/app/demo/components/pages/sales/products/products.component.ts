@@ -20,6 +20,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
   products: Product[];
   filteredData: Product[];
   name: any;
+
+  file: File;
+
  
   product: Product;
 
@@ -28,7 +31,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
   selectedCategoryId: Category;
   categories: any[] = [];
 
+
+  selectedCategoryId: Category;
+  categories: any[] = [];
+
+
+
   productForm: FormGroup;
+
 
   productDialog: boolean = false;
   productToUpdate: Product;

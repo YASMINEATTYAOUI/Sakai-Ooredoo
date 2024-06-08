@@ -9,6 +9,7 @@ export class Product {
   price?: any;
   soldQuantity?: any;
   availableQuantity?: any;
+
   creationDate?: Date;
   lastModifiedDate?: Date;
 

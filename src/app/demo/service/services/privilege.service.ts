@@ -14,6 +14,7 @@ private baseUrl = environment.apiUrl + '/privileges';
 
   constructor(private http: HttpClient) {}
 
+
   getServiceUrl() {
     return this.baseUrl;
   }
