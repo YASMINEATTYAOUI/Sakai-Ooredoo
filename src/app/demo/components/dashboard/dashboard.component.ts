@@ -8,10 +8,14 @@ import { ClientService } from '../../service/services/client.service';
 import { OrderService } from '../../service/services/order.service';
 import { UserService } from '../../service/services/user.service';
 import { AuthenticationService } from '../../service/services/authentication.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
     templateUrl: './dashboard.component.html',
-    providers: [MessageService],
+    providers: [
+        DatePipe,
+        MessageService
+    ],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     [x: string]: any;
@@ -37,12 +41,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     tableLoading: boolean = false;
 
     messages: { severity: string; summary: string; detail: string; }[];
-    
+
     user: any;
     errorMessage: string | undefined;
-    
+
     currentUser: any;
-    userProfile: any;
+    currentDate: string;
 
     constructor(
         private authService: AuthenticationService,
@@ -51,6 +55,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private productService: ProductService,
         private clientService: ClientService,
         private orderService: OrderService,
+        private datePipe: DatePipe,
         private messageService: MessageService,
     ) {
         this.subscription = this.layoutService.configUpdate$
@@ -62,11 +67,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        //this.getCurrentUser();
-
-        this.authService.getCurrentUser().subscribe(
-            data => this.currentUser = data,
-            error => console.error('Error fetching user data', error));
+        this.getCurrentUser();
+        this.currentDate = this.datePipe.transform(new Date(), 'fullDate'); // Format the date as you prefer
+  
         this.initChart();
         this.getProducts();
         this.countUsers();
@@ -76,16 +79,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getCurrentUser(): void {
-        this.userService.getCurrentUser().subscribe(
-          data => {
-            this.user = data;
-          },
-          error => {
-            this.errorMessage = error;
-          }
-        );
-      }
-
+        this.authService.getCurrentUser().subscribe(
+            data => this.currentUser = data,
+            error => console.error('Error fetching user data', error));
+    }
 
     countUsers() {
         this.userService.countUsers().subscribe(count => {
