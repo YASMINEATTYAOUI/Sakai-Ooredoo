@@ -3,8 +3,8 @@
     <div class="card px-6 py-6">
       <p-toast></p-toast>
       <p-toolbar styleClass="mb-4">
-        <ng-template  pTemplate="left">
-          <div class="my-2" >
+        <ng-template pTemplate="left">
+          <div class="my-2">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
               (click)="openNew()"></button>
           </div>
@@ -44,7 +44,7 @@
             <th pSortableColumn="userCount">
               <span>Number of Users</span>
             </th>
-            
+
             <th pSortableColumn="status">
               <span>Status</span>
             </th>
@@ -57,15 +57,16 @@
 
             <td>
               <div class="flex align-items-center">
-                <span class="border-circle mr-2" [ngStyle]="{ 'background-color': getCircleColor(i) }" style="width: 7px; height: 7px"></span>
+                <span class="border-circle mr-2" [ngStyle]="{ 'background-color': getCircleColor(i) }"
+                  style="width: 7px; height: 7px"></span>
                 {{ role.name }}
               </div>
             </td>
             <td>{{ role.description }}</td>
             <td>
-            <ng-container *ngFor="let privilege of role.privileges; let last = last">
-              {{ privilege.name}}<span *ngIf="!last">,</span>
-            </ng-container>
+              <ng-container *ngFor="let privilege of role.privileges; let last = last">
+                {{ privilege.name}}<span *ngIf="!last">,</span>
+              </ng-container>
             </td>
             <td>{{ role.userCount }}</td>
             <td>
@@ -111,7 +112,7 @@
             <p-multiSelect [options]="privileges" formControlName="privileges" optionLabel="name"
               placeholder="Select Privileges" (onChange)="privilegesSelectedEvent($event)" />
           </div>
-          
+
           <div class="field">
             <div class="status-container">
               <label for="active">Status</label>

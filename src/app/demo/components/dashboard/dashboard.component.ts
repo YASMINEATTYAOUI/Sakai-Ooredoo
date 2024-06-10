@@ -62,8 +62,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        this.getCurrentUser();
+        //this.getCurrentUser();
 
+        this.authService.getCurrentUser().subscribe(
+            data => this.currentUser = data,
+            error => console.error('Error fetching user data', error));
         this.initChart();
         this.getProducts();
         this.countUsers();

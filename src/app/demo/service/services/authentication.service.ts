@@ -47,11 +47,11 @@ export class AuthenticationService {
     this.router.navigate(['/login']);
   }
 
-  /*
-  getCurrentAuthUser() {
-    return this.http.get(`${this.baseUrl}`);
+  
+  getCurrentUser() {
+    return this.http.get<any>(`${this.baseUrl}/current-user`);
   }
-*/
+
   getCurrentAuthUser() {
     const token = this.getJwtToken();
     if (token) {
