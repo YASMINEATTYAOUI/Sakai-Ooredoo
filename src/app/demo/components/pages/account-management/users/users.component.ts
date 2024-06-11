@@ -134,9 +134,15 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
-  searchUsers(event) {
+  searchUsers(query: string): void {
     console.log("user selected is " + event);
-    this.filteredData = this.users.filter(item => item.username.toLowerCase().startsWith(event.toLowerCase()));
+    this.filteredData = this.users.filter(user =>
+      user.username.toLowerCase().includes(query.toLowerCase()) ||
+      user.fullName.toLowerCase().includes(query.toLowerCase()) ||
+      user.email.toLowerCase().includes(query.toLowerCase()) ||
+      user.phoneNumber.toString().toLocaleLowerCase().includes(query.toLowerCase()) ||
+      user.role.name.toLowerCase().includes(query.toLowerCase())
+     );
   }
 
   deleteUser(user: User): void {

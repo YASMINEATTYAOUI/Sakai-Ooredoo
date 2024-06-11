@@ -173,10 +173,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
     });
   }
 
-  searchProducts(event) {
-    this.filteredData = this.products.filter(item => 
-      item.reference.toLowerCase().startsWith(event.toLowerCase()));
-      
+  searchProducts(query: string): void {
+    this.filteredData = this.products.filter(product =>
+      product.reference.toLowerCase().includes(query.toLowerCase()) ||
+      product.price.toString().toLowerCase().includes(query.toLowerCase()) ||
+      //product.category.name.toLowerCase().includes(query.toLowerCase())||
+      //product.brand.name.toLowerCase().includes(query.toLowerCase())||
+      product.soldQuantity.toString().toLowerCase().includes(query.toLowerCase()) ||
+      product.availableQuantity.toString().toLocaleLowerCase().includes(query.toLowerCase()) ||
+      product.description.toLowerCase().includes(query.toLowerCase())
+     );
   }
 
   deleteProduct(product: Product): void {

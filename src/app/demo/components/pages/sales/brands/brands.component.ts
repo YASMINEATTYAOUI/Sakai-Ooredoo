@@ -105,11 +105,12 @@ export class BrandsComponent implements OnInit, OnDestroy {
     });
   }
 
-  searchBrands(event) {
-    console.log("brand selected is " + event);
-    this.filteredData = this.brands.filter(item => item.name.toLowerCase().startsWith(event.toLowerCase()));
-
+  searchBrands(query: string): void {
+    this.filteredData = this.brands.filter(brand =>
+      brand.name.toLowerCase().includes(query.toLowerCase()) ||
+      brand.description.toLowerCase().includes(query.toLowerCase()));
   }
+
 
   deleteBrand(brand: Brand): void {
     if (brand) {

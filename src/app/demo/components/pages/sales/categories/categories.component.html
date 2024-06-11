@@ -19,13 +19,15 @@
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [(selection)]="selectedCategories" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
-
+                
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="searchCategoriess($event.target.value)"
+                            <input pInputText type="text" (input)="searchCategories($event.target.value)"
                                 placeholder="Search..." class="w-auto sm:w-auto" />
+                               
+                            
                         </span>
                         <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
                         icon="pi pi-refresh" (click)="getCategories()"></button>
@@ -37,8 +39,7 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
-                        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                       <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
                         <th pSortableColumn="creationDate"><span>Creation Date</span></th>
                         <th pSortableColumn="lastModifiedDate"><span>Last Modified Date</span></th>
                         <th pSortableColumn="edit"><span></span></th>
@@ -47,7 +48,6 @@
                 <ng-template pTemplate="body" let-category>
                     <tr class="ng-star-inserted">
                         <td><p-tableCheckbox [value]="category"></p-tableCheckbox></td>
-                        <td>{{category.code || category.id}}</td>
                         <td>{{category.name}}</td>
                         <td>{{ category.creationDate }}</td>
                         <td>{{ category.lastModifiedDate }}</td>

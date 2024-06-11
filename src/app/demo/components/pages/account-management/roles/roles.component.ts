@@ -159,11 +159,9 @@ export class RolesComponent implements OnInit, OnDestroy {
     });
   }
 
-  
-
-  searchRoles(event) {
-    console.log("role selected is " + event);
-    this.filteredData = this.roles.filter(item => item.name.toLowerCase().startsWith(event.toLowerCase()));
+  searchUsers(query: string): void {
+    this.filteredData = this.roles.filter(role =>
+      role.name.toLowerCase().includes(query.toLowerCase()));
   }
 
   toRole(role: Role) {

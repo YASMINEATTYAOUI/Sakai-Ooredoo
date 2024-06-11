@@ -112,22 +112,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
       }
     );
   }
-/*
-  private createPackage(): void {
-    this.packageService.createPackage(this.file,
-      this.packageForm.get('reference').value,
-      this.packageForm.get('description').value,
-      this.packageForm.get('nbProduct').value,
-      this.packageForm.get('price').value,
-      this.packageForm.get('soldQuantity').value,
-      this.packageForm.get('availableQuantity').value).subscribe({
-        next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Created', life: 2000 }),
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
-        complete: () => { }
-      })
-    this.packages.push(this._package);
-  }
-*/
+
   private updatePackage(): void {
     if (this.packageToUpdate.id) {
       this.packageService.updatePackage(this.packageForm.get('id').value, this.file,
@@ -148,7 +133,6 @@ export class PackagesComponent implements OnInit, OnDestroy {
     }
   }
 
-
   getPackages() {
     this.tableLoading = true;
     this.packageService.getPackages().subscribe({
@@ -167,10 +151,14 @@ export class PackagesComponent implements OnInit, OnDestroy {
     });
   }
 
-  searchPackages(event) {
-    console.log("package selected is " + event);
-    this.filteredData = this.packages.filter(item => item.reference.toLowerCase().startsWith(event.toLowerCase()));
-
+  searchPackages(query: string): void {
+    this.filteredData = this.packages.filter(_package =>
+      _package.reference.toLowerCase().includes(query.toLowerCase()) ||
+      _package.price.toString().toLowerCase().includes(query.toLowerCase()) ||
+      _package.soldQuantity.toString().toLowerCase().includes(query.toLowerCase()) ||
+      _package.availableQuantity.toString().toLocaleLowerCase().includes(query.toLowerCase()) ||
+      _package.description.toLowerCase().includes(query.toLowerCase())
+     );
   }
 
   deletePackage(_package: Package): void {
