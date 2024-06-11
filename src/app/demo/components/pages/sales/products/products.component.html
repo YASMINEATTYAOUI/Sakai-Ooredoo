@@ -1,23 +1,18 @@
+<div class="mt-2 mb-6 font-bold text-xl text-900">Products Management</div>
+
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toast></p-toast>
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-                            (click)="openNew()"></button>
 
-                    </div>
-                </ng-template>
+            <div class="mb-4 ">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                (click)="openNew()"></button>
 
-                <ng-template pTemplate="right">
-                    <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-                        (click)="deleteSelectedProducts(selectedProducts)"
-                        [disabled]="!selectedProducts || !selectedProducts.length"></button>
-                </ng-template>
-
-            </p-toolbar>
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+                (click)="deleteSelectedProducts(selectedProducts)"
+                [disabled]="!selectedProducts || !selectedProducts.length"></button>
+            </div>
 
             <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [rows]="10" [paginator]="true"
                 [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
@@ -26,18 +21,16 @@
                 <ng-template pTemplate="caption">
 
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Products Management</h5>
 
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
 
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="searchProducts($event.target.value)"
                                 placeholder="Search..." class="w-auto sm:w-auto" />
-                            <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
-                                icon="pi pi-refresh" (click)="getProducts()"></button>
-
                         </span>
 
+                        <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+                        icon="pi pi-refresh" (click)="getProducts()"></button>
 
                     </div>
                 </ng-template>

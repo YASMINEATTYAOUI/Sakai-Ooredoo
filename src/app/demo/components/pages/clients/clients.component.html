@@ -1,8 +1,11 @@
+<div class="mt-2 mb-6 font-bold text-xl text-900">Clients Management</div>
+
 <div class="grid">
   <div class="col-12">
     <div class="card px-6 py-6">
-      <h5>Clients Management</h5>
+
       <p-toast></p-toast>
+
       <p-table [value]="filteredData" responsiveLayout="scroll" [rows]="10" [paginator]="true"
         [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
@@ -13,10 +16,9 @@
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="searchClients($event.target.value)" placeholder="Search..."
                 class="w-auto sm:w-auto" />
-              <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
-                icon="pi pi-refresh" (click)="getClients()"></button>
-
             </span>
+            <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+              icon="pi pi-refresh" (click)="getClients()"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -50,11 +52,7 @@
             <td style="width:14%; min-width:10rem;">
               {{client.adress}}
             </td>
-            <!--
-            <td>
-              <p-tag [value]="client.status ? 'Active' : 'Blocked'" [severity]="getSeverity(client.status)"></p-tag>
-            </td>
-          -->
+
             <td>
               <i class="pi"
                 [ngClass]="{ 'text-green-500 pi-check-circle': client.status, 'text-red-500 pi-times-circle': !client.status }"></i>

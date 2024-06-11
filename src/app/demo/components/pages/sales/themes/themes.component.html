@@ -1,22 +1,18 @@
+<div class="mt-2 mb-6 font-bold text-xl text-900">Themes Management</div>
+
+
 <div class="grid">
   <div class="col-12">
     <div class="card px-6 py-6">
       <p-toast></p-toast>
-      <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="left">
-          <div class="my-2">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-              (click)="openNew()"></button>
-            
-          </div>
-        </ng-template>
 
-        <ng-template pTemplate="right">
-          <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-              (click)="deleteSelectedThemes(selectedThemes)"
-              [disabled]="!selectedThemes || !selectedThemes.length"></button>
-        </ng-template>
-      </p-toolbar>
+      <div class="mb-4">
+        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+        (click)="openNew()"></button>
+        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+        (click)="deleteSelectedThemes(selectedThemes)"
+        [disabled]="!selectedThemes || !selectedThemes.length"></button>
+      </div>
 
       <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [rows]="10" [paginator]="true"
         [rowsPerPageOptions]="[5,10,20]" [showCurrentPageReport]="true"
@@ -25,14 +21,14 @@
         <ng-template pTemplate="caption">
 
           <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 class="m-0">Themes Management</h5>
             <span class="block mt-2 md:mt-0 p-input-icon-left">
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="searchThemes($event.target.value)" placeholder="Search..."
                 class="w-auto sm:w-auto" />
-                <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;" icon="pi pi-refresh" (click)="getThemes()"></button>
-                
+               
             </span>
+            <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;" icon="pi pi-refresh" (click)="getThemes()"></button>
+                
           </div>
         </ng-template>
         <ng-template pTemplate="header">

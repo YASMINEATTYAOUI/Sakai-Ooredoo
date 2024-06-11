@@ -1,33 +1,17 @@
-<!---->
+<div class="mt-2 mb-6 font-bold text-xl text-900">Privilege Management</div>
+
 <div class="grid">
   <div class="col-12">
     <div class="card">
-      <h5>Privilege Management</h5>
       <p-toast></p-toast>
-      <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="left">
-          <div class="my-2">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-              (click)="openNew()"></button>
-          </div>
-        </ng-template>
-        <ng-template pTemplate="center">
-          <div class="flex justify-content-center mb-3">
-            <p-selectButton [options]="sizes" [(ngModel)]="selectedSize" [multiple]="false" optionLabel="name"
-              optionValue="class" />
-          </div>
-        </ng-template>
-        <ng-template pTemplate="right">
-          <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
-            icon="pi pi-refresh" (click)="getPrivileges()"></button>
-        </ng-template>
-      </p-toolbar>
-
+        
       <p-table [value]="privileges" [tableStyle]="{ 'min-width': '50rem' }" [styleClass]="selectedSize.class"
         [paginator]="true" [rows]="4" [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [rowsPerPageOptions]="[5, 10, 20]" [(selection)]="selectedPrivileges" selectionMode="multiple" [rowHover]="true"
         dataKey="id">
+        <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+            icon="pi pi-refresh" (click)="getPrivileges()"></button>
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name">Name</th>

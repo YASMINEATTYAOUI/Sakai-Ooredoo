@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService, Message } from 'primeng/api';
+import { MessageService, Message, MenuItem } from 'primeng/api';
 import { User } from 'src/app/demo/models/user';
 import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { UserService } from 'src/app/demo/service/services/user.service';
@@ -16,7 +16,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   users: User[];
   filteredData: User[];
   name: any;
-  user: User ;
+  user: User;
   //user2 :UserDto ;
   /*
   user = {
@@ -49,16 +49,23 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   userId: any;
 
+
+  items: MenuItem[] | undefined;
+  home: MenuItem | undefined;
+
   constructor(
-    
+
     private userService: UserService,
     private roleService: RoleService,
     private messageService: MessageService,
-    private router: Router) {}
+    private router: Router) { }
 
   ngOnInit() {
+
+    this.items = [{ icon: 'pi pi-home', route: '/dashboard' }, { label: 'Acount Management' }, { label: 'Users', route: '/inputtext' }];
+    
     this.getUsers();
-    this.loadRoles(); 
+    this.loadRoles();
   }
   ngOnDestroy(): void {
 
@@ -78,24 +85,24 @@ export class UsersComponent implements OnInit, OnDestroy {
     if (this.userToUpdate) {
       this.updateUser(this.user);
     } else {
-      
+
       this.createUser(this.user);
     }
     this.userDialog = false;
   }
 
   private createUser(user: User): void {
-    
+
     this.userService.createUser(user).subscribe({
       next: (response) => {
         console.log(user);
         this.users.push(response);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 2000 })
-    },
+      },
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
     })
-    
+
   }
 
   private updateUser(user: User): void {
@@ -147,15 +154,15 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
   }
 
-  
 
-  roleSelectedEvent(event: any){
-    this.user.role =event.value;
+
+  roleSelectedEvent(event: any) {
+    this.user.role = event.value;
 
   }
 
   openNew() {
-   //this.user = new User();
+    //this.user = new User();
     this.submitted = false;
     this.userDialog = true;
 

@@ -16,6 +16,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { UsersComponent } from './users.component';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { UsersComponent } from './users.component';
     DropdownModule,
     RadioButtonModule,
     InputNumberModule,
-    DialogModule
+    DialogModule,
+    BreadcrumbModule
     
 ],
 declarations: [UsersComponent]

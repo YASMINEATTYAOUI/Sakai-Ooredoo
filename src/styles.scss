@@ -93,3 +93,9 @@ $gutter: 1rem; //for primeflex grid system
   flex-direction: column;
 }
 
+@media (max-width: 767px) {
+  .user-details {
+      display: none;
+  }
+}
+

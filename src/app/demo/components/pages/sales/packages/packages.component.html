@@ -1,22 +1,18 @@
+<div class="mt-2 mb-6 font-bold text-xl text-900">Packages Management</div>
+
 <div class="grid">
   <div class="col-12">
     <div class="card px-6 py-6">
       <p-toast></p-toast>
-      <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="left">
-          <div class="my-2">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-              (click)="openNew()"></button>
 
-          </div>
-        </ng-template>
+      <div class="mb-4 ">
+        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+          (click)="openNew()"></button>
 
-        <ng-template pTemplate="right">
-          <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-            (click)="deleteSelectedPackages(selectedPackages)"
-            [disabled]="!selectedPackages || !selectedPackages.length"></button>
-        </ng-template>
-      </p-toolbar>
+        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+          (click)="deleteSelectedPackages(selectedPackages)" [disabled]="!selectedPackages || !selectedPackages.length">
+        </button>
+      </div>
 
       <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [rows]="10" [paginator]="true"
         [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
@@ -25,15 +21,15 @@
         <ng-template pTemplate="caption">
 
           <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 class="m-0">Packages Management</h5>
             <span class="block mt-2 md:mt-0 p-input-icon-left">
               <i class="pi pi-search"></i>
               <input pInputText type="text" (input)="searchPackages($event.target.value)" placeholder="Search..."
                 class="w-auto sm:w-auto" />
-              <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
-                icon="pi pi-refresh" (click)="getPackages()"></button>
-
             </span>
+
+            <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+              icon="pi pi-refresh" (click)="getPackages()"></button>
+
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -142,10 +138,10 @@
           <div class="field">
             <label for="file">Package Picture</label>
             <input id="file-upload" class="w-full" type="file" class="custom-file-input"
-                (change)="onFileSelected($event)" accept="image/*" formControlName="file"><img
-                *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" class="uploaded-image"
-                style="width: 100px; height: 100px; border-radius: 8px;">
-        </div>
+              (change)="onFileSelected($event)" accept="image/*" formControlName="file"><img *ngIf="imageUrl"
+              [src]="imageUrl" alt="Uploaded Image" class="uploaded-image"
+              style="width: 100px; height: 100px; border-radius: 8px;">
+          </div>
         </form>
       </ng-template>
 
