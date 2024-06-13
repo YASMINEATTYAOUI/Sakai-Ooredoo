@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Client } from 'src/app/demo/models/client';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { ClientService } from 'src/app/demo/service/services/client.service';
 
 @Component({
@@ -32,6 +33,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
 
   constructor(
     private clientService: ClientService,
+    private authService: AuthenticationService,
     private messageService: MessageService,
     private router: Router) {}
 
@@ -86,4 +88,8 @@ export class ClientsComponent implements OnInit, OnDestroy {
   toClient(client: Client) {
     this.router.navigate(['dashboard/pages/clients', client.id]);
   }
+
+  canToggleClientStatus(): boolean {
+    return this.authService.hasPrivilege('Update Client');
+  } 
 }

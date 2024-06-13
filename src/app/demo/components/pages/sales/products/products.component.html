@@ -7,11 +7,11 @@
 
             <div class="mb-4 ">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-                (click)="openNew()"></button>
+                (click)="openNew()" *ngIf="canEditProduct()"></button>
 
             <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
                 (click)="deleteSelectedProducts(selectedProducts)"
-                [disabled]="!selectedProducts || !selectedProducts.length"></button>
+                [disabled]="!selectedProducts || !selectedProducts.length" *ngIf="canEditProduct()"></button>
             </div>
 
             <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [rows]="10" [paginator]="true"
@@ -73,9 +73,9 @@
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-success mr-2"
-                                    (click)="openDialog(product)"></button>
+                                    (click)="openDialog(product)" *ngIf="canEditProduct()"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                    (click)="deleteProduct(product)"></button>
+                                    (click)="deleteProduct(product)" *ngIf="canEditProduct()"></button>
                             </div>
                         </td>
                     </tr>

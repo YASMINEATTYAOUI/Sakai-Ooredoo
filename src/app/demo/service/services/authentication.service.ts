@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 //import jwtDecode from 'jwt-decode'; // Ensure to import correctly
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { User } from '../../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ import { environment } from 'src/environments/environment';
 export class AuthenticationService {
 
   private baseUrl = environment.apiUrl + '/auth';
+
+  currentUser: User;
 
   private readonly JWT_TOKEN = 'JWT_TOKEN';
   private loggedUser?: string;
@@ -49,7 +52,11 @@ export class AuthenticationService {
 
   
   getCurrentUser() {
-    return this.http.get<any>(`${this.baseUrl}/current-user`);
+    return this.http.get<any>(`${this.baseUrl}/current-user`) .pipe(tap(user => this.currentUser = user));
+  }
+
+  hasPrivilege(privilegeName: string): boolean {
+    return this.currentUser.role.privileges.some(privilege => privilege.name === privilegeName);
   }
 
   getCurrentAuthUser() {

@@ -7,10 +7,10 @@
 
       <div class="mb-4 ">
         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-          (click)="openNew()"></button>
+          (click)="openNew()" *ngIf="canAddBrand()"></button>
         <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
           (click)="deleteSelectedBrands(selectedBrands)"
-          [disabled]="!selectedBrands || !selectedBrands.length"></button>
+          [disabled]="!selectedBrands || !selectedBrands.length" *ngIf="canDeleteBrand()"></button>
       </div>
       <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="4"
         [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -61,9 +61,9 @@
             <td>
               <div class="flex">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-                  (click)="openDialog(brand)"></button>
+                  (click)="openDialog(brand)" *ngIf="canEditBrand()"></button>
                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                  (click)="deleteBrand(brand)"></button>
+                  (click)="deleteBrand(brand)" *ngIf="canDeleteBrand()"></button>
               </div>
             </td>
           </tr>
@@ -95,11 +95,25 @@
               cols="20"></textarea>
           </div>
 
-          <div class="field">
+          <!-- <div class="field">
             <label for="file">Brand Logo</label>
             <input id="file-upload" class=" w-full" type="file" class="custom-file-input" formControlName="file"
               (change)="onFileSelected($event)" accept="image/*">
-          </div>
+          </div> -->
+
+          <!-- <div class="field">
+            
+            <label for="file-upload" class="custom-file-upload">Brand Logo</label>
+            <input id="file-upload" class="custom-file-input" type="file" formControlName="file" (change)="onFileSelected($event)" accept="image/*">
+          </div> -->
+
+          <div class="file-upload-container">
+            <label for="file-upload" class="file-upload-label">+ Import brand logo</label>
+            <input id="file-upload" type="file" class="file-upload-input" (change)="onFileSelected($event)" accept="image/*">
+            
+        </div>
+        
+
         </form>
       </ng-template>
 

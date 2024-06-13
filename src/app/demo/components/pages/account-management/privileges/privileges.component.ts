@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Privilege } from 'src/app/demo/models/privilege';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { PrivilegeService } from 'src/app/demo/service/services/privilege.service';
 
 @Component({
@@ -48,6 +49,7 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private privilegeService: PrivilegeService,
     private messageService: MessageService,
+    private authService: AuthenticationService,
     private router: Router,
   ) {
     this.privilegeForm = this.formBuilder.group({
@@ -139,5 +141,9 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.privilegeForm.reset();
   }
+
+  canTogglePrivilegeStatus(): boolean {
+    return this.authService.hasPrivilege('Update Privilege');
+  }  
 
 }

@@ -5,6 +5,7 @@ import { MessageService, Message } from 'primeng/api';
 import { Brand } from 'src/app/demo/models/brand';
 import { Category } from 'src/app/demo/models/category';
 import { Product } from 'src/app/demo/models/product';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { BrandService } from 'src/app/demo/service/services/brand.service';
 import { CategoryService } from 'src/app/demo/service/services/category.service';
 import { ProductService } from 'src/app/demo/service/services/product.service';
@@ -51,6 +52,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private brandService: BrandService,
     private categoryService: CategoryService,
+    private authService: AuthenticationService,
     private messageService: MessageService,
     private router: Router) {
     this.productForm = this.formBuilder.group({
@@ -279,5 +281,17 @@ export class ProductsComponent implements OnInit, OnDestroy {
       };
     }
   }
+
+  canAddProduct(): boolean {
+    return this.authService.hasPrivilege('Create Product');
+  } 
+
+  canEditProduct(): boolean {
+    return this.authService.hasPrivilege('Update Product');
+  } 
+
+  canDeleteProduct(): boolean {
+    return this.authService.hasPrivilege('Delete Product');
+  } 
 
 }

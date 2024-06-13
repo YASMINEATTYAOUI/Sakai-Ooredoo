@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Brand } from 'src/app/demo/models/brand';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { BrandService } from 'src/app/demo/service/services/brand.service';
 
 @Component({
@@ -35,6 +36,7 @@ export class BrandsComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private brandService: BrandService,
+    private authService: AuthenticationService,
     private messageService: MessageService,
     private router: Router
   ) {
@@ -189,4 +191,17 @@ export class BrandsComponent implements OnInit, OnDestroy {
     this.brandDialog = false;
     this.submitted = false;
   }
+
+  canAddBrand(): boolean {
+    return this.authService.hasPrivilege('Create Brand');
+  } 
+
+  canEditBrand(): boolean {
+    return this.authService.hasPrivilege('Update Brand');
+  } 
+
+  canDeleteBrand(): boolean {
+    return this.authService.hasPrivilege('Delete Brand');
+  } 
+
 }

@@ -57,6 +57,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     private userService: UserService,
     private roleService: RoleService,
+    private authService: AuthenticationService,
     private messageService: MessageService,
     private router: Router) { }
 
@@ -234,5 +235,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.userDialog = false;
     this.submitted = false;
   }
+
+  canAddUser(): boolean {
+    return this.authService.hasPrivilege('Update User');
+  }  
+  canEditUser(): boolean {
+    return this.authService.hasPrivilege('Update User');
+  }  
 
 }

@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Order } from 'src/app/demo/models/order';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { OrderService } from 'src/app/demo/service/services/order.service';
 
 @Component({
@@ -33,6 +34,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   constructor(
     private orderService: OrderService,
+    private authService: AuthenticationService,
     private messageService: MessageService,
     private router: Router) {
   }
@@ -108,4 +110,9 @@ export class OrdersComponent implements OnInit, OnDestroy {
   toOrder(order: Order) {
     this.router.navigate(['dashboard/pages/orders', order.id]);
   }
+
+  canToggleOrderStatus(): boolean {
+    return this.authService.hasPrivilege('Update Order');
+  } 
+
 }

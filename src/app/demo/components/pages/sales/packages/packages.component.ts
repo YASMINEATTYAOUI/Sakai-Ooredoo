@@ -6,6 +6,7 @@ import { Product } from 'src/app/demo/models/product';
 import { Package } from 'src/app/demo/models/package';
 import { PackageService } from 'src/app/demo/service/services/package.service';
 import { ProductService } from 'src/app/demo/service/services/product.service';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 
 @Component({
   selector: 'app-packages',
@@ -43,6 +44,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private packageService: PackageService,
     private productService: ProductService,
+    private authService: AuthenticationService,
     private messageService: MessageService,
     private router: Router) {
     this.packageForm = this.formBuilder.group({
@@ -247,5 +249,18 @@ export class PackagesComponent implements OnInit, OnDestroy {
     this.packageDialog = false;
     this.submitted = false;
   }
+
+  canAddPackage(): boolean {
+    return this.authService.hasPrivilege('Create Package');
+  } 
+
+  canEditPackage(): boolean {
+    return this.authService.hasPrivilege('Update Package');
+  } 
+
+  canDeletePackage(): boolean {
+    return this.authService.hasPrivilege('Delete Package');
+  } 
+
 
 }

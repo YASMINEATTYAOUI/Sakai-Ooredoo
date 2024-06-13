@@ -7,10 +7,11 @@
 
       <div class="mb-4 ">
         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-          (click)="openNew()"></button>
+          (click)="openNew()" *ngIf="canEditPackage()"></button>
 
         <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-          (click)="deleteSelectedPackages(selectedPackages)" [disabled]="!selectedPackages || !selectedPackages.length">
+          (click)="deleteSelectedPackages(selectedPackages)" [disabled]="!selectedPackages || !selectedPackages.length"
+          *ngIf="canEditPackage()">
         </button>
       </div>
 
@@ -75,9 +76,9 @@
             <td>
               <div class="flex">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-                  (click)="openDialog(_package)"></button>
+                  (click)="openDialog(_package)" *ngIf="canEditPackage()"></button>
                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                  (click)="deletePackage(_package)"></button>
+                  (click)="deletePackage(_package)" *ngIf="canEditPackage()"></button>
               </div>
             </td>
           </tr>

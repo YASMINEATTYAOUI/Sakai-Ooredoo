@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Theme } from 'src/app/demo/models/theme';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { ThemeService } from 'src/app/demo/service/services/theme.service';
 
 @Component({
@@ -39,6 +40,7 @@ export class ThemesComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private themeService: ThemeService,
+    private authService: AuthenticationService,
     private messageService: MessageService,
     private router: Router
   ) {
@@ -193,5 +195,17 @@ export class ThemesComponent implements OnInit, OnDestroy {
     this.themeDialog = false;
     this.submitted = false;
   }
+
+  canAddTheme(): boolean {
+    return this.authService.hasPrivilege('Create Theme');
+  } 
+
+  canEditTheme(): boolean {
+    return this.authService.hasPrivilege('Update Theme');
+  } 
+
+  canDeleteTheme(): boolean {
+    return this.authService.hasPrivilege('Delete Theme');
+  } 
 
 }

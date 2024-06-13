@@ -7,7 +7,7 @@
             <p-toast></p-toast>
             <div class="mb-4">
                 <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-danger mr-2"
-                    (click)="openNew()"></button>
+                    (click)="openNew()" *ngIf="canAddUser()"></button>
             </div>
 
             <p-table [value]="filteredData" responsiveLayout="scroll" [rows]="10" [paginator]="true"
@@ -77,7 +77,7 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2" (click)="openDialog(user)"></button>
+                                    class="p-button-rounded p-button-success mr-2" (click)="openDialog(user)" *ngIf="canToggleUser()"></button>
                             </div>
                         </td>
                     </tr>

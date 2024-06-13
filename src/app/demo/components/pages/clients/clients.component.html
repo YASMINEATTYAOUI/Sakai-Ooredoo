@@ -59,7 +59,7 @@
             </td>
             <td>
               <div class="flex">
-                <p-inputSwitch [(ngModel)]="client.status" (onChange)="toggleClient(client)"></p-inputSwitch>
+                <p-inputSwitch [(ngModel)]="client.status" (onChange)="toggleClient(client)" *ngIf="canToggleClientStatus()"></p-inputSwitch>
               </div>
             </td>
           </tr>

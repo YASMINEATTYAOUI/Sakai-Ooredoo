@@ -73,7 +73,7 @@
                           <td>
                             <div class="flex">
                                 <p-inputSwitch [(ngModel)]="order.orderStatus"
-                                    (onChange)="toggleOrder(order)"></p-inputSwitch>
+                                    (onChange)="toggleOrder(order)" *ngIf="canToggleOrderStatus()"></p-inputSwitch>
                             </div>
                         </td>
                     </tr>

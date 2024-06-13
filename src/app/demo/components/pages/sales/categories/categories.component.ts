@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Category } from 'src/app/demo/models/category';
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { CategoryService } from 'src/app/demo/service/services/category.service';
 
 @Component({
@@ -39,6 +40,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private categoryService: CategoryService,
+    private authService: AuthenticationService,
     private messageService: MessageService,
     private router: Router
   ) {
@@ -191,5 +193,17 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.categoryDialog = false;
     this.submitted = false;
   }
+
+  canAddCategory(): boolean {
+    return this.authService.hasPrivilege('Create Category');
+  } 
+
+  canEditCategory(): boolean {
+    return this.authService.hasPrivilege('Update Category');
+  } 
+
+  canDeleteCategory(): boolean {
+    return this.authService.hasPrivilege('Delete Category');
+  } 
 
 }

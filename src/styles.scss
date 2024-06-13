@@ -99,3 +99,41 @@ $gutter: 1rem; //for primeflex grid system
   }
 }
 
+
+.file-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-upload-label {
+  background-color: #ff6363; /* Couleur de fond */
+  color: white; /* Couleur du texte */
+  padding: 10px 20px; /* Espacement intérieur */
+  border-radius: 8px; /* Coins arrondis */
+  cursor: pointer; /* Curseur pointeur au survol */
+  display: inline-block;
+}
+
+.file-upload-import {
+  background-color: #ff6363; /* Couleur de fond */
+  color: white; /* Couleur du texte */
+  padding: 10px 20px; /* Espacement intérieur */
+  border-radius: 8px; /* Coins arrondis */
+  cursor: pointer; /* Curseur pointeur au survol */
+  border: none; /* Suppression de la bordure par défaut */
+  font-size: 16px; /* Taille de la police */
+}
+
+.file-upload-input {
+  display: none; /* Masquer l'input original */
+}
+
+.file-upload-label.uploaded {
+  background-color: #4caf50; /* Couleur de fond après sélection */
+}
+
+.file-upload-import:disabled {
+  background-color: #bbb; /* Couleur de fond désactivée */
+  cursor: not-allowed; /* Curseur non autorisé */
+}

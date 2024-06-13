@@ -8,10 +8,10 @@
 
       <div class="mb-4">
         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-        (click)="openNew()"></button>
+        (click)="openNew()" *ngIf="canEditTheme()" ></button>
         <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
         (click)="deleteSelectedThemes(selectedThemes)"
-        [disabled]="!selectedThemes || !selectedThemes.length"></button>
+        [disabled]="!selectedThemes || !selectedThemes.length" *ngIf="canEditTheme()"></button>
       </div>
 
       <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [rows]="10" [paginator]="true"
@@ -62,9 +62,9 @@
             <td>
               <div class="flex">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-                  (click)="openDialog(theme)"></button>
+                  (click)="openDialog(theme)" *ngIf="canEditTheme()"></button>
                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                  (click)="deleteTheme(theme)"></button>
+                  (click)="deleteTheme(theme)" *ngIf="canEditTheme()"></button>
               </div>
             </td>
           </tr>

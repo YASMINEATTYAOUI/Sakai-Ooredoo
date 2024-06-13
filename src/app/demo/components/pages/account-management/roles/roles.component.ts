@@ -8,7 +8,7 @@ import { RoleService } from 'src/app/demo/service/services/role.service';
 import { PrivilegeService } from 'src/app/demo/service/services/privilege.service';
 import { UserService } from 'src/app/demo/service/services/user.service';
 import { User } from 'src/app/demo/models/user';
-
+import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 
 @Component({
   selector: 'app-roles',
@@ -59,6 +59,7 @@ export class RolesComponent implements OnInit, OnDestroy {
     private roleService: RoleService,
     private userService: UserService,
     private privilegeService: PrivilegeService,
+    private authService: AuthenticationService,
     private messageService: MessageService,
     private router: Router
   ) {
@@ -75,16 +76,11 @@ export class RolesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getRoles();
     this.loadPrivileges();
-    this.currentUser = this.userService.getCurrentUser();
     this.rolePrivileges = this.currentUser.role.privileges;
   
   }
 
   ngOnDestroy() {
-  }
-
-  hasPrivilege(privilegeName: string): boolean {
-    return this.rolePrivileges.some(priv => priv.name === privilegeName);
   }
 
   loadPrivileges() {
@@ -192,4 +188,14 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.roleForm.reset();
   }
+
+
+  canAddRole(): boolean {
+    return this.authService.hasPrivilege('Create Role');
+  }
+
+  canEditRole(): boolean {
+    return this.authService.hasPrivilege('Update Role');
+  }  
+
 }
