@@ -5,6 +5,7 @@ import { MessageService, Message } from 'primeng/api';
 import { Privilege } from 'src/app/demo/models/privilege';
 import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { PrivilegeService } from 'src/app/demo/service/services/privilege.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-privileges',
@@ -51,12 +52,20 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private authService: AuthenticationService,
     private router: Router,
+    private translate: TranslateService,
+
   ) {
     this.privilegeForm = this.formBuilder.group({
       id: [''],
       name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
       active: [''],
     });
+
+    translate.addLangs(['en', 'fr']);
+    translate.setDefaultLang('en');
+    const browserLang = translate.getBrowserLang();
+    translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
+  
   }
 
   ngOnInit(): void {

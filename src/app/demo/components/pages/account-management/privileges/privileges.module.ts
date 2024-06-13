@@ -32,6 +32,14 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { SelectButtonModule } from 'primeng/selectbutton';
 
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   declarations: [PrivilegesComponent],
   imports: [
@@ -66,7 +74,14 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     ChipsModule,
     AvatarModule,
     AvatarGroupModule,
-    SelectButtonModule
+    SelectButtonModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ]
 })
 export class PrivilegesModule { }

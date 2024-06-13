@@ -75,7 +75,7 @@
             <p-table [value]="products" [paginator]="true" [rows]="5" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Image {{ 'Image' | translate }}</th>
+                        <th>{{ 'Image' | translate }}</th>
                         <th pSortableColumn="reference"> {{ 'Reference' | translate }}<p-sortIcon field="reference"></p-sortIcon></th>
                         <th pSortableColumn="price"> {{ 'Price' | translate }}<p-sortIcon field="price"></p-sortIcon></th>
                         

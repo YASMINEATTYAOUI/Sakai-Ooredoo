@@ -10,7 +10,16 @@
   "orders": "commandes",
   "Products": "Produits",
   "Reference": "Référence",
-  "Price": "Prix"
+  "Price": "Prix",
 
-  
+  "Privilege Management": "Gestion des privilèges",
+  "Name": "Nom",
+  "Status": "Statut",
+
+
+
+
+  "products": "products",
+  "products": "products",
+  "products": "products"
 }
