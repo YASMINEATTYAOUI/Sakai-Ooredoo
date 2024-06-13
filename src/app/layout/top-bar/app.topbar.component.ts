@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { LayoutService } from "../service/app.layout.service";
 import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-topbar',
@@ -25,7 +26,8 @@ export class AppTopBarComponent implements OnInit{
     constructor(
       private router : Router,
         public layoutService: LayoutService,
-        private authService: AuthenticationService
+        private authService: AuthenticationService,
+        private translate: TranslateService
     ) { }
 
     logout(){
@@ -37,22 +39,10 @@ export class AppTopBarComponent implements OnInit{
       this.authService.getCurrentUser().subscribe(
         data => this.currentUser = data,
         error => console.error('Error fetching user data', error));
-      //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-      //Add 'implements OnInit' to the class.
-      
     }
-/*
-    onLogout(refreshToken: string): void {
-        this.authService.logout(refreshToken).subscribe({
-          next: () => {
-            // Handle successful logout, such as clearing user data or navigating to the login page
-            console.log('Logout successful');
-          },
-          error: (error) => {
-            // Handle error, such as displaying an error message
-            console.error('Logout failed', error);
-          }
-        });
-      }
-      */
+
+    switchLanguage(language: string) {
+      this.translate.use(language);
+    }
+
 }

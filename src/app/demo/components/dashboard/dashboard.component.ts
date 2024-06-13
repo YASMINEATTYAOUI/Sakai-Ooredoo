@@ -9,6 +9,7 @@ import { OrderService } from '../../service/services/order.service';
 import { UserService } from '../../service/services/user.service';
 import { AuthenticationService } from '../../service/services/authentication.service';
 import { DatePipe } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -56,6 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private clientService: ClientService,
         private orderService: OrderService,
         private datePipe: DatePipe,
+        private translate: TranslateService,
         private messageService: MessageService,
     ) {
         this.subscription = this.layoutService.configUpdate$
@@ -63,7 +65,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .subscribe((config) => {
                 this.initChart();
             });
-    }
+
+            // Add languages
+    translate.addLangs(['en', 'fr']);
+    // Set default language
+    translate.setDefaultLang('en');
+    // Use a specific language
+    const browserLang = translate.getBrowserLang();
+    translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
+  }
+    
 
     ngOnInit() {
 
