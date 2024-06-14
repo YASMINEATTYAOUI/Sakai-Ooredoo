@@ -40,7 +40,7 @@
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-                        <th pSortableColumn="creationDate"><span>Creation Date</span></th>
+                        <th pSortableColumn="creationDate"><span>Creation Date </span></th>
                         <th pSortableColumn="lastModifiedDate"><span>Last Modified Date</span></th>
                         <th pSortableColumn="edit"><span></span></th>
                     </tr>
@@ -49,8 +49,8 @@
                     <tr class="ng-star-inserted">
                         <td><p-tableCheckbox [value]="category"></p-tableCheckbox></td>
                         <td>{{category.name}}</td>
-                        <td>{{ category.creationDate }}</td>
-                        <td>{{ category.lastModifiedDate }}</td>
+                        <td>{{ category.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{ category.lastModifiedDate | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"

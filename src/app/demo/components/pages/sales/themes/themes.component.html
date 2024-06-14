@@ -54,10 +54,10 @@
             <td>{{ theme.name }}</td>
             <td>{{ theme.characteristic }}</td>
             <td>
-              {{ theme.creationDate }}
+              {{ theme.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}
             </td>
             <td>
-              {{ theme.lastModifiedDate }}
+              {{ theme.lastModifiedDate | date: 'yyyy-MM-dd HH:mm:ss'}}
             </td>
             <td>
               <div class="flex">

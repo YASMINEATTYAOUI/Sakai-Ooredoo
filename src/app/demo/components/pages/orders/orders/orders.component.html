@@ -31,7 +31,7 @@
 
                         <th pSortableColumn="numberOrder">Number of Order<p-sortIcon field="numberOrder"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="date">Date<p-sortIcon field="date"></p-sortIcon></th>
+                        <th pSortableColumn="creationDate">Creation Date<p-sortIcon field="creationDate"></p-sortIcon></th>
                         <th pSortableColumn="articlesNumber">Number of Articles<p-sortIcon
                                 field="articlesNumber"></p-sortIcon></th>
                         <th pSortableColumn="totalPrice">Total Price<p-sortIcon field="totalPrice"></p-sortIcon>
@@ -53,7 +53,7 @@
                             {{order.numberOrder}}
                         </td>
                         <td>
-                            {{order.creationDate}}
+                            {{order.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}
                         </td>
                         <td>
                             {{order.articlesNumber}}
