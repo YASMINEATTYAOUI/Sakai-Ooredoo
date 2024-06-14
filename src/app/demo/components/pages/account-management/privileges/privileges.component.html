@@ -4,14 +4,23 @@
   <div class="col-12">
     <div class="card">
       <p-toast></p-toast>
-        
-      <p-table [value]="privileges" [tableStyle]="{ 'min-width': '50rem' }" [styleClass]="selectedSize.class"
-        [paginator]="true" [rows]="4" [showCurrentPageReport]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
+      <p-table [value]="filteredData" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="4"
+        [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [rowsPerPageOptions]="[5, 10, 20]" [(selection)]="selectedPrivileges" selectionMode="multiple" [rowHover]="true"
         dataKey="id">
-        <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
-            icon="pi pi-refresh" (click)="getPrivileges()"></button>
+        <ng-template pTemplate="caption">
+          <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="searchPrivileges($event.target.value)" placeholder="Search..."
+                class="w-auto sm:w-auto" />
+            </span>
+            <button pButton pRipple type="button" class="p-button-rounded " style="margin-left: 20px;"
+              icon="pi pi-refresh" (click)="getPrivileges()"></button>
+          </div>
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name"> {{ 'Name' | translate }}</th>
@@ -19,11 +28,12 @@
             <th pSortableColumn="edit"><span></span></th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-privilege let-i="rowIndex" >
+        <ng-template pTemplate="body" let-privilege let-i="rowIndex">
           <tr>
             <td>
               <div class="flex align-items-center">
-                <span class="border-circle mr-2" [ngStyle]="{ 'background-color': getCircleColor(i) }" style="width: 7px; height: 7px"></span>
+                <span class="border-circle mr-2" [ngStyle]="{ 'background-color': getCircleColor(i) }"
+                  style="width: 7px; height: 7px"></span>
                 {{ privilege.name }}
               </div>
             </td>

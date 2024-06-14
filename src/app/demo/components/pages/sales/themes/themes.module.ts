@@ -25,6 +25,7 @@ import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [ThemesComponent],
@@ -57,6 +58,7 @@ import { TooltipModule } from 'primeng/tooltip';
     TooltipModule,
     DividerModule,
     ChipsModule,
+    TranslateModule.forChild(),
   ]
 })
 export class ThemesModule { }

@@ -8,6 +8,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { PlusIcon } from 'primeng/icons/plus';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [UserProfileComponent],
@@ -18,6 +19,7 @@ import { MessageService } from 'primeng/api';
     DropdownModule,
     FileUploadModule,
     ToastModule,
+    TranslateModule.forChild(),
   ],
   providers: [MessageService]
 })

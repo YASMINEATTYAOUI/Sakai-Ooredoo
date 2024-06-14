@@ -26,6 +26,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
     TooltipModule,
     DividerModule,
     ChipsModule,
-    MultiSelectModule
+    MultiSelectModule,
+    TranslateModule.forChild()
   ]
 })
 export class PackagesModule { }

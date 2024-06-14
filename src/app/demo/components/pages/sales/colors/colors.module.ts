@@ -25,6 +25,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { ColorsRoutingModule } from './colors-routing.module';
 import { ColorsComponent } from './colors.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -59,6 +60,7 @@ import { ColorsComponent } from './colors.component';
     TooltipModule,
     DividerModule,
     ChipsModule,
+    TranslateModule.forChild(),
   ]
 })
 export class ColorsModule { }

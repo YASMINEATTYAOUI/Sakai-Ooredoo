@@ -18,6 +18,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TagModule } from 'primeng/tag';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [ClientsComponent],
@@ -41,6 +42,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     DialogModule,
     TagModule,
     InputSwitchModule,
+    TranslateModule.forChild()
   ]
 })
 export class ClientsModule { }

@@ -26,6 +26,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { BrandDetailsComponent } from './brand-details/brand-details.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -57,6 +58,8 @@ import { BrandDetailsComponent } from './brand-details/brand-details.component';
     TooltipModule,
     DividerModule,
     ChipsModule,
+    TranslateModule.forChild()
+    
   ],
   declarations: [
     BrandsComponent,

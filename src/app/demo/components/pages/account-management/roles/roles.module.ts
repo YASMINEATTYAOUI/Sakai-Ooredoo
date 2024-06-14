@@ -26,6 +26,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     DividerModule,
     ChipsModule,
     MultiSelectModule,
+    TranslateModule.forChild(),
   ],
   declarations: [RolesComponent]
 })

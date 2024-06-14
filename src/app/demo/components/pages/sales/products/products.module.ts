@@ -26,6 +26,7 @@ import { MessagesModule } from 'primeng/messages';
 import { PaginatorModule } from 'primeng/paginator';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -57,6 +58,7 @@ import { TooltipModule } from 'primeng/tooltip';
         TooltipModule,
         DividerModule,
         ChipsModule,
+        TranslateModule.forChild(),
     ],
     declarations: [
         ProductsComponent,

@@ -60,12 +60,6 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
       name: ['', [Validators.pattern('^[a-zA-Z0-9 ]*$'), Validators.maxLength(50), Validators.required]],
       active: [''],
     });
-
-    translate.addLangs(['en', 'fr']);
-    translate.setDefaultLang('en');
-    const browserLang = translate.getBrowserLang();
-    translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
-  
   }
 
   ngOnInit(): void {
