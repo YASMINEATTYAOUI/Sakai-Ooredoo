@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Product } from '../../models/product';
 import { ProductService } from '../../service/services/product.service';
@@ -65,22 +65,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .subscribe((config) => {
                 this.initChart();
             });
-
-            // Add languages
-    translate.addLangs(['en', 'fr']);
-    // Set default language
-    translate.setDefaultLang('en');
-    // Use a specific language
-    const browserLang = translate.getBrowserLang();
-    translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
-  }
-    
+       }
 
     ngOnInit() {
 
         this.getCurrentUser();
         this.currentDate = this.datePipe.transform(new Date(), 'fullDate'); // Format the date as you prefer
-  
+
         this.initChart();
         this.getProducts();
         this.countUsers();
@@ -139,8 +130,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             item.reference.toLowerCase().startsWith(event.toLowerCase()));
 
     }
-
-
 
     initChart() {
         const documentStyle = getComputedStyle(document.documentElement);

@@ -1,4 +1,11 @@
 {
+
+  "Calendar": "Calendrier",
+  "Notifications": "Notifications",
+  "Language": "Langue",
+  "Profile": "Profil",
+  "Logout": "Déconnexion",
+
   "Welcome": "Bienvenue",
   "Total Users": "Nombre total d'utilisateurs",
   "users": "utilisateurs",
@@ -19,7 +26,6 @@
 
 
 
-  "products": "products",
-  "products": "products",
   "products": "products"
 }
+  

@@ -1,4 +1,10 @@
 {
+  "Calendar": "Calendar",
+  "Notifications": "Notifications",
+  "Language": "Language",
+  "Profile": "Profile",
+  "Logout": "Logout",
+
   "Welcome": "Welcome",
   "Total Users": "Total Users",
   "users": "users",
@@ -15,12 +21,7 @@
   "Privilege Management": "Privilege Management",
   "Name": "Name",
   "Status": "Status",
-  
-  "products": "products",
-  "products": "products",
-  "products": "products",
-  "products": "products",
-  "products": "products",
+
   "products": "products",
   "products": "products",
   "products": "products",

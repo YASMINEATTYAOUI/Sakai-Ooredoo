@@ -12,11 +12,9 @@ import { DashboardsRoutingModule } from './dashboard-routing.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { AppLayoutModule } from 'src/app/layout/app.layout.module';
 
 
-export function HttpLoaderFactory(http: HttpClient) {
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-  }
 
 @NgModule({
     imports: [
@@ -29,13 +27,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         PanelMenuModule,
         ButtonModule,
         DashboardsRoutingModule,
-        TranslateModule.forRoot({
-            loader: {
-              provide: TranslateLoader,
-              useFactory: HttpLoaderFactory,
-              deps: [HttpClient]
-            }
-          })
+        TranslateModule.forChild()
     ],
     declarations: [DashboardComponent]
 })

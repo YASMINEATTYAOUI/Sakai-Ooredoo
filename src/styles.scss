@@ -137,3 +137,48 @@ $gutter: 1rem; //for primeflex grid system
   background-color: #bbb; /* Couleur de fond désactivée */
   cursor: not-allowed; /* Curseur non autorisé */
 }
+
+
+
+.language-menu {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 1000;
+  right: 10px; /* Adjust positioning as needed */
+  top: 50px; /* Adjust positioning as needed */
+}
+
+.language-menu img {
+  margin: 5px;
+  cursor: pointer;
+}
+
+
+
+// .language-menu {
+//   border: 1px solid #ccc;
+//   border-radius: 4px;
+//   background: #fff;
+//   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+//   padding: 10px;
+// }
+
+.language-option {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.language-option:hover {
+  background-color: #f0f0f0;
+}
+
+// .flag-icon {
+//   width: 20px;
+//   height: auto;
+//   margin-right: 10px;
+// }
