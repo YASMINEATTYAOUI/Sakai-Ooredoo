@@ -16,7 +16,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   users: User[];
   filteredData: User[];
   name: any;
-  user: User;
+  user: User = new User;
   //user2 :UserDto ;
   /*
   user = {
@@ -54,7 +54,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   home: MenuItem | undefined;
 
   constructor(
-
     private userService: UserService,
     private roleService: RoleService,
     private authService: AuthenticationService,
@@ -63,8 +62,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.items = [{ icon: 'pi pi-home', route: '/dashboard' }, { label: 'Acount Management' }, { label: 'Users', route: '/inputtext' }];
-    
+    this.items = [{ icon: 'pi pi-home', route: '/dashboard' }, { label: 'Acount Management' }, { label: 'Users', route: '/inputtext' }]
     this.getUsers();
     this.loadRoles();
   }
@@ -161,11 +159,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
   roleSelectedEvent(event: any) {
     this.user.role = event.value;
-
   }
 
   openNew() {
@@ -173,7 +168,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.userDialog = true;
 
-    console.log(this.roles)
   }
 
   openDialog(user?: User) {

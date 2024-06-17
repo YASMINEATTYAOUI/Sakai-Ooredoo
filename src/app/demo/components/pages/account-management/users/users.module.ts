@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersRoutingModule } from './users-routing.module';
-import { FormGroup, FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -17,6 +17,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { UsersComponent } from './users.component';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     RadioButtonModule,
     InputNumberModule,
     DialogModule,
-    BreadcrumbModule
+    ReactiveFormsModule,
+    InputSwitchModule
     
 ],
 declarations: [UsersComponent]

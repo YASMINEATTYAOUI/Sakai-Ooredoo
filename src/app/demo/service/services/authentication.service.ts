@@ -50,13 +50,12 @@ export class AuthenticationService {
     this.router.navigate(['/login']);
   }
 
-  
   getCurrentUser() {
     return this.http.get<any>(`${this.baseUrl}/current-user`) .pipe(tap(user => this.currentUser = user));
   }
 
   hasPrivilege(privilegeName: string): boolean {
-    return this.currentUser.role.privileges.some(privilege => privilege.name === privilegeName);
+    return this.currentUser?.role.privileges.some(privilege => privilege.name === privilegeName);
   }
 
   getCurrentAuthUser() {

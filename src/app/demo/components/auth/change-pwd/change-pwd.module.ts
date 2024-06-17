@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';;
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-import { ForgotPwdComponent } from './forgot-pwd.component';
-import { ForgotPwdRoutingModule } from './forgot-pwd-routing.module';
 import { CheckboxModule } from 'primeng/checkbox';
 import { PasswordModule } from 'primeng/password';
 import { HttpClientModule } from '@angular/common/http';
+import { ChangePwdComponent } from './change-pwd.component';
+import { ChangePwdRoutingModule } from './change-pwd-routing.module';
 
 @NgModule({
   declarations: [
-    ForgotPwdComponent
+    ChangePwdComponent
   ],
   imports: [
     CommonModule,
-    ForgotPwdRoutingModule,
+    ChangePwdRoutingModule,
     ReactiveFormsModule,
     ButtonModule,
     ToastModule,
@@ -28,4 +28,5 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule
   ]
 })
-export class ForgotPwdModule { }
+
+export class ChangePwdModule { }
