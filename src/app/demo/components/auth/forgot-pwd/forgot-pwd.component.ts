@@ -5,6 +5,8 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { ChangePassword } from 'src/app/demo/models/change-password'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { SharedDataService } from 'src/app/demo/utils/shared-data.service';
 @Component({
   selector: 'app-forgot-pwd',
   templateUrl: './forgot-pwd.component.html',
@@ -28,14 +30,20 @@ export class ForgotPwdComponent implements OnInit {
   constructor(
     public layoutService: LayoutService,
     private forgetPasswordService: ForgetPasswordService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private router: Router,
+    private sharedDataService: SharedDataService) { }
 
   ngOnInit(): void {
     this.forgetPasswordForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email])
     });
   }
-
+  
+  updateSharedVariable() {
+    this.sharedDataService.email = this.forgetPasswordForm.get('email').value;;
+  }
+  
   sendOtp() {
     if (this.forgetPasswordForm.valid) {
       this.email = this.forgetPasswordForm.get('email').value;
@@ -43,7 +51,7 @@ export class ForgotPwdComponent implements OnInit {
         response => {
           if (response.status == 200) {
             this.expression = true
-          }
+           }
           console.log('Response from server:', response);
           if (response && response.message) {
             alert(response.message);
@@ -54,14 +62,16 @@ export class ForgotPwdComponent implements OnInit {
         (error: HttpErrorResponse) => {
           if (error.status == 200) {
             this.expression = true;
+            this.updateSharedVariable()
+           console.log(this.sharedDataService.email)
             return;
           }
-          console.error('Error:', error);
-          alert('Failed to send email. Server returned ' + error.status + ' error.');
-        }
+          else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to send email. Server returned ' + error.status + ' error.' });
+          }}
       );
     } else {
-      alert('Please enter a valid email');
+      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please enter a valid email' });
     }
   }
 }

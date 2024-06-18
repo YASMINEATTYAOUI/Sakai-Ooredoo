@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ChangePassword } from 'src/app/demo/models/change-password';
 import { ForgetPasswordService } from 'src/app/demo/service/services/forget-password.service';
+import { SharedDataService } from 'src/app/demo/utils/shared-data.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
@@ -10,7 +12,7 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
   templateUrl: './change-pwd.component.html',
   providers: [MessageService]
 })
-export class ChangePwdComponent implements OnInit{
+export class ChangePwdComponent implements OnInit {
   changePasswordForm: FormGroup;
 
   expression: boolean = false;
@@ -28,30 +30,52 @@ export class ChangePwdComponent implements OnInit{
   constructor(
     public layoutService: LayoutService,
     private forgetPasswordService: ForgetPasswordService,
-    private messageService: MessageService) { }
-
-  ngOnInit(): void {
-    this.changePasswordForm = new FormGroup({
-      password: new FormControl('', Validators.required),
-      confirmPassword: new FormControl('', Validators.required)
+    private sharedDataService: SharedDataService,
+    private formBuilder: FormBuilder,
+    private messageService: MessageService,
+    private router: Router,
+  ) {
+    this.changePasswordForm = this.formBuilder.group({
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required]
     });
   }
 
+  ngOnInit(): void {
+  }
+
   resetPassword() {
-    if (this.changePassword.password !== this.changePassword.confirmPassword) {
-      alert('Passwords do not match!');
+    
+    console.log(this.sharedDataService.email)
+    if (this.changePasswordForm.invalid) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please enter passwords.' });
+      return;
+    }
+    if (this.changePasswordForm.get('password').value !== this.changePasswordForm.get('confirmPassword').value) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Passwords do not match!' });
       return;
     }
 
+    this.email = this.sharedDataService.email;
+
     this.forgetPasswordService.resetPassword(this.email, this.changePassword).subscribe(
       response => {
-        console.log(response);
-        alert('Password has been changed!');
+        if (response.status == 200) {
+          this.expression = true
+          this.messageService.add({ severity: 'success', summary: 'OTP Verified', detail: 'OTP verified successfully.' });
+        }
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Password has been changed!' });
       },
       error => {
+        if (error.status == 200) {
+          this.expression = true
+          this.messageService.add({ severity: 'success', summary: 'OTP Verified', detail: 'OTP verified successfully.' });
+          this.router.navigate(['/auth/login']);
+        }
         console.error(error);
-        alert('Failed to change password');
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to change password' });
       }
     );
+
   }
 }

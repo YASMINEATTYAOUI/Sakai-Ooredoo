@@ -11,10 +11,12 @@ import { OtpRoutingModule } from './otp-routing.module';
 import { OtpComponent } from './otp.component';
 //import { InputOtpModule } from 'primeng/inputotp';
 import { NgOtpInputModule } from  'ng-otp-input';
+import { NgOtpInputValueAccessor } from 'src/app/demo/utils/ng-otp-input-value-accessor';
 
 @NgModule({
   declarations: [
-    OtpComponent
+    OtpComponent,
+    NgOtpInputValueAccessor
   ],
   imports: [
     CommonModule,
