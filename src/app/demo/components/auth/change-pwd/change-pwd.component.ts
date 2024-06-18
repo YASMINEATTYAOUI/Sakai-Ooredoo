@@ -57,8 +57,12 @@ export class ChangePwdComponent implements OnInit {
     }
 
     this.email = this.sharedDataService.email;
+    const changePassword = {
+      password: this.changePasswordForm.value.password,
+      confirmPassword: this.changePasswordForm.value.confirmPassword
+    };
 
-    this.forgetPasswordService.resetPassword(this.email, this.changePassword).subscribe(
+    this.forgetPasswordService.resetPassword(changePassword, this.email, ).subscribe(
       response => {
         if (response.status == 200) {
           this.expression = true

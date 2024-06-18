@@ -21,7 +21,7 @@ export class ForgetPasswordService {
     return this.http.post<any>(`${this.baseUrl}/verify-mail/${otp}/${email}`, {});
   }
 
-  resetPassword(email: string, changePassword: ChangePassword): Observable<any> {
+  resetPassword(changePassword: ChangePassword, email: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/reset-password/${email}`, changePassword);
   }
 }
