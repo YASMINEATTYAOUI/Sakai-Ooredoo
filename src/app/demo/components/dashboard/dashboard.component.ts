@@ -10,6 +10,7 @@ import { UserService } from '../../service/services/user.service';
 import { AuthenticationService } from '../../service/services/authentication.service';
 import { DatePipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -30,7 +31,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     products: Product[];
 
-    chartData: any;
+    roleChartLabels: string[] = [];
+  chartData: any = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        label: 'Number of Users',
+        backgroundColor: [] // Tableau pour stocker les couleurs de chaque barre
+      }
+    ]
+  };
+
+  colorPalette: string[] = ['#ff4a3d',  '#ff6459', '#ff8980','#2c397f','#00695f','#a31545', '#82498c', '#ac5700',];
 
     chartOptions: any;
 
@@ -49,6 +62,47 @@ export class DashboardComponent implements OnInit, OnDestroy {
     currentUser: any;
     currentDate: string;
 
+
+    public roleChartOptions: any = {
+        responsive: true,
+        maintainAspectRatio: false
+    };
+
+    //public roleChartLabels: string[] = [];
+    public roleChartData: any = {
+        labels: this.roleChartLabels,
+        datasets: [
+            { data: [], label: 'Number of Users' }
+        ]
+    };
+
+
+    orders: any[] = [];
+    public barChartOptions: any = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { 
+            x: {
+              grid: { color: 'rgba(0,0,0,0)' },
+            },
+            y: {
+              grid: { color: 'rgba(0,0,0,0)' },
+              beginAtZero: true
+            }
+          }
+    };
+    public barChartLabels: string[] = [];
+    public barChartType: string = 'bar';
+    public barChartLegend = true;
+    public barChartPlugins = [];
+
+    public barChartData: any = {
+        labels: this.barChartLabels,
+        datasets: [
+            { data: [], label: 'Orders' }
+        ]
+    };
+
     constructor(
         private authService: AuthenticationService,
         public layoutService: LayoutService,
@@ -65,7 +119,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .subscribe((config) => {
                 this.initChart();
             });
-       }
+    }
 
     ngOnInit() {
 
@@ -78,6 +132,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.countProducts();
         this.countClients();
         this.countOrders();
+
+        this.orderService.getOrders().subscribe(data => {
+            this.orders = data;
+            this.barChartLabels = this.orders.map(order => order.creationDate);
+            this.barChartData.labels = this.barChartLabels;
+            this.barChartData.datasets[0].data = this.orders.map(order => order.totalPrice);
+        });
+
+
     }
 
     getCurrentUser(): void {
@@ -131,64 +194,52 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     }
 
-    initChart() {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-        this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--green-600'),
-                    borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
-                }
-            ]
-        };
-
-        this.chartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
+   
+    initChart(): void {
+        this.userService.getUsers().subscribe(data => {
+          const roleCountMap = new Map<string, number>();
+    
+          data.forEach(user => {
+            const roleName = user.role.name;
+            if (roleCountMap.has(roleName)) {
+              roleCountMap.set(roleName, roleCountMap.get(roleName) + 1);
+            } else {
+              roleCountMap.set(roleName, 1);
             }
-        };
-    }
+          });
+    
+          this.roleChartLabels = Array.from(roleCountMap.keys());
+          const dataValues = Array.from(roleCountMap.values());
+    
+          // Générer des couleurs aléatoires dans la palette prédéfinie
+          const backgroundColors = this.generateRandomColors(dataValues.length);
+    
+          this.chartData.labels = this.roleChartLabels;
+          this.chartData.datasets[0].data = dataValues;
+          this.chartData.datasets[0].backgroundColor = backgroundColors;
+        });
+      }
+      
+    generateRandomColors(count: number): string[] {
+        // const colors: string[] = [];
+        // for (let i = 0; i < count; i++) {
+        //   const randomIndex = Math.floor(Math.random() * this.colorPalette.length);
+        //   const color = this.colorPalette[randomIndex];
+        //   colors.push(color);
+        // }
+        // return colors;
+        const colors: string[] = [];
+  const paletteLength = this.colorPalette.length;
+
+  for (let i = 0; i < count; i++) {
+    const colorIndex = i % paletteLength; // Use modulo to cycle through the palette
+    const color = this.colorPalette[colorIndex];
+    colors.push(color);
+  }
+
+  return colors;
+      }
+      
 
     ngOnDestroy() {
         if (this.subscription) {

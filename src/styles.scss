@@ -188,3 +188,8 @@ $gutter: 1rem; //for primeflex grid system
   transform: translateY(-50%);
   cursor: pointer;
 }
+
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+}

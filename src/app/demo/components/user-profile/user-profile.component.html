@@ -1,92 +1,117 @@
 <div class="surface-card p-4 shadow-2 border-round">
-  <div class="grid formgrid p-fluid">
-    <div class="field mb-4 col-12">
-      <label for="username" class="font-medium text-900">Username</label>
-      <input id="username" type="text" pinputtext="" class="p-inputtext p-component p-element">
-    </div>
-
-    <div class="surface-border border-top-1 opacity-50 mb-3 col-12"></div>
-    <div class="field mb-4 col-12 md:col-6">
-      <label for="firstName" class="block text-900 font-medium mb-2">First Name</label>
-      <input id="firstName" type="text" pinputtext=""
-        class="p-inputtext p-component p-element ng-valid ng-touched ng-dirty ">
-    </div>
-
-
-    <div class="field mb-4 col-12 md:col-6">
-      <label for="lastName" class="block text-900 font-medium mb-2">Last Name</label>
-      <input id="lastName" type="text" pinputtext=""
-        class="p-inputtext p-component p-element ng-valid ng-touched ng-dirty">
-    </div>
-
-
-    <div class="field mb-4 col-12 md:col-6">
-      <label for="phoneNumber" class="block text-900 font-medium mb-2">Phone Number</label>
-      <input id="phoneNumber" type="text" pinputtext=""
-        class="p-inputtext p-component p-element ng-valid ng-touched ng-dirty">
-    </div>
-
-    <div class="field mb-4 col-12 md:col-6">
-      <label for="avatar2" class="font-medium text-900">Avatar</label>
-      <div class="flex align-items-center">
-        <img src="../../../../assets/demo/images/avatar/hero-1.png" width="200" class="mr-4">
-
-        <p-toast />
-        <p-fileUpload mode="basic" chooseLabel="Upload Image" chooseIcon="pi pi-upload" name="demo[]" accept="image/*"
-          maxFileSize="1000000" (onUpload)="onUpload($event)" />
-
+  
+      <!-- <div class="w-full " style="
+                    height: 200px;
+                    background: url('../../../../assets/demo/images/avatar/hero-1.png')
+                        no-repeat;
+                    background-size: cover;filter: brightness(40%);">
       </div>
-    </div>
-    <div class="surface-border border-top-1 opacity-50 mb-3 col-12"></div>
-    <div class="field mb-4 col-12 md:col-6">
-      <label for="email2" class="font-medium text-900">Email</label>
-      <input id="email2" type="text" pinputtext="" class="p-inputtext p-component p-element">
-    </div>
-    <div class="field mb-4 col-12 md:col-6">
-      <label for="role" class="font-medium text-900">Role</label>
-      <p-dropdown inputid="role" optionlabel="name" filterby="name" placeholder="Select a Role"
-        class="p-element p-inputwrapper">
-        <div class="p-dropdown p-component p-dropdown-clearable">
-          <div class="p-hidden-accessible">
-            <input type="text" readonly="" aria-haspopup="listbox" pautofocus="" role="combobox" class="p-element"
-              id="role" placeholder="Select a Role" aria-expanded="false">
-          </div><!---->
-          <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
-            class="mr-2 inline-block"></p-fileUpload>
-          <span class="p-dropdown-label p-inputtext p-placeholder ng-star-inserted">Select a
-            Role</span><!----><!----><!---->
-          <div role="button" aria-label="dropdown trigger" aria-haspopup="listbox" class="p-dropdown-trigger"><!---->
-            <div class="p-element p-icon-wrapper ng-star-inserted">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"
-                class="p-dropdown-trigger-icon p-icon" aria-hidden="true">
-              </svg>
-            </div><!----><!----><!----><!---->
-          </div>
-          <p-overlay class="p-element ng-tns-c30-96 ng-star-inserted"><!----></p-overlay>
-        </div>
-      </p-dropdown>
-    </div>
-
-
-    <div class="surface-border border-top-1 opacity-50 mb-3 col-12"></div>
-    <div class="field mb-4 col-12">
-      <label for="privacy2" class="font-medium text-900">Privacy</label>
-      <div class="flex align-items-center">
-        <div inputid="privacy2" class="p-element">
-          <div class="p-inputswitch p-component">
-            <div class="p-hidden-accessible">
-              <input type="checkbox" role="switch" id="privacy2" aria-checked="false">
+      <div class="px-4 py-5 md:px-6 lg:px-8 surface-section">
+        <div class="flex flex-column lg:flex-row lg:align-items-center lg:justify-content-between relative"
+          style="margin-top: -2rem; top: -70px; margin-bottom: -70px">
+          <div>
+            <div class="mb-3 surface-card shadow-2 flex align-items-center justify-content-center" style="
+                                width: 140px;
+                                height: 140px;
+                                border-radius: 10px;
+                            ">
+              <img src="/assets/demo/images/avatar/hero-1.png" alt="Image" width="140" height="140" />
             </div>
-            <span class="p-inputswitch-slider"></span>
+            <div class="text-900 text-3xl font-medium mb-3">
+              Full Name
+            </div>
+            <p class="mt-0 mb-3 text-700 text-xl">
+              Role
+            </p>
+            <div class="text-600 font-medium">
+              <span>Email</span>
+            </div>
+            <div class="text-600 font-medium">
+              <span>phone Number</span>
+            </div>
+            <div class="text-600 font-medium">
+              <span>Privileges:</span>
+            </div>
+          </div>
+          <div class="mt-3 lg:mt-0">
+            <button pbutton="" pripple="" label="Follow" icon="pi pi-plus-circle"
+              class="p-element p-ripple p-button-outlined mr-2 p-button p-component" fdprocessedid="10uj3j">
+              <span class="p-button-icon p-button-icon-left pi pi-plus-circle" aria-hidden="true"></span>
+              <span
+                class="p-button-label">Edit Profile</span>
+                <span class="p-ink"></span>
+              </button>
+                <button pbutton="" pripple=""
+              label="Website" icon="pi pi-link" class="p-element p-ripple mr-2 p-button p-component"
+              fdprocessedid="mgco5">
+              <span class="p-button-icon p-button-icon-left pi pi-link" aria-hidden="true"></span>
+              <span
+                class="p-button-label">Change password</span>
+                <span class="p-ink"></span>
+              </button>
+                
           </div>
         </div>
-        <span class="ml-2 text-900">Share my data with contacts</span>
       </div>
-    </div>
+  </div> -->
 
-    <div class="surface-border border-top-1 opacity-50 mb-3 col-12"></div>
-    <div class="col-3">
-      <button pButton pRipple type="button" label="Save Changes" class="p-button-danger"></button>
-    </div>
-  </div>
+
+
+
+
+
+  <div class="w-full " style="
+  height: 200px;
+  background: url('../../../../assets/téléchargement\ \(1\).jpg')
+      no-repeat;
+  background-size: cover;filter: brightness(60%);">
+</div>
+<div class="px-4 py-5 md:px-6 lg:px-8 surface-section">
+<div class="flex flex-column lg:flex-row lg:align-items-center lg:justify-content-between relative"
+style="margin-top: -2rem; top: -70px; margin-bottom: -70px">
+<div>
+<div class="mb-3 surface-card shadow-2 flex align-items-center justify-content-center" style="
+              width: 140px;
+              height: 140px;
+              border-radius: 10px;
+          ">
+<img src="../../../../assets/yasmine.jpg" alt="Image" width="140" height="140" />
+</div>
+<div class="text-900 text-3xl font-medium mb-3">
+Full Name
+</div>
+<p class="mt-0 mb-3 text-700 text-xl">
+Role
+</p>
+<div class="text-600 font-medium">
+<span>Email</span>
+</div>
+<div class="text-600 font-medium">
+<span>phone Number</span>
+</div>
+<div class="text-600 font-medium">
+<span>Privileges:</span>
+</div>
+</div>
+<div class="mt-3 lg:mt-0">
+<button pbutton="" pripple="" label="Follow" icon="pi pi-user-edit"
+class="p-element p-ripple p-button-outlined mr-2 p-button p-component" fdprocessedid="10uj3j"
+routerLink="/dashboard/user-profile/edit-profile">
+<span class="p-button-icon p-button-icon-left pi pi-user-edit" aria-hidden="true"></span>
+<span
+class="p-button-label">Edit Profile</span>
+<span class="p-ink"></span>
+</button>
+<button pbutton="" pripple=""
+label="Website" icon="pi pi-key" class="p-element p-ripple mr-2 p-button p-component"
+fdprocessedid="mgco5" routerLink="/dashboard/user-profile/change-password">
+<span class="p-button-icon p-button-icon-left pi pi-key" aria-hidden="true"></span>
+<span
+class="p-button-label">Change password</span>
+<span class="p-ink"></span>
+</button>
+
+</div>
+</div>
+</div>
 </div>
