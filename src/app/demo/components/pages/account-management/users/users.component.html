@@ -29,12 +29,12 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 3rem">
+                        <!-- <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th>
+                        </th> -->
 
                         <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
-                        <th>Image</th>
+                        <!-- <th>Image</th> -->
                         <th pSortableColumn="fullName">Full Name <p-sortIcon field="fullName"></p-sortIcon></th>
                         <th pSortableColumn="email">Email<p-sortIcon field="email"></p-sortIcon></th>
                         <th pSortableColumn="phoneNumber">Phone Number <p-sortIcon field="phoneNumber"></p-sortIcon>
@@ -48,15 +48,15 @@
 
                 <ng-template pTemplate="body" let-user>
                     <tr>
-                        <td>
+                        <!-- <td>
                             <p-tableCheckbox [value]="user"></p-tableCheckbox>
-                        </td>
+                        </td> -->
                         <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.username}}
                         </td>
-                        <td [readonly]="true" style="width:14%; min-width:10rem;">
+                        <!-- <td [readonly]="true" style="width:14%; min-width:10rem;">
                             <img [src]="user.image" style="width: 50px; height: 50px;">
-                        </td>
+                        </td> -->
                         <td [readonly]="true" style="width:14%; min-width:10rem;">
                             {{user.fullName}}
                         </td>
@@ -69,11 +69,18 @@
                         <td [readonly]="true" style="width:14%; min-width: 10rem;">
                             {{user.role?.name}}
                         </td>
-                        <td style="width:14%; min-width: 10rem;">
+
+                        <!-- <td style="width:14%; min-width: 10rem;">
 
                             <p-tag [value]="user.status ? 'Active' : 'Inactive'"
                                 [severity]="getSeverity(user.status)"></p-tag>
-                        </td>
+                        </td> -->
+
+                        <td>
+                            <i class="pi"
+                              [ngClass]="{ 'text-green-500 pi-check-circle': user.status, 'text-red-500 pi-times-circle': !user.status }"></i>
+                          </td>
+
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"

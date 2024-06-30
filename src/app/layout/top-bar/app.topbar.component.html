@@ -18,14 +18,14 @@
     <div #topbarmenu class="layout-topbar-menu"
         [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
 
-        <button class="p-link layout-topbar-button" [routerLink]="'/dashboard/calendar'">
+        <!-- <button class="p-link layout-topbar-button" [routerLink]="'/dashboard/calendar'">
             <i class="pi pi-calendar"></i>
             <span> {{ 'Calendar' | translate }}</span>
         </button>
         <button class="p-link layout-topbar-button" [routerLink]="'/dashboard'">
             <i class="pi pi-bell"></i>
             <span> {{ 'Notifications' | translate }}</span>
-        </button>
+        </button> -->
         <button class="p-link layout-topbar-button" (click)="toggleLanguageMenu()">
             <i class="pi pi-language"></i>
             <span> {{ 'Language' | translate }}</span>
@@ -59,7 +59,7 @@
     <div #userinfo class="user-info ">
         <img src="../../../../assets/demo/images/avatar/elwinsharvill.png" alt="User Image" class="user-image">
         <div class="user-details mr-4">
-            <div>{{ currentUser?.username }}</div>
+            <div>{{ currentUser?.fullName }}</div>
             <div>{{ currentUser?.role.name }}</div>
         </div>
     </div>

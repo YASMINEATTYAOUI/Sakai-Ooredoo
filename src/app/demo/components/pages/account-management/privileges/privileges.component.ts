@@ -130,7 +130,7 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
 
   searchPrivileges(event) {
     console.log("privilege selected is " + event);
-    this.filteredData = this.privileges.filter(item => item.name.toLowerCase().startsWith(event.toLowerCase()));
+    this.filteredData = this.privileges.filter(item => item.name.toLowerCase().includes(event.toLowerCase()));
   }
 
   openNew() {
