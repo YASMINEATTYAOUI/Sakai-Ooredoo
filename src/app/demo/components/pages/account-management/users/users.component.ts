@@ -83,6 +83,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   save(): void {
     this.submitted = true;
+    
     if (this.userToUpdate) {
       this.updateUser(this.user);
     } else {

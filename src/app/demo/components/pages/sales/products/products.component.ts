@@ -45,8 +45,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
   selectedFile: File;
   imageUrl: string | ArrayBuffer;
   
-  
-
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
@@ -77,7 +75,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
- 
   onFileSelected(event: any): void {
     this.selectedFile = <File>event.target.files[0];
   }
@@ -113,8 +110,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.productDialog = false;
   }
   createProduct(): void {
-    
-    if (this.productForm.invalid ) {
+    console.log(this.productForm)
+    // if (this.productForm.invalid ) {
     const formData = new FormData();
     formData.append('file', this.selectedFile);
     formData.append('reference', this.productForm.get('reference')?.value);
@@ -130,9 +127,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
     });
-  } else {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please fill out the form correctly!' });
-  }
+  // } else {
+  //   this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please fill out the form correctly!' });
+  // }
    error => {
       console.error('Error creating product:', error);
     };
@@ -179,8 +176,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.filteredData = this.products.filter(product =>
       product.reference.toLowerCase().includes(query.toLowerCase()) ||
       product.price.toString().toLowerCase().includes(query.toLowerCase()) ||
-      //product.category.name.toLowerCase().includes(query.toLowerCase())||
-      //product.brand.name.toLowerCase().includes(query.toLowerCase())||
+      // product?.category.name.toLowerCase().includes(query.toLowerCase())||
+      // product?.brand.name.toLowerCase().includes(query.toLowerCase())||
       product.soldQuantity.toString().toLowerCase().includes(query.toLowerCase()) ||
       product.availableQuantity.toString().toLocaleLowerCase().includes(query.toLowerCase()) ||
       product.description.toLowerCase().includes(query.toLowerCase())
@@ -206,13 +203,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.router.navigate(['dashboard/pages/sales/packages', product.id]);
   }
 
-  
-
   openNew() {
     this.product = new Product;
     this.submitted = false;
     this.productDialog = true;
-    console.log("opened");
   }
 
   openDialog(product?: Product) {
@@ -273,7 +267,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   onFileSelectedd(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.selectedFile = file; // Update selectedFile with the selected file
+      this.selectedFile = file;
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
