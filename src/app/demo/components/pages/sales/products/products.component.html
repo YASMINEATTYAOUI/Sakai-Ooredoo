@@ -107,7 +107,7 @@
                     </div>
 
                     <div class="field">
-                        <label for="brands">Brand</label>
+                        <label for="brand">Brand</label>
                         <p-dropdown [options]="brands" formControlName="brand" optionLabel="name"
                             placeholder="Select Brand" (onChange)="brandSelectedEvent($event)">
                         </p-dropdown>
@@ -152,13 +152,20 @@
                         </div>
                     </div>
 
-                    <div class="field">
+                    <!-- <div class="field">
                         <label for="file">Product Picture</label>
                         <input id="file-upload" class="w-full" type="file" class="custom-file-input"
                             (change)="onFileSelected($event)" accept="image/*" formControlName="file"><img
                             *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" class="uploaded-image"
                             style="width: 100px; height: 100px; border-radius: 8px;">
+                    </div> -->
+
+                    <div class="file-upload-container">
+                        <label for="file-upload" class="file-upload-label">+ Product Picture</label>
+                        <input id="file-upload" type="file" class="file-upload-input" (change)="onFileSelected($event)" accept="image/*">
+                        
                     </div>
+
                 </form>
             </ng-template>
 

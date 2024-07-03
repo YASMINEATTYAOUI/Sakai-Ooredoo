@@ -17,7 +17,7 @@ export class BrandsComponent implements OnInit, OnDestroy {
   brands: Brand[];
   brand: Brand;
   name: string;
-  file: File;
+  selectedFile: File;
   brandId: any;
 
   brandForm: FormGroup;
@@ -56,26 +56,34 @@ export class BrandsComponent implements OnInit, OnDestroy {
   }
 
   createBrand() {
-    this.brandService.createBrand(this.brandForm.get('name').value, this.brandForm.get('description').value, this.file).subscribe({
+    this.brandService.createBrand(this.brandForm.get('name').value, this.brandForm.get('description').value, this.selectedFile).subscribe({
       next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Created', life: 2000 }),
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Creation Failed' }),
       complete: () => { }
     });
     this.brands.push(this.brandForm.value);
   }
-  private updateBrand(): void {
-    if (this.brandToUpdate) {
-      this.submitted = true;
-      this.brandService.updateBrand(this.brandForm.get('id').value, this.brandForm.get('name').value, this.brandForm.get('description').value, this.file).subscribe({
-        next: (response) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Brand Updated', life: 2000 }),
+
+  updateBrand(): void {
+    if (this.brandToUpdate && this.brandToUpdate.id ) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+      formData.append('name', this.brandForm.get('name')?.value);
+      formData.append('description', this.brandForm.get('description')?.value);
+      this.brandService.updateBrand(this.brandToUpdate.id, formData).subscribe({
+        next: (response) => {
+          console.log('Product updated successfully');
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 2000 });
+          this.getBrands();
+        },
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
         complete: () => { }
       });
     }
   }
 
-  onFileSelected(event: any) {
-    this.file = <File>event.target.files[0];
+  onFileSelected(event: any): void {
+    this.selectedFile = <File>event.target.files[0];
   }
 
   save(): void {
@@ -147,8 +155,9 @@ export class BrandsComponent implements OnInit, OnDestroy {
       id: brand.id,
       name: brand.name,
       description: brand.description,
-      file: brand.image
+      //file: brand.image  
     });
+    this.selectedFile = null;
   }
 
   confirmDeleteSelected() {

@@ -20,10 +20,12 @@ export class PackagesComponent implements OnInit, OnDestroy {
   packages: Package[];
   filteredData: Package[];
   name: any;
-  file: File;
+  selectedFile: File;
   _package: Package;
   selectedProductId: Product;
   products: any[] = [];
+
+  selectedProducts:  Product[];
 
   packageForm: FormGroup;
 
@@ -74,7 +76,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
     });
   }
   productsSelectedEvent(event: any) {
-    this._package.products = event.value;
+    this._package.products = <Product[]>event.value;
   }
 
   save(): void {
@@ -94,7 +96,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
       return;
     }
     const formData: FormData = new FormData();
-    formData.append('file', this.file);
+    formData.append('file', this.selectedFile);
     formData.append('reference', this.packageForm.get('reference').value);
     formData.append('description', this.packageForm.get('description').value);
     formData.append('nbProduct', this.packageForm.get('nbProduct').value);
@@ -114,26 +116,56 @@ export class PackagesComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   private updatePackage(): void {
-    if (this.packageToUpdate.id) {
-      this.packageService.updatePackage(this.packageForm.get('id').value, this.file,
-        this.packageForm.get('reference').value,
-        this.packageForm.get('description').value,
-        this.packageForm.get('nbProduct').value,
-        this.packageForm.get('price').value,
-        this.packageForm.get('soldQuantity').value,
-        this.packageForm.get('availableQuantity').value).subscribe({
-          next: (response) => {
-            console.log('Package updated successfully');
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Updated', life: 2000 });
-            this.getPackages();
-          },
-          error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-          complete: () => { }
-        });
+    if (this.packageToUpdate && this.packageToUpdate.id) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+      formData.append('reference', this.packageForm.get('reference')?.value);
+      formData.append('description', this.packageForm.get('description')?.value);
+      formData.append('nbProduct', this.packageForm.get('nbProduct')?.value);
+      formData.append('price', this.packageForm.get('price')?.value);
+      formData.append('soldQuantity', this.packageForm.get('soldQuantity')?.value);
+      formData.append('availableQuantity', this.packageForm.get('availableQuantity')?.value);
+      //formData.append('products', JSON.stringify(this.selectedProducts.map(product => product.id)));
+  
+      // if (this.selectedProducts && Array.isArray(this.selectedProducts)) {
+      //   formData.append('products', JSON.stringify(this.selectedProducts.map(product => product.id)));
+      // }
+
+      const productIds: number[] = this.packageForm.get('products').value.map(product => product.id);
+      productIds.forEach(productId => formData.append('products', productId.toString()));  
+
+      this.packageService.updatePackage(this.packageToUpdate.id, formData).subscribe({
+        next: (response) => {
+          console.log('Package updated successfully');
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Updated', life: 2000 });
+          this.getPackages();
+        },
+        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+        complete: () => { }
+      });
     }
   }
+  
+  // private updatePackage(): void {
+  //   if (this.packageToUpdate.id) {
+  //     this.packageService.updatePackage(this.packageForm.get('id').value, this.file,
+  //       this.packageForm.get('reference').value,
+  //       this.packageForm.get('description').value,
+  //       this.packageForm.get('nbProduct').value,
+  //       this.packageForm.get('price').value,
+  //       this.packageForm.get('soldQuantity').value,
+  //       this.packageForm.get('availableQuantity').value).subscribe({
+  //         next: (response) => {
+  //           console.log('Package updated successfully');
+  //           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Package Updated', life: 2000 });
+  //           this.getPackages();
+  //         },
+  //         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+  //         complete: () => { }
+  //       });
+  //   }
+  // }
 
   getPackages() {
     this.tableLoading = true;
@@ -183,7 +215,7 @@ export class PackagesComponent implements OnInit, OnDestroy {
   }
 
   onFileSelected(event: any) {
-    this.file = <File>event.target.files[0];
+    this.selectedFile = <File>event.target.files[0];
   }
 
   openNew() {
@@ -200,12 +232,13 @@ export class PackagesComponent implements OnInit, OnDestroy {
       id: _package.id,
       reference: _package.reference,
       description: _package.description,
-      file: _package.image,
+      nbProduct:_package.nbProduct,
       price: _package.price,
       soldQuantity: _package.soldQuantity,
       availableQuantity: _package.availableQuantity,
+      products:_package.products
     });
-
+    this.selectedFile = null;
   }
 
   confirmDeleteSelected() {
@@ -261,6 +294,5 @@ export class PackagesComponent implements OnInit, OnDestroy {
   canDeletePackage(): boolean {
     return this.authService.hasPrivilege('Delete Package');
   } 
-
 
 }

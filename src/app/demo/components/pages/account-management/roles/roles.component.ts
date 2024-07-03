@@ -76,7 +76,7 @@ export class RolesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getRoles();
     this.loadPrivileges();
-    this.rolePrivileges = this.currentUser.role.privileges;
+    //this.rolePrivileges = this.currentUser.role.privileges;
   
   }
 
@@ -89,7 +89,14 @@ export class RolesComponent implements OnInit, OnDestroy {
     });
   }
   
+  // privilegesSelectedEvent(event: any) {
+  //   this.role.privileges = <Privilege[]>event.value;
+  // }
+
   privilegesSelectedEvent(event: any) {
+    if (!this.role) {
+      this.role = {} as Role; // Ensure role is defined
+    }
     this.role.privileges = <Privilege[]>event.value;
   }
 
@@ -116,10 +123,10 @@ export class RolesComponent implements OnInit, OnDestroy {
       this.roleService.updateRole(role.id, role).subscribe({
         next: (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 2000 });
-          this.getRoles(); // Refresh roles list after update
+          this.getRoles();
         },
         error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-        complete: () => { }
+        complete: () => {}
       });
     }
   }
@@ -161,7 +168,7 @@ export class RolesComponent implements OnInit, OnDestroy {
   }
 
   toRole(role: Role) {
-    this.router.navigate(['dashboard/products/', role.id]);
+    this.router.navigate(['dashboard/roles/', role.id]);
   }
 
   openNew() {
@@ -179,6 +186,7 @@ export class RolesComponent implements OnInit, OnDestroy {
       id: role.id,
       name: role.name,
       description: role.description,
+      privileges:role.privileges,
       active: role.active
     });
   }

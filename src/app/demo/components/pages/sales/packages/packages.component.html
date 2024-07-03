@@ -60,7 +60,7 @@
             </td>
             <td>{{_package.reference}}</td>
             <td class="text-align-center">
-              <img class=" w-auto" [src]="_package.image" style="width: 50px; height: 25px;">
+              <img class=" w-auto" [src]="_package.image" style=" height: 75px;">
             </td>
             <td>{{ _package.nbProduct}}</td>
             <td>
@@ -136,13 +136,20 @@
             </div>
           </div>
 
-          <div class="field">
+          <!-- <div class="field">
             <label for="file">Package Picture</label>
             <input id="file-upload" class="w-full" type="file" class="custom-file-input"
               (change)="onFileSelected($event)" accept="image/*" formControlName="file"><img *ngIf="imageUrl"
               [src]="imageUrl" alt="Uploaded Image" class="uploaded-image"
               style="width: 100px; height: 100px; border-radius: 8px;">
-          </div>
+          </div> -->
+
+          <div class="file-upload-container">
+            <label for="file-upload" class="file-upload-label">+ Package Picture</label>
+            <input id="file-upload" type="file" class="file-upload-input" (change)="onFileSelected($event)" accept="image/*">
+            
+        </div>
+
         </form>
       </ng-template>
 

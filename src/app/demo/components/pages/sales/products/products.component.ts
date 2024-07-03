@@ -86,7 +86,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   brandSelectedEvent(event: any) {
-    this.product.brand = event.value;
+      this.product.brand = event.value;
   }
 
   loadCategories() {
@@ -135,22 +135,27 @@ export class ProductsComponent implements OnInit, OnDestroy {
     };
   }
 
-  private updateProduct(): void {
-    if (this.productToUpdate.id) {
-      this.productService.updateProduct(this.productForm.get('id').value, this.selectedFile,
-        this.productForm.get('reference').value,
-        this.productForm.get('description').value,
-        this.productForm.get('price').value,
-        this.productForm.get('soldQuantity').value,
-        this.productForm.get('availableQuantity').value).subscribe({
-          next: (response) => {
-            console.log('Product updated successfully');
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 2000 });
-            this.getProducts();
-          },
-          error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
-          complete: () => { }
-        });
+  updateProduct(): void {
+    if (this.productToUpdate && this.productToUpdate.id ) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+      formData.append('reference', this.productForm.get('reference')?.value);
+      formData.append('description', this.productForm.get('description')?.value);
+      formData.append('price', this.productForm.get('price')?.value);
+      formData.append('soldQuantity', this.productForm.get('soldQuantity')?.value);
+      formData.append('availableQuantity', this.productForm.get('availableQuantity')?.value);
+      formData.append('brand', this.productForm.get('brand')?.value.id);
+      formData.append('category', this.productForm.get('category')?.value.id);
+  
+      this.productService.updateProduct(this.productToUpdate.id, formData).subscribe({
+        next: (response) => {
+          console.log('Product updated successfully');
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 2000 });
+          this.getProducts();
+        },
+        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+        complete: () => { }
+      });
     }
   }
 
@@ -200,7 +205,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   toProduct(product: Product) {
-    this.router.navigate(['dashboard/pages/sales/packages', product.id]);
+    this.router.navigate(['dashboard/pages/sales/products', product.id]);
   }
 
   openNew() {
@@ -217,11 +222,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
       id: product.id,
       reference: product.reference,
       description: product.description,
-      file: product.image,
-      price:product.price,
-      soldQuantity:product.soldQuantity,
-      availableQuantity:product.availableQuantity,
+      price: product.price,
+      soldQuantity: product.soldQuantity,
+      availableQuantity: product.availableQuantity,
+      brand: product.brand,
+      category: product.category,
     });
+    this.selectedFile = null;
   }
 
   confirmDeleteSelected() {
@@ -233,7 +240,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
           this.deleteProductsDialog = false;
           this.selectedProducts = [];
           console.log('Products deleted successfully');
-          this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The products have been deleted.' }); // Changed "Packages" to "Products"
+          this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The products have been deleted.' });
           this.getProducts();
         },
         error: (e) => {
@@ -252,7 +259,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
         this.deleteProductDialog = false;
         this.product = {};
         console.log('Product deleted successfully');
-        this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The product has been deleted.' }); // Changed "Package" to "Product"
+        this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'The product has been deleted.' });
         this.getProducts();
       },
       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Deletion Failed' }),

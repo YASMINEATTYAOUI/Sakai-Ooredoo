@@ -29,26 +29,9 @@ createProduct(formData: FormData): Observable<any> {
   return this.http.post(this.baseUrl, formData);
 }
 
-  updateProduct(productId: number, file: File, reference: string, description: string, price: number, soldQuantity: number, availableQuantity: number): Observable<Package> {
-    const formData = new FormData();
-    formData.append('file', file, file.name);
-    formData.append('reference', reference);
-    formData.append('description', description);
-    formData.append('price', price.toString());
-    formData.append('soldQuantity', soldQuantity.toString());
-    formData.append('availableQuantity', availableQuantity.toString());
-  
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json'
-      })
-    };
-  
-    return this.http.put<Package>(`${this.baseUrl}/${productId}`, formData, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+updateProduct(productId: number, formData: FormData): Observable<any> {
+  return this.http.put(`${this.baseUrl}/${productId}`, formData);
+}
 
   getProducts(): Observable<any[]> {
     return this.http.get<any>(`${this.baseUrl}/sorted`).pipe(
