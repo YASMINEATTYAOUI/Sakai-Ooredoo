@@ -4,6 +4,7 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { User} from '../../models/user';
 import { environment } from 'src/environments/environment';
 import { PageEvent } from '../../utils/page-event';
+import { ChangePassword } from '../../models/change-password';
 
 @Injectable({
   providedIn: 'root'
@@ -92,9 +93,9 @@ export class UserService {
     countUsers(): Observable<number> {
       return this.http.get<number>(`${this.baseUrl}/count`);
     }
-    /*
-    changePassword(changePasswordRequest: ChangePasswordRequest): Observable<void> {
-      return this.http.post<void>(`${this.baseUrl}/changePassword`, changePasswordRequest);
+
+    changePassword(changePassword: ChangePassword, email: string): Observable<any> {
+      return this.http.post<any>(`${this.baseUrl}/change-password/${email}`, changePassword);
     }
-  */
+   
   }
