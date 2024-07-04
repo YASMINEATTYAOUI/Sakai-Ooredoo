@@ -70,6 +70,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.getProducts();
     this.loadBrands();
     this.loadCategories();
+
   }
 
   ngOnDestroy() {

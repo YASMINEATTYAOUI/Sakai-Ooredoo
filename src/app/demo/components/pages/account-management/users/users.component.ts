@@ -56,28 +56,51 @@ export class UsersComponent implements OnInit, OnDestroy {
   items: MenuItem[] | undefined;
   home: MenuItem | undefined;
 
+  currentUser:User;
+
   constructor(
     private userService: UserService,
     private roleService: RoleService,
     private authService: AuthenticationService,
     private messageService: MessageService,
     private formBuilder: FormBuilder,
-    private router: Router) { 
-      this.userUpdateForm = this.formBuilder.group({
-        id:[],
-        role: ['', Validators.required],
-        status: [''],
-      });
-    }
+    private router: Router) {
+    this.userUpdateForm = this.formBuilder.group({
+      id: [],
+      role: ['', Validators.required],
+      status: [''],
+    });
+
+  }
 
   ngOnInit() {
 
     this.items = [{ icon: 'pi pi-home', route: '/dashboard' }, { label: 'Acount Management' }, { label: 'Users', route: '/inputtext' }]
     this.getUsers();
     this.loadRoles();
-
+    console.log()
+    this.getCurrentUser()
     
+    console.log(this.hasActiveRole())
+    console.log(this.isActive())
   }
+
+  getCurrentUser(): void {
+    this.authService.getCurrentUser().subscribe(
+        data => this.currentUser = data,
+        error => console.error('Error fetching user data', error));
+}
+
+  hasActiveRole(): Boolean {
+    console.log('currentUser:', this.currentUser);
+    return this.currentUser?.role?.active === true;
+  }
+
+  isActive(): Boolean {
+    console.log('currentUser:', this.currentUser);
+    return this.currentUser?.status ;
+  }
+
 
   ngOnDestroy(): void {
 
@@ -95,9 +118,9 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   save(): void {
     this.submitted = true;
-    
+
     if (this.userToUpdate) {
-    this.updateUser();
+      this.updateUser();
     } else {
 
       this.createUser(this.user);
@@ -142,14 +165,14 @@ export class UsersComponent implements OnInit, OnDestroy {
       const formData = new FormData();
       formData.append('role', this.userUpdateForm.get('role').value.id);
       formData.append('status', this.userUpdateForm.get('status').value);
-  
+
       // Log the FormData to check its contents
       console.log('Updating user with ID:', this.userToUpdate.id);
       console.log('FormData:', {
         role: formData.get('role'),
         status: formData.get('status')
       });
-  
+
       this.userService.updateUsers(this.userToUpdate.id, formData).subscribe({
         next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 2000 }),
         error: (e) => {
@@ -188,7 +211,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       user.email.toLowerCase().includes(query.toLowerCase()) ||
       user.phoneNumber.toString().toLocaleLowerCase().includes(query.toLowerCase()) ||
       user.role.name.toLowerCase().includes(query.toLowerCase())
-     );
+    );
   }
 
   deleteUser(user: User): void {
@@ -222,7 +245,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.userService.getUserById(user.id).subscribe(response => {
       this.user = response;
       this.userUpdateForm.patchValue({
-        
+
         role: this.user.role,
         status: this.user.status,
       });
@@ -286,9 +309,9 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   canAddUser(): boolean {
     return this.authService.hasPrivilege('Update User');
-  }  
+  }
   canEditUser(): boolean {
     return this.authService.hasPrivilege('Update User');
-  }  
+  }
 
 }

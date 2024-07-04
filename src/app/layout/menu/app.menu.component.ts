@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
 import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
+import { User } from 'src/app/demo/models/user';
 
 @Component({
     selector: 'app-menu',
@@ -10,11 +11,29 @@ import { AuthenticationService } from 'src/app/demo/service/services/authenticat
 export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
+    currentUser:User;
 
     constructor(
         public layoutService: LayoutService,
         public authService: AuthenticationService
     ) { }
+
+
+    getCurrentUser(): void {
+        this.authService.getCurrentUser().subscribe(
+            data => this.currentUser = data,
+            error => console.error('Error fetching user data', error));
+    }
+    
+      hasActiveRole(): Boolean {
+        console.log('currentUser:', this.currentUser);
+        return this.currentUser?.role?.active === true;
+      }
+    
+      isActive(): Boolean {
+        console.log('currentUser:', this.currentUser);
+        return this.currentUser?.status ;
+      }
 
     canViewUsers(): boolean {
         return this.authService.hasPrivilege('View User');

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { Brand } from 'src/app/demo/models/brand';
+import { User } from 'src/app/demo/models/user';
 import { AuthenticationService } from 'src/app/demo/service/services/authentication.service';
 import { BrandService } from 'src/app/demo/service/services/brand.service';
 
@@ -33,6 +34,8 @@ export class BrandsComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
   isUpdate: boolean = false;
 
+  currentUser:User;
+  
   constructor(
     private formBuilder: FormBuilder,
     private brandService: BrandService,
@@ -50,6 +53,25 @@ export class BrandsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getBrands();
+    this.getCurrentUser();
+    console.log(this.hasActiveRole())
+    console.log(this.isActive())
+  }
+
+  getCurrentUser(): void {
+    this.authService.getCurrentUser().subscribe(
+        data => this.currentUser = data,
+        error => console.error('Error fetching user data', error));
+}
+
+  hasActiveRole(): Boolean {
+    console.log('currentUser:', this.currentUser);
+    return this.currentUser?.role?.active ;
+  }
+
+  isActive(): Boolean {
+    console.log('currentUser:', this.currentUser);
+    return this.currentUser?.status ;
   }
 
   ngOnDestroy() {
