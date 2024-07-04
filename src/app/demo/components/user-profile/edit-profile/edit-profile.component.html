@@ -1,33 +1,33 @@
 <div class="surface-card p-4 shadow-2 border-round">
-  <div class="grid formgrid p-fluid">
+  <div class="grid formgrid p-fluid" [formGroup]="profileForm">
 
 
     <div class="text-center mb-5">
       <div class="text-900 text-3xl font-medium mb-3 ml-4">Edit Profile</div>
     </div>
-
+  <!-- <form [formGroup]="profileForm" > -->
     <div class="field mb-4 col-12">
       <label for="username" class="font-medium text-900">Username</label>
-      <input id="username" type="text" pinputtext="" class="p-inputtext p-component p-element" />
+      <input id="username" type="text" pinputtext="" class="p-inputtext p-component p-element" formControlName="username" />
     </div>
 
     <div class="surface-border border-top-1 opacity-50 mb-3 col-12"></div>
     <div class="field mb-4 col-12 md:col-6">
-      <label for="firstName" class="block text-900 font-medium mb-2">Full Name</label>
-      <input id="firstName" type="text" pinputtext=""
-        class="p-inputtext p-component p-element ng-valid ng-touched ng-dirty" />
+      <label for="fullName" class="block text-900 font-medium mb-2">Full Name</label>
+      <input id="fullName" type="text" pinputtext=""
+        class="p-inputtext p-component p-element ng-valid ng-touched ng-dirty" formControlName="fullName"/>
     </div>
 
     <div class="field mb-4 col-12 md:col-6">
-      <label for="lastName" class="block text-900 font-medium mb-2">Email</label>
-      <input id="lastName" type="text" pinputtext=""
-        class="p-inputtext p-component p-element ng-valid ng-touched ng-dirty" />
+      <label for="email" class="block text-900 font-medium mb-2">Email</label>
+      <input id="email" type="text" pinputtext=""
+        class="p-inputtext p-component p-element ng-valid ng-touched ng-dirty" formControlName="email"/>
     </div>
 
     <div class="field mb-4 col-12 md:col-6">
       <label for="phoneNumber" class="block text-900 font-medium mb-2">Phone Number</label>
       <input id="phoneNumber" type="text" pinputtext=""
-        class="p-inputtext p-component p-element ng-valid ng-touched ng-dirty" />
+        class="p-inputtext p-component p-element ng-valid ng-touched ng-dirty" formControlName="phoneNumber"/>
     </div>
 
     <div class="field mb-4 col-12 md:col-6">
@@ -37,13 +37,13 @@
 
         <p-toast />
         <p-fileUpload mode="basic" chooseLabel="Upload Image" chooseIcon="pi pi-upload" name="demo[]" accept="image/*"
-          maxFileSize="1000000" (onUpload)="onUpload($event)" />
+          maxFileSize="1000000"  />
       </div>
     </div>
     <div class="surface-border border-top-1 opacity-50 mb-3 col-12"></div>
-    
+  <!-- </form> -->
     <div class="col-3">
-      <button pButton pRipple type="button" label="Save Changes" class="p-button-danger" (click)="save()"></button>
+      <button pButton pRipple type="button" label="Save Changes" class="p-button-danger" (click)="updateProfile()"></button>
     </div>
   </div>
 </div>

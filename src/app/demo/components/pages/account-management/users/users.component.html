@@ -3,11 +3,11 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
-            
+
             <p-toast></p-toast>
             <div class="mb-4">
-                <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-danger mr-2"
-                    (click)="openNew()" *ngIf="canAddUser()"></button>
+                <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-danger mr-2" (click)="openNew()"
+                    *ngIf="canAddUser()"></button>
             </div>
 
             <p-table [value]="filteredData" responsiveLayout="scroll" [rows]="10" [paginator]="true"
@@ -78,13 +78,14 @@
 
                         <td>
                             <i class="pi"
-                              [ngClass]="{ 'text-green-500 pi-check-circle': user.status, 'text-red-500 pi-times-circle': !user.status }"></i>
-                          </td>
+                                [ngClass]="{ 'text-green-500 pi-check-circle': user.status, 'text-red-500 pi-times-circle': !user.status }"></i>
+                        </td>
 
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2" (click)="openDialog(user)" *ngIf="canEditUser()"></button>
+                                    class="p-button-rounded p-button-success mr-2" (click)="openDialog(user)"
+                                    *ngIf="canEditUser()"></button>
                             </div>
                         </td>
                     </tr>
@@ -102,66 +103,62 @@
             class="p-fluid">
             <ng-template pTemplate="content">
                 <!-- <form> -->
-                    <!-- <img [src]="user.image" [alt]="user.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2"
+                <!-- <img [src]="user.image" [alt]="user.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2"
                         *ngIf="user.image"> -->
 
-                    <div class="field">
-                        <label for="username">Username</label>
-                        <input type="text" pInputText id="username" [(ngModel)]="user.username" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.username}" name="username" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.username">Username is
-                            required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="fullName">Full Name</label>
-                        <input type="text" pInputText id="fullName" [(ngModel)]="user.fullName" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.fullName}" name="fullName" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.fullName">Full Name is
-                            required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="email">Email</label>
-                        <input type="text" pInputText id="email" [(ngModel)]="user.email" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.email}" name="email" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.email">Email is required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="phoneNumber">Phone Number</label>
-                        <input type="text" pInputText id="phoneNumber" [(ngModel)]="user.phoneNumber" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.phoneNumber}" name="phoneNumber" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.phoneNumber">Phone Number is
-                            required.</small>
-                    </div>
-                    <div class="field ">
-                        <label for="password">Password</label>
-                        <input type="text" pInputText id="password" [(ngModel)]="user.password" required autofocus
-                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.password}" name="password"
-                            [toggleMask]="true" />
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.password">Password
-                            required.</small>
-                    </div>
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input type="text" pInputText id="username" [(ngModel)]="user.username" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.username}" name="username" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.username">Username is
+                        required.</small>
+                </div>
+                <div class="field">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" pInputText id="fullName" [(ngModel)]="user.fullName" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.fullName}" name="fullName" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.fullName">Full Name is
+                        required.</small>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="text" pInputText id="email" [(ngModel)]="user.email" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.email}" name="email" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.email">Email is required.</small>
+                </div>
+                <div class="field">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="text" pInputText id="phoneNumber" [(ngModel)]="user.phoneNumber" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.phoneNumber}" name="phoneNumber" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.phoneNumber">Phone Number is
+                        required.</small>
+                </div>
+                <div class="field ">
+                    <label for="password">Password</label>
+                    <input type="text" pInputText id="password" [(ngModel)]="user.password" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.password}" name="password"
+                        [toggleMask]="true" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.password">Password
+                        required.</small>
+                </div>
 
 
-                    <div class="field">
-                        <label for="roles">Assign Role</label>
-                        <p-dropdown [options]="roles" [(ngModel)]="selectedRoleId" optionLabel="name"
-                            placeholder="Select Role" (onChange)="roleSelectedEvent($event)" />
-                    </div>
+                <div class="field">
+                    <label for="roles">Assign Role</label>
+                    <p-dropdown [options]="roles" [(ngModel)]="selectedRoleId" optionLabel="name"
+                        placeholder="Select Role" (onChange)="roleSelectedEvent($event)" />
+                </div>
 
-                    <div class="field">
-                        <label class="mb-3">Account Status</label>
-                        <p-inputSwitch ></p-inputSwitch>
-                    </div>
-                    <div class="field">
-                        <div class="status-container">
-                          <label for="active">Account Status</label>
-            
-                          <p-inputSwitch [(ngModel)]="user.status" class="ng-dirty ng-invalid"></p-inputSwitch>
-                          <!-- <small class="ng-dirty ng-invalid text-red-600"
+                <div class="field">
+                    <div class="status-container">
+                        <label for="active">Account Status</label>
+
+                        <p-inputSwitch [(ngModel)]="user.status" class="ng-dirty ng-invalid"></p-inputSwitch>
+                        <!-- <small class="ng-dirty ng-invalid text-red-600"
                             *ngIf="roleForm.get('active').invalid && roleForm.get('active').touched">
                             Status is required.</small> -->
-                        </div>
-                      </div>
+                    </div>
+                </div>
                 <!-- </form> -->
             </ng-template>
 
@@ -169,7 +166,62 @@
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
                     (click)="hideDialog()"></button>
                 <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"
-                    (click)="assignRole()"></button>
+                    ></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="userDialogUpdate" [style]="{width: '450px'}" header="User Details" [modal]="true"
+            class="p-fluid">
+            <ng-template pTemplate="content" [formGroup]="userUpdateForm">
+                <!-- <form> -->
+                <!-- <img [src]="user.image" [alt]="user.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2"
+                        *ngIf="user.image"> -->
+
+
+
+                <!-- <div class="field">
+                    <label for="roles">Assign Role</label>
+                    <p-dropdown [options]="roles" [(ngModel)]="selectedRoleId" optionLabel="name"
+                        placeholder="Select Role" (onChange)="roleSelectedEvent($event)" />
+                </div> -->
+
+
+
+                <!-- 
+                <div class="field">
+                    <div class="status-container">
+                        <label for="status">Account Status</label>
+
+                        <p-inputSwitch [(ngModel)]="user.status" class="ng-dirty ng-invalid"></p-inputSwitch>
+                        <small class="ng-dirty ng-invalid text-red-600"
+                            *ngIf="roleForm.get('active').invalid && roleForm.get('active').touched">
+                            Status is required.</small>
+                    </div>
+                </div> -->
+
+                
+                <div class="field">
+                    <label for="roles">Assign Role</label>
+                    <p-dropdown [options]="roles" formControlName="role" optionLabel="name"
+                        placeholder="Select Role" (onChange)="roleSelectedEvent($event)" />
+                </div>
+
+                <div class="field">
+                    <div class="status-container">
+                        <label for="status">Account Status</label>
+
+                        <p-inputSwitch formControlName="status" class="ng-dirty ng-invalid"></p-inputSwitch>
+                        
+                    </div>
+                </div>
+                <!-- </form> -->
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"
+                    ></button>
             </ng-template>
         </p-dialog>
 

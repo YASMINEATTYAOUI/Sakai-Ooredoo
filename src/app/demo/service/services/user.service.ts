@@ -45,9 +45,14 @@ export class UserService {
       return this.http.post(`${this.baseUrl}/save`, user);
     }
   
-    updateUser(user: User): Observable<Object> {
-      return this.http.put(this.baseUrl, user);
+    updateUser(userId: any, formData: FormData): Observable<User> {
+      return this.http.put<User>(`${this.baseUrl}/${userId}`, formData);
     }
+
+    updateUsers(userId: number, formData: FormData): Observable<any> {
+      return this.http.put<any>(`${this.baseUrl}/users/${userId}`, formData);
+    }
+
     getUsers(): Observable<User[]> {
       return this.http.get<User[]>(`${this.baseUrl}/users`).pipe(
         map((users: any[]) => {

@@ -6,6 +6,7 @@ import { AuthenticationService } from 'src/app/demo/service/services/authenticat
 import { UserService } from 'src/app/demo/service/services/user.service';
 import { RoleService } from 'src/app/demo/service/services/role.service';
 import { Role } from 'src/app/demo/models/role';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -31,6 +32,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   } 
   */
   userDialog: boolean = false;
+  userDialogUpdate: boolean = false;
   userToUpdate: User;
   deleteUserDialog: boolean = false;
 
@@ -49,6 +51,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   userId: any;
 
+  userUpdateForm: FormGroup;
 
   items: MenuItem[] | undefined;
   home: MenuItem | undefined;
@@ -58,13 +61,22 @@ export class UsersComponent implements OnInit, OnDestroy {
     private roleService: RoleService,
     private authService: AuthenticationService,
     private messageService: MessageService,
-    private router: Router) { }
+    private formBuilder: FormBuilder,
+    private router: Router) { 
+      this.userUpdateForm = this.formBuilder.group({
+        id:[],
+        role: ['', Validators.required],
+        status: [''],
+      });
+    }
 
   ngOnInit() {
 
     this.items = [{ icon: 'pi pi-home', route: '/dashboard' }, { label: 'Acount Management' }, { label: 'Users', route: '/inputtext' }]
     this.getUsers();
     this.loadRoles();
+
+    
   }
 
   ngOnDestroy(): void {
@@ -85,12 +97,13 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.submitted = true;
     
     if (this.userToUpdate) {
-      this.updateUser(this.user);
+    this.updateUser();
     } else {
 
       this.createUser(this.user);
     }
     this.userDialog = false;
+    this.userDialogUpdate = false;
   }
 
   private createUser(user: User): void {
@@ -107,11 +120,42 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   }
 
-  private updateUser(user: User): void {
+  // private updateUser(): void {
+  //   if (this.userToUpdate) {
+  //     const formData = new FormData();
+  //     formData.append('role', this.userUpdateForm.get('role').value);
+  //     formData.append('status', this.userUpdateForm.get('status').value);
+
+  //     console.log('FormData:', formData.get('role'), formData.get('status'));
+
+
+  //     this.userService.updateUsers(this.userToUpdate.id, formData).subscribe({
+  //       next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 2000 }),
+  //       error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+  //       complete: () => { }
+  //     });
+  //   }
+  // }
+
+  private updateUser(): void {
     if (this.userToUpdate) {
-      this.userService.updateUser(user).subscribe({
+      const formData = new FormData();
+      formData.append('role', this.userUpdateForm.get('role').value.id);
+      formData.append('status', this.userUpdateForm.get('status').value);
+  
+      // Log the FormData to check its contents
+      console.log('Updating user with ID:', this.userToUpdate.id);
+      console.log('FormData:', {
+        role: formData.get('role'),
+        status: formData.get('status')
+      });
+  
+      this.userService.updateUsers(this.userToUpdate.id, formData).subscribe({
         next: (response: any) => this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 2000 }),
-        error: (e) => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' }),
+        error: (e) => {
+          console.error('Update Failed', e);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update Failed' });
+        },
         complete: () => { }
       });
     }
@@ -175,10 +219,17 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   openDialog(user?: User) {
     this.userToUpdate = user;
-    this.userService.getUserById(user.id);
-    this.userDialog = true;
-
+    this.userService.getUserById(user.id).subscribe(response => {
+      this.user = response;
+      this.userUpdateForm.patchValue({
+        
+        role: this.user.role,
+        status: this.user.status,
+      });
+    });
+    this.userDialogUpdate = true;
   }
+
 
   confirmDeleteSelected() {
     if (this.selectedUsers && this.selectedUsers.length > 0) {
